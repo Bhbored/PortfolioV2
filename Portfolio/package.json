@@ -1,0 +1,12 @@
+{
+  "scripts": {
+    "build:css": "postcss Styles/input.css -o wwwroot/Styles/tailwind.css",
+    "watch:css": "postcss Styles/input.css -o wwwroot/Styles/tailwind.css --watch"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^10.1.0",
+    "tailwindcss": "^3.4.17"
+  }
+}

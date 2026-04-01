@@ -1,0 +1,19 @@
+{
+  "mcpServers": {
+    "microsoft-learn": {
+      "type": "http",
+      "url": "https://learn.microsoft.com/api/mcp"
+    }
+  },
+  "$version": 3,
+  "permissions": {
+    "allow": [
+      "Bash(npm run *)",
+      "Bash(npm install *)",
+      "Bash(npm uninstall *)",
+      "Bash(dotnet *)",
+      "Bash(del *)",
+      "Bash(taskkill *)"
+    ]
+  }
+}

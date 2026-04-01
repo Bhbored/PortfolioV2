@@ -1,0 +1,35 @@
+﻿@using Portfolio.Mockdata
+@using Portfolio.Models
+@inject NavigationManager Navigation
+
+<footer class="w-full py-8 border-t border-white/5 bg-[#0e0e13] flex flex-col md:flex-row justify-between items-center px-12 w-full">
+    <div class="font-headline text-[10px] uppercase tracking-[0.2em] text-white/40 animate-fade-in-left" style="animation-delay: 300ms; animation-fill-mode: both; opacity: 0;">
+        © @DateTime.Now.Year <span class="text-primary-container font-bold">@info.Name.ToUpper() DEVELOPER NOIR</span>. ENGINEERED FOR PRECISION.
+    </div>
+    
+    <div class="flex items-center gap-12 mt-4 md:mt-0">
+        <a class="font-headline text-[10px] uppercase tracking-[0.2em] text-white/40 hover:text-secondary transition-colors cursor-pointer hover:scale-110 transform" href="@info.Social.Github" target="_blank" style="animation: fadeInUp 0.5s ease-out 400ms forwards; opacity: 0;">
+            Github
+        </a>
+        <a class="font-headline text-[10px] uppercase tracking-[0.2em] text-white/40 hover:text-secondary transition-colors cursor-pointer hover:scale-110 transform" href="@info.Social.Linkedin" target="_blank" style="animation: fadeInUp 0.5s ease-out 500ms forwards; opacity: 0;">
+            LinkedIn
+        </a>
+        <a class="font-headline text-[10px] uppercase tracking-[0.2em] text-white/40 hover:text-secondary transition-colors cursor-pointer hover:scale-110 transform" href="#" style="animation: fadeInUp 0.5s ease-out 600ms forwards; opacity: 0;">
+            Source Code
+        </a>
+    </div>
+    
+    <div class="mt-4 md:mt-0 flex items-center gap-2 animate-scale-in" style="animation-delay: 700ms; animation-fill-mode: both; opacity: 0;">
+        <div class="w-2 h-2 bg-primary-container rounded-full animate-pulse"></div>
+        <span class="font-headline text-[10px] uppercase tracking-[0.2em] text-primary-container">System Online</span>
+    </div>
+</footer>
+
+@code {
+    private readonly PersonalInfo info = PersonalInfoData.GetDeveloper();
+    
+    private void ViewSource()
+    {
+        // Navigate to source code repository
+    }
+}

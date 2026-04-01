@@ -1,0 +1,74 @@
+@using Portfolio.Models
+
+<div class="bg-surface-container-high border border-outline-variant/30 p-4 md:p-8 space-y-4 md:space-y-6 group hover:border-primary/50 transition-all duration-500 cursor-pointer hover:scale-[1.02] hover:shadow-glow-cyan" @onclick="ToggleExpand">
+    <div class="flex justify-between items-start">
+        <span class="material-symbols-outlined text-primary text-2xl md:text-3xl">@Icon</span>
+    </div>
+
+    <div>
+        <h4 class="font-headline font-bold text-xl md:text-2xl mb-2">@skill.Title</h4>
+
+        @if (skill.IsNew)
+        {
+            <div class="inline-block bg-secondary-container px-2 py-0.5 text-[10px] font-black text-on-secondary tracking-widest mb-4">NEW</div>
+        }
+
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-[10px] font-label tracking-widest opacity-60">
+                @if (skill.IsNew)
+                {
+                    <span class="text-accent-orange">CURRENTLY EXPLORING</span>
+                }
+                else
+                {
+                    @:MASTERY LEVEL
+                }
+            </span>
+            <span class="text-xs md:text-sm font-label text-on-surface">@skill.MasteryLevel%</span>
+        </div>
+
+        <div class="h-1 bg-surface-container-highest w-full relative overflow-hidden">
+            <div class="absolute h-full @(skill.IsNew ? "bg-accent-orange" : "bg-accent-cyan")" style="width: @skill.MasteryLevel%; box-shadow: 0 0 10px rgba(@(skill.IsNew ? "255,77,0" : "0,240,255"), 0.5);"></div>
+            @if (skill.IsNew)
+            {
+                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            }
+        </div>
+
+        <!-- Expandable Details -->
+        @if (isExpanded)
+        {
+            <div class="mt-4 md:mt-6 pt-4 md:pt-6 border-t border-outline-variant/20">
+                <ul class="space-y-2 md:space-y-3">
+                    @foreach (var detail in skill.Details)
+                    {
+                        <li class="flex items-start gap-2 md:gap-3 text-xs md:text-sm text-on-surface-variant">
+                            <span class="material-symbols-outlined text-primary text-[14px] md:text-[16px] mt-0.5">check_circle</span>
+                            <span>@detail</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
+
+    <!-- Expand Indicator -->
+    <div class="absolute bottom-3 right-3 md:bottom-4 md:right-4">
+        <span class="material-symbols-outlined text-primary text-sm md:text-base transition-transform duration-300 @(isExpanded ? "rotate-180" : "")">
+            expand_more
+        </span>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required Skill Skill { get; set; }
+    [Parameter, EditorRequired] public required string Icon { get; set; }
+
+    private bool isExpanded = false;
+    private Skill skill => Skill;
+
+    private void ToggleExpand()
+    {
+        isExpanded = !isExpanded;
+    }
+}

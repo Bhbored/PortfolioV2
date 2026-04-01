@@ -1,0 +1,45 @@
+﻿@page "/"
+@using Portfolio.Mockdata
+@using Portfolio.Components.Landing
+@using Portfolio.Components.Skills
+
+<PageTitle>Home | BH DEVELOPER NOIR</PageTitle>
+
+<div class="home-container">
+    <!-- Hero Section -->
+    <HeroSection Info="@PersonalInfo" />
+
+    <!-- Skills Section -->
+    <SkillsSection />
+
+    <!-- Placeholder sections for Work, About, Contact -->
+    <section id="work" class="min-h-screen flex items-center justify-center mesh-gradient px-6">
+        <div class="text-center animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
+            <h2 class="font-headline text-[32px] md:text-[48px] lg:text-[64px] font-bold uppercase mb-4">Work</h2>
+            <p class="font-body text-white/60 text-sm md:text-lg">Featured projects coming soon...</p>
+        </div>
+    </section>
+
+    <section id="about" class="min-h-screen flex items-center justify-center mesh-gradient px-6">
+        <div class="text-center animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
+            <h2 class="font-headline text-[32px] md:text-[48px] lg:text-[64px] font-bold uppercase mb-4">About</h2>
+            <p class="font-body text-white/60 text-sm md:text-lg">About section coming soon...</p>
+        </div>
+    </section>
+
+    <section id="contact" class="min-h-screen flex items-center justify-center mesh-gradient px-6">
+        <div class="text-center animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
+            <h2 class="font-headline text-[32px] md:text-[48px] lg:text-[64px] font-bold uppercase mb-4">Contact</h2>
+            <p class="font-body text-white/60 text-sm md:text-lg">Contact section coming soon...</p>
+        </div>
+    </section>
+</div>
+
+@code {
+    private PersonalInfo PersonalInfo = new();
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        PersonalInfo = PersonalInfoData.GetDeveloper();
+    }
+}

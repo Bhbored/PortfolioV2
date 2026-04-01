@@ -1,0 +1,11 @@
+<div class="absolute inset-0 flex items-end justify-center pt-12 md:pt-0">
+    <!-- Portrait Container -->
+    <div class="relative w-full h-full group max-w-md mx-auto md:max-w-none">
+        <img alt="Developer portrait" class="w-full h-full object-cover  portrait-mask brightness-100 group-hover:brightness-100 transition-all duration-700 group-hover:scale-105" src="@PortraitUrl" style="transform-origin: center bottom;" />
+        
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required string PortraitUrl { get; set; }
+}

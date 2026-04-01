@@ -1,0 +1,33 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+  </PropertyGroup>
+
+  <Target Name="BuildTailwind" BeforeTargets="BeforeBuild">
+    <Exec Command="npm run build:css" />
+  </Target>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="10.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="10.0.5" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\Shared\" />
+    <Folder Include="Contracts\" />
+    <Folder Include="Mockdata\" />
+    <Folder Include="Components\Landing\" />
+    <Folder Include="Components\Experience\" />
+    <Folder Include="Components\Certificates\" />
+    <Folder Include="Components\Education\" />
+    <Folder Include="Components\Contact\" />
+    <Folder Include="Components\Projects\" />
+    <Folder Include="Components\Skills\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
+</Project>
