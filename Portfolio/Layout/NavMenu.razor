@@ -5,7 +5,7 @@
 <div class="nav-menu-container">
     <nav class="fixed top-0 w-full h-[80px] z-50 bg-[#0a0a0f]/80 backdrop-blur-xl shadow-[0_0_20px_rgba(0,240,255,0.08)] flex justify-between items-center px-6 md:px-12 w-full max-w-none animate-fade-in-down">
         <div class="absolute inset-0 grid-pattern opacity-20 pointer-events-none"></div>
-        
+
         <!-- Logo -->
         <div class="relative group animate-fade-in-left" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
             <div class="flex items-center gap-4">
@@ -19,16 +19,19 @@
                 </a>
             </div>
         </div>
-        
+
         <!-- Desktop Navigation Links -->
-        <div class="hidden md:flex items-center gap-12 font-body text-sm tracking-widest uppercase">
-            <a class="text-primary-container border-b-2 border-primary-container pb-1 transition-all duration-300 relative group hover:text-white hover:scale-105" href="#work" style="animation: fadeInUp 0.6s ease-out 300ms forwards; opacity: 0;">
-                Work
-                <span class="absolute -bottom-2 left-1/2 w-0 h-[1px] bg-primary group-hover:w-full group-hover:left-0 transition-all duration-500"></span>
-            </a>
-            <a class="text-white/70 hover:text-primary-container hover:scale-105 transition-all duration-300" href="#skills" style="animation: fadeInUp 0.6s ease-out 400ms forwards; opacity: 0;">Skills</a>
-            <a class="text-white/70 hover:text-primary-container hover:scale-105 transition-all duration-300" href="#about" style="animation: fadeInUp 0.6s ease-out 500ms forwards; opacity: 0;">About</a>
-            <a class="text-white/70 hover:text-primary-container hover:scale-105 transition-all duration-300" href="#contact" style="animation: fadeInUp 0.6s ease-out 600ms forwards; opacity: 0;">Contact</a>
+        <div class="hidden md:flex items-center gap-8 font-body text-sm tracking-widest uppercase">
+            @foreach (var navItem in navItems)
+            {
+                var isActive = currentSection == navItem;
+                <a class="transition-all duration-300 hover:scale-105 relative group @(isActive ? "text-primary-container" : "text-white/70 hover:text-primary-container")"
+                   href="@($"#{navItem.ToLower()}")"
+                   @onclick="() => SetActiveSection(navItem)">
+                    @navItem
+                    <span class="absolute -bottom-2 left-0 w-full h-[2px] bg-primary-container @(isActive ? "" : "scale-x-0") group-hover:scale-x-100 transition-transform duration-300"></span>
+                </a>
+            }
         </div>
         
         <!-- Mobile Menu Button -->
@@ -40,7 +43,7 @@
         
         <!-- Desktop CTA -->
         <div class="hidden md:block relative group" style="animation: fadeInRight 0.6s ease-out 700ms forwards; opacity: 0;">
-            <button class="px-8 py-2.5 rounded-full border border-transparent bg-gradient-to-r from-primary-container to-secondary-container p-[1px] hover:scale-105 active:scale-95 transition-all duration-300" @onclick="NavigateToContact">
+            <button class="px-8 py-2.5 rounded-full border border-transparent bg-gradient-to-r from-primary-container to-secondary-container p-[1px] hover:scale-105 active:scale-95 transition-all duration-300" @onclick="@(() => NavigateTo("Contact"))">
                 <div class="bg-[#0a0a0f] px-8 py-2 rounded-full h-full w-full flex items-center justify-center">
                     <span class="font-headline text-sm font-bold tracking-widest uppercase text-white">Let's Talk</span>
                 </div>
@@ -53,33 +56,17 @@
     <div class="fixed inset-0 bg-[#0a0a0f]/95 backdrop-blur-xl z-40 md:hidden transition-all duration-500 @(isMobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none")">
         <div class="flex flex-col items-center justify-center h-full w-full px-6">
             <div class="flex flex-col gap-8 text-center">
-                <a class="font-body text-2xl tracking-widest uppercase text-white/70 hover:text-primary-container transition-all duration-300 hover:scale-110 @(isMobileMenuOpen ? "animate-fade-in-up" : "")" 
-                   href="#work" 
-                   style="animation-delay: 100ms; animation-fill-mode: both; opacity: 0;"
-                   @onclick="CloseMobileMenu">
-                    Work
-                </a>
-                <a class="font-body text-2xl tracking-widest uppercase text-white/70 hover:text-primary-container transition-all duration-300 hover:scale-110 @(isMobileMenuOpen ? "animate-fade-in-up" : "")" 
-                   href="#skills" 
-                   style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;"
-                   @onclick="CloseMobileMenu">
-                    Skills
-                </a>
-                <a class="font-body text-2xl tracking-widest uppercase text-white/70 hover:text-primary-container transition-all duration-300 hover:scale-110 @(isMobileMenuOpen ? "animate-fade-in-up" : "")" 
-                   href="#about" 
-                   style="animation-delay: 300ms; animation-fill-mode: both; opacity: 0;"
-                   @onclick="CloseMobileMenu">
-                    About
-                </a>
-                <a class="font-body text-2xl tracking-widest uppercase text-white/70 hover:text-primary-container transition-all duration-300 hover:scale-110 @(isMobileMenuOpen ? "animate-fade-in-up" : "")" 
-                   href="#contact" 
-                   style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;"
-                   @onclick="CloseMobileMenu">
-                    Contact
-                </a>
-                <button class="mt-8 px-12 py-4 rounded-full border border-transparent bg-gradient-to-r from-primary-container to-secondary-container p-[1px] hover:scale-105 active:scale-95 transition-all duration-300 @(isMobileMenuOpen ? "animate-scale-in" : "")"
-                        style="animation-delay: 500ms; animation-fill-mode: both; opacity: 0;"
-                        @onclick="NavigateToContact">
+                @foreach (var navItem in navItems)
+                {
+                    var isActive = currentSection == navItem;
+                    <a class="font-body text-2xl tracking-widest uppercase transition-all duration-300 hover:scale-110 @(isActive ? "text-primary-container" : "text-white/70 hover:text-primary-container")"
+                           href="@(() => navItem.Equals("Home",StringComparison.OrdinalIgnoreCase) ? "/" : ($"#{navItem.ToLower()}"))"
+                       @onclick="() => { SetActiveSection(navItem); CloseMobileMenu(); }">
+                        @navItem
+                    </a>
+                }
+                <button class="mt-8 px-12 py-4 rounded-full border border-transparent bg-gradient-to-r from-primary-container to-secondary-container p-[1px] hover:scale-105 active:scale-95 transition-all duration-300"
+                        @onclick="@(() => NavigateTo("Contact"))">
                     <div class="bg-[#0a0a0f] px-12 py-4 rounded-full h-full w-full flex items-center justify-center">
                         <span class="font-headline text-sm font-bold tracking-widest uppercase text-white">Let's Talk</span>
                     </div>
@@ -92,20 +79,28 @@
 @code {
     private readonly PersonalInfo info = PersonalInfoData.GetDeveloper();
     private bool isMobileMenuOpen = false;
-    
+    private string currentSection = "Home";
+
+    private readonly List<string> navItems = new() { "Home", "Skills", "Projects", "Experience", "Certificates", "Education", "Contact" };
+
+    private void SetActiveSection(string section)
+    {
+        currentSection = section;
+    }
+
     private void ToggleMobileMenu()
     {
         isMobileMenuOpen = !isMobileMenuOpen;
     }
-    
+
     private void CloseMobileMenu()
     {
         isMobileMenuOpen = false;
     }
-    
-    private void NavigateToContact()
+
+    private void NavigateTo(string section)
     {
         isMobileMenuOpen = false;
-        Navigation.NavigateTo("#contact");
+        Navigation.NavigateTo($"#{section.ToLower()}");
     }
 }

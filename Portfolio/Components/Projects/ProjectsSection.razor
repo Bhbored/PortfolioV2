@@ -1,0 +1,31 @@
+@using Portfolio.Models
+@using Portfolio.Mockdata
+
+<section id="projects" class="pt-32 pb-24 px-6 md:px-8 min-h-screen mesh-gradient relative overflow-hidden">
+    <!-- Hero Section Title -->
+    <div class="max-w-screen-2xl mx-auto mb-16 md:mb-24 flex flex-col md:flex-row items-baseline justify-between gap-8">
+        <h1 class="font-headline text-[40px] md:text-[64px] lg:text-[80px] font-black tracking-tighter leading-none text-white uppercase max-w-2xl animate-fade-in-left" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
+            KINETIC<br />INTERFACES
+        </h1>
+        <div class="max-w-md text-on-surface-variant font-body leading-relaxed border-l border-outline-variant/20 pl-4 md:pl-8 animate-fade-in-up" style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;">
+            <span class="block text-primary text-xs font-label tracking-widest uppercase mb-4">Documentation // Module 04</span>
+            <p class="text-sm md:text-base">
+                A visualization of the dynamic cursor system. Our interface reacts to environmental context, transforming the user's focus point based on content hierarchy and interaction intent.
+            </p>
+        </div>
+    </div>
+
+    <!-- Projects Grid -->
+    <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        @for (int i = 0; i < projects.Count; i++)
+        {
+            var project = projects[i];
+            <ProjectCard Project="project" Index="@(i)" />
+        }
+    </div>
+
+</section>
+
+@code {
+    private readonly List<Project> projects = ProjectData.Projects;
+}
