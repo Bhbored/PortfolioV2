@@ -1,0 +1,53 @@
+@using Portfolio.Models
+@using Portfolio.Mockdata
+
+<section id="certificates" class="min-h-screen pt-25 md:pt-40 pb-32 px-6 relative">
+    <!-- Atmospheric Background Mesh -->
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none opacity-20 -z-10 mesh-gradient">
+        <div class="absolute top-1/4 right-1/4 w-64 md:w-96 h-64 md:h-96 bg-primary/10 blur-[120px] rounded-full"></div>
+        <div class="absolute bottom-1/4 left-1/4 w-80 md:w-[500px] h-80 md:h-[500px] bg-accent-orange/5 blur-[150px] rounded-full"></div>
+    </div>
+
+    <!-- Header Section -->
+    <header class="mb-16 md:mb-24 relative">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="inline-block relative">
+                <span class="absolute -top-4 md:-top-6 left-0 font-label text-[8px] md:text-[10px] tracking-[0.4em] text-primary/40 uppercase animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">// VERIFIED_CREDENTIALS</span>
+                <h1 class="font-headline text-[48px] md:text-[80px] lg:text-[96px] font-black tracking-tighter uppercase leading-none animate-fade-in-left" style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;">
+                    CERTIFIED<br /><span class="text-primary">COMPETENCE</span>_
+                </h1>
+            </div>
+            <div class="max-w-xs md:text-right">
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed animate-fade-in-up" style="animation-delay: 600ms; animation-fill-mode: both; opacity: 0;">
+                    Documented validation of technical expertise across industry-standard certification platforms.
+                </p>
+            </div>
+        </div>
+        <div class="mt-4 flex items-center gap-2 animate-fade-in-up" style="animation-delay: 800ms; animation-fill-mode: both; opacity: 0;">
+            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+            <span class="font-label text-[10px] tracking-[0.3em] uppercase text-slate-500">@certificates.Count Credentials Verified</span>
+        </div>
+    </header>
+
+    <!-- Certificates Auto-Scroll Track -->
+    <div class="scroll-track">
+        <div class="scroll-track-inner py-4">
+            @* First set *@
+            @for (int i = 0; i < certificates.Count; i++)
+            {
+                var cert = certificates[i];
+                <CertificateCard Certificate="@cert" Index="@i" />
+            }
+            @* Duplicated set for seamless loop *@
+            @for (int i = 0; i < certificates.Count; i++)
+            {
+                var cert = certificates[i];
+                <CertificateCard Certificate="@cert" Index="@(certificates.Count + i)" />
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    private readonly List<Certificate> certificates = CertificateData.Certificates;
+}

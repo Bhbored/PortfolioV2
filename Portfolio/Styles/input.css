@@ -171,3 +171,55 @@ body {
 .delay-1000 { animation-delay: 1000ms; }
 .delay-1200 { animation-delay: 1200ms; }
 .delay-1500 { animation-delay: 1500ms; }
+
+/* Horizontal Scroll Track for Certificates - Auto Scroll */
+.scroll-track {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.scroll-track::before,
+.scroll-track::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4rem;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.scroll-track::before {
+    left: 0;
+    background: linear-gradient(to right, #0a0a0f, transparent);
+}
+
+.scroll-track::after {
+    right: 0;
+    background: linear-gradient(to left, #0a0a0f, transparent);
+}
+
+.scroll-track-inner {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: scrollAuto 40s linear infinite;
+}
+
+.scroll-track:hover .scroll-track-inner {
+    animation-play-state: paused;
+}
+
+.scroll-track > * {
+    flex-shrink: 0;
+}
+
+@keyframes scrollAuto {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
