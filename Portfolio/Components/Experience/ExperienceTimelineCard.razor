@@ -1,0 +1,100 @@
+@using Portfolio.Models
+
+@* Experience Timeline Card Component *@
+@* Alternates layout based on IsLeft parameter *@
+
+<div class="grid grid-cols-1 md:grid-cols-2 items-center w-full relative animate-fade-in-up" style="animation-delay: @AnimationDelay; animation-fill-mode: both; opacity: 0;">
+    @if (IsLeft)
+    {
+        <!-- Card Content (Left) -->
+        <div class="pr-0 md:pr-24 order-2 md:order-1">
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl hover:border-primary/50 transition-all duration-500 group relative hover:scale-[1.02] hover:-translate-y-1">
+                <!-- Label Caption -->
+                <span class="absolute -top-6 left-0 font-label text-[10px] text-slate-500 tracking-widest uppercase">Layer_@LayerIndex // @LayerLabel</span>
+                
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="font-headline text-xl md:text-2xl font-bold text-white mb-1">@Experience.Company</h3>
+                        <p class="text-primary font-label tracking-wide text-xs md:text-sm font-semibold">@Experience.Title.ToUpperInvariant()</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary/30 group-hover:text-primary/80 transition-all duration-300 text-3xl">work</span>
+                </div>
+                
+                <ul class="space-y-3 md:space-y-4 text-slate-400 text-xs md:text-sm leading-relaxed">
+                    @foreach (var item in Experience.Description)
+                    {
+                        <li class="flex gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
+                            <span>@item</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+
+        <!-- Timeline Center Node -->
+        <div class="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-10">
+            <div class="w-4 h-4 bg-primary rounded-full shadow-glow-cyan @(IsActive ? "animate-pulse" : "")"></div>
+        </div>
+
+        <!-- Date Label (Right) -->
+        <div class="hidden md:flex justify-start pl-24 order-3">
+            <div class="rotate-90 origin-left flex items-center gap-4">
+                <span class="font-headline font-bold text-xl lg:text-2xl text-primary/40 tracking-tighter whitespace-nowrap">@Experience.Period</span>
+                <div class="w-12 h-[2px] bg-primary/20"></div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <!-- Date Label (Left) -->
+        <div class="hidden md:flex justify-end pr-24 order-1">
+            <div class="-rotate-90 origin-right flex items-center gap-4">
+                <div class="w-12 h-[2px] bg-primary/20"></div>
+                <span class="font-headline font-bold text-xl lg:text-2xl text-primary/40 tracking-tighter whitespace-nowrap uppercase">@Experience.Period</span>
+            </div>
+        </div>
+
+        <!-- Timeline Center Node -->
+        <div class="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none z-10">
+            <div class="w-4 h-4 bg-white/20 border-2 border-white/40 rounded-full"></div>
+        </div>
+
+        <!-- Card Content (Right) -->
+        <div class="pl-0 md:pl-24 order-2">
+            <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 md:p-8 rounded-xl shadow-2xl hover:border-primary/50 transition-all duration-500 group relative hover:scale-[1.02] hover:-translate-y-1">
+                <!-- Label Caption -->
+                <span class="absolute -top-6 left-0 font-label text-[10px] text-slate-500 tracking-widest uppercase">Layer_@LayerIndex // @LayerLabel</span>
+
+                <div class="flex justify-between items-start mb-6">
+                    <div>
+                        <h3 class="font-headline text-xl md:text-2xl font-bold text-white mb-1">@Experience.Company</h3>
+                        <p class="text-primary font-label tracking-wide text-xs md:text-sm font-semibold">@Experience.Title.ToUpperInvariant()</p>
+                    </div>
+                    <span class="material-symbols-outlined text-primary/30 group-hover:text-primary/80 transition-all duration-300 text-3xl">work</span>
+                </div>
+                
+                <ul class="space-y-3 md:space-y-4 text-slate-400 text-xs md:text-sm leading-relaxed">
+                    @foreach (var item in Experience.Description)
+                    {
+                        <li class="flex gap-3">
+                            <span class="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0"></span>
+                            <span>@item</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required Experience Experience { get; set; }
+    [Parameter, EditorRequired] public required bool IsLeft { get; set; }
+    [Parameter, EditorRequired] public required int Index { get; set; }
+    [Parameter, EditorRequired] public required bool IsActive { get; set; }
+
+    private string LayerIndex => (Index + 1).ToString("D2");
+    private string LayerLabel => IsActive ? "Current_Execution" : "Archive_Log";
+    private string AnimationDelay => $"{(Index * 200) + 400}ms";
+}

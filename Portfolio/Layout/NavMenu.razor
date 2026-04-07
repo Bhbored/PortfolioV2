@@ -26,8 +26,8 @@
             {
                 var isActive = currentSection == navItem;
                 <a class="transition-all duration-300 hover:scale-105 relative group @(isActive ? "text-primary-container" : "text-white/70 hover:text-primary-container")"
-                   href="@($"#{navItem.ToLower()}")"
-                   @onclick="() => SetActiveSection(navItem)">
+                       href="@($"#{navItem.ToLower()}")"
+                       @onclick="() => SetActiveSection(navItem)">
                     @navItem
                     <span class="absolute -bottom-2 left-0 w-full h-[2px] bg-primary-container @(isActive ? "" : "scale-x-0") group-hover:scale-x-100 transition-transform duration-300"></span>
                 </a>
@@ -60,8 +60,8 @@
                 {
                     var isActive = currentSection == navItem;
                     <a class="font-body text-2xl tracking-widest uppercase transition-all duration-300 hover:scale-110 @(isActive ? "text-primary-container" : "text-white/70 hover:text-primary-container")"
-                           href="@(() => navItem.Equals("Home",StringComparison.OrdinalIgnoreCase) ? "/" : ($"#{navItem.ToLower()}"))"
-                       @onclick="() => { SetActiveSection(navItem); CloseMobileMenu(); }">
+                           href="@(() => navItem.Equals("Home", StringComparison.OrdinalIgnoreCase) ? "/" : ($"#{navItem.ToLower()}"))"
+                           @onclick="() => { SetActiveSection(navItem); CloseMobileMenu(); }">
                         @navItem
                     </a>
                 }
@@ -81,7 +81,7 @@
     private bool isMobileMenuOpen = false;
     private string currentSection = "Home";
 
-    private readonly List<string> navItems = new() { "Home", "Skills", "Projects", "Experience", "Certificates", "Education", "Contact" };
+    private readonly List<string> navItems = ["Home", "Skills", "Projects", "Experience", "Certificates", "Education"];
 
     private void SetActiveSection(string section)
     {
