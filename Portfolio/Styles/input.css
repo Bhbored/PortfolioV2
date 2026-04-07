@@ -215,6 +215,49 @@ body {
     flex-shrink: 0;
 }
 
+/* Reverse auto-scroll (left to right) for Education */
+.scroll-track-reverse {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+.scroll-track-reverse::before,
+.scroll-track-reverse::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4rem;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.scroll-track-reverse::before {
+    left: 0;
+    background: linear-gradient(to right, #0a0a0f, transparent);
+}
+
+.scroll-track-reverse::after {
+    right: 0;
+    background: linear-gradient(to left, #0a0a0f, transparent);
+}
+
+.scroll-track-inner-reverse {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+    animation: scrollAutoReverse 40s linear infinite;
+}
+
+.scroll-track-reverse:hover .scroll-track-inner-reverse {
+    animation-play-state: paused;
+}
+
+.scroll-track-reverse > * {
+    flex-shrink: 0;
+}
+
 @keyframes scrollAuto {
     0% {
         transform: translateX(0);
@@ -222,4 +265,21 @@ body {
     100% {
         transform: translateX(-50%);
     }
+}
+
+@keyframes scrollAutoReverse {
+    0% {
+        transform: translateX(-50%);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}
+
+/* Utility: Gradient text on hover */
+.group:hover .text-gradient {
+    background: linear-gradient(135deg, #00f0ff 0%, #ff4d00 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }

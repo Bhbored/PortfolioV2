@@ -1,12 +1,18 @@
 @using Portfolio.Models
 
-<div class="bg-surface-container-high border border-outline-variant/30 p-4 md:p-8 space-y-4 md:space-y-6 group hover:border-primary/50 transition-all duration-500 cursor-pointer hover:scale-[1.02] hover:shadow-glow-cyan animate-fade-in-up" style="animation-delay: @(Index * 70)ms; animation-fill-mode: both; opacity: 0;" @onclick="ToggleExpand">
-    <div class="flex justify-between items-start">
-        <span class="material-symbols-outlined text-primary text-2xl md:text-3xl">@Icon</span>
+<div class="relative bg-gradient-to-br from-surface-container-high via-surface-container to-surface-container-low border border-outline-variant/30 p-4 md:p-8 space-y-4 md:space-y-6 group hover:border-primary/50 transition-all duration-500 cursor-pointer hover:scale-[1.02] hover:shadow-glow-cyan animate-fade-in-up overflow-hidden" style="animation-delay: @(Index * 70)ms; animation-fill-mode: both; opacity: 0;" @onclick="ToggleExpand">
+    <!-- Animated Gradient Sweep on Hover -->
+    <div class="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out pointer-events-none"></div>
+
+    <!-- Top Glow Line -->
+    <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+    <div class="flex justify-between items-start relative z-10">
+        <span class="material-symbols-outlined text-primary text-2xl md:text-3xl group-hover:animate-pulse transition-all duration-300">@Icon</span>
     </div>
 
-    <div>
-        <h4 class="font-headline font-bold text-xl md:text-2xl mb-2">@skill.Title</h4>
+    <div class="relative z-10">
+        <h4 class="font-headline font-bold text-xl md:text-2xl mb-2 group-hover:text-gradient transition-all duration-500">@skill.Title</h4>
 
         @if (skill.IsNew)
         {
@@ -53,10 +59,17 @@
     </div>
 
     <!-- Expand Indicator -->
-    <div class="absolute bottom-3 right-3 md:bottom-4 md:right-4">
+    <div class="absolute bottom-3 right-3 md:bottom-4 md:right-4 z-10">
         <span class="material-symbols-outlined text-primary text-sm md:text-base transition-transform duration-500 @(isExpanded ? "rotate-180" : "")">
             expand_more
         </span>
+    </div>
+
+    <!-- Bottom Decorative Dots -->
+    <div class="absolute bottom-3 right-10 md:bottom-4 md:right-12 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+        <span class="w-1 h-1 rounded-full bg-primary/60"></span>
+        <span class="w-1 h-1 rounded-full bg-primary/40"></span>
+        <span class="w-1 h-1 rounded-full bg-primary/20"></span>
     </div>
 </div>
 
