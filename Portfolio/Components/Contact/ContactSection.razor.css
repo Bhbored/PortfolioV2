@@ -1,0 +1,14 @@
+.text-glow-cyan {
+    text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.text-glow-orange {
+    text-shadow: 0 0 20px rgba(255, 77, 0, 0.4);
+}
+
+/* Floating label animation support */
+::deep .peer:-webkit-autofill ~ label,
+::deep .peer:-webkit-autofill:focus ~ label {
+    transform: translateY(-1.5rem) scale(0.75);
+    color: var(--color-primary, #00f0ff);
+}

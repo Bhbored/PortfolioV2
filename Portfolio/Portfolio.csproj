@@ -9,6 +9,7 @@
 
   <Target Name="BuildTailwind" BeforeTargets="BeforeBuild">
     <Exec Command="npm run build:css" />
+    <Exec Command="npm run build:gsap" />
   </Target>
 
   <ItemGroup>

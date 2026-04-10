@@ -6,6 +6,7 @@
 @using Portfolio.Components.Experience
 @using Portfolio.Components.Certificates
 @using Portfolio.Components.Education
+@using Portfolio.Components.Contact
 
 <PageTitle>Home | BH DEVELOPER NOIR</PageTitle>
 
@@ -29,16 +30,12 @@
     <EducationSection />
 
     <!-- Contact Section -->
-    <section id="contact" class="min-h-screen flex items-center justify-center mesh-gradient px-6">
-        <div class="text-center">
-            <h2 class="font-headline text-[32px] md:text-[48px] lg:text-[64px] font-bold uppercase mb-4">Contact</h2>
-            <p class="font-body text-white/60 text-sm md:text-lg">Contact section coming soon...</p>
-        </div>
-    </section>
+    <ContactSection Info="@PersonalInfo" />
 </div>
 
 @code {
     private PersonalInfo PersonalInfo = new();
+
     protected override void OnInitialized()
     {
         base.OnInitialized();

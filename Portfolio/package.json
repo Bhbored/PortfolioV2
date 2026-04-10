@@ -1,12 +1,15 @@
 {
   "scripts": {
     "build:css": "postcss Styles/input.css -o wwwroot/Styles/tailwind.css",
-    "watch:css": "postcss Styles/input.css -o wwwroot/Styles/tailwind.css --watch"
+    "watch:css": "postcss Styles/input.css -o wwwroot/Styles/tailwind.css --watch",
+    "build:gsap": "copyfiles -f ../node_modules/gsap/dist/gsap.min.js ../node_modules/gsap/dist/ScrollTrigger.min.js ../node_modules/gsap/dist/ScrollToPlugin.min.js wwwroot/js/",
+    "build:all": "npm run build:css && npm run build:gsap"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.21",
     "postcss": "^8.5.3",
     "postcss-cli": "^10.1.0",
-    "tailwindcss": "^3.4.17"
+    "tailwindcss": "^3.4.17",
+    "copyfiles": "^2.4.1"
   }
 }
