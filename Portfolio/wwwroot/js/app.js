@@ -1,4 +1,4 @@
-﻿// GSAP + Plugins are loaded via script tags in index.html
+// GSAP + Plugins are loaded via script tags in index.html
 // This file contains custom helper functions
 
 // Register plugins at load time
