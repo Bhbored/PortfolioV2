@@ -3,7 +3,7 @@
 
 <section id="skills" class="min-h-screen pt-16 md:pt-20 pb-24 md:pb-32 px-6 max-w-screen-2xl mx-auto overflow-x-hidden mesh-gradient">
     <!-- Section Header -->
-    <header class="mb-16 md:mb-32 relative">
+    <header class="mb-16 md:mb-24 relative">
         <div class="inline-block relative">
             <span class="absolute -top-4 md:-top-6 left-0 font-label text-[8px] md:text-[10px] tracking-[0.4em] text-primary/40 uppercase animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">// SYSTEM_CAPABILITIES_LOADED</span>
             <h1 class="font-headline text-[48px] md:text-[80px] lg:text-[96px] font-black tracking-tighter uppercase leading-none animate-fade-in-left" style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;">
@@ -17,23 +17,66 @@
         </div>
     </header>
 
-    <!-- Asymmetric Skills Grid -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-12 items-start">
+    <!-- Skills Categories with Auto-Scroll -->
+    <div class="space-y-16 md:space-y-24">
         @for (int i = 0; i < categories.Count; i++)
         {
             var category = categories[i];
-            <div class="flex flex-col space-y-6 md:space-y-8 animate-fade-in-up" style="animation-delay: @(800 + i * 150)ms; animation-fill-mode: both; opacity: 0;">
-                <div class="flex items-center gap-3 md:gap-4 mb-4">
+            var isEven = i % 2 == 0;
+            
+            <div class="skill-category animate-fade-in-up" style="animation-delay: @(800 + i * 150)ms; animation-fill-mode: both; opacity: 0;">
+                <!-- Category Header -->
+                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
                     <span class="font-label text-xs bg-surface-container-high px-2 py-1 text-primary">0@(i + 1)</span>
                     <h3 class="font-headline font-bold tracking-tight text-lg md:text-xl uppercase">@category.Category</h3>
                 </div>
 
-                @for (int j = 0; j < category.Skills.Count; j++)
+                <!-- Auto-Scroll Track (alternating direction) -->
+                @if (isEven)
                 {
-                    var skill = category.Skills[j];
-                    var icon = GetIconForSkill(skill.Title);
-
-                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + j)" />
+                    <div class="skills-scroll-track">
+                        <div class="skills-scroll-track-inner">
+                            @* First set *@
+                            @foreach (var skill in category.Skills)
+                            {
+                                var icon = GetIconForSkill(skill.Title);
+                                <div class="skill-card-wrapper">
+                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
+                                </div>
+                            }
+                            @* Duplicated set for seamless loop *@
+                            @foreach (var skill in category.Skills)
+                            {
+                                var icon = GetIconForSkill(skill.Title);
+                                <div class="skill-card-wrapper">
+                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="skills-scroll-track-reverse">
+                        <div class="skills-scroll-track-inner-reverse">
+                            @* First set *@
+                            @foreach (var skill in category.Skills)
+                            {
+                                var icon = GetIconForSkill(skill.Title);
+                                <div class="skill-card-wrapper">
+                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
+                                </div>
+                            }
+                            @* Duplicated set for seamless loop *@
+                            @foreach (var skill in category.Skills)
+                            {
+                                var icon = GetIconForSkill(skill.Title);
+                                <div class="skill-card-wrapper">
+                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
+                                </div>
+                            }
+                        </div>
+                    </div>
                 }
             </div>
         }

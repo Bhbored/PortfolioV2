@@ -9,15 +9,15 @@
 
     <div class="flex justify-between items-start relative z-10">
         <span class="material-symbols-outlined text-primary text-2xl md:text-3xl group-hover:animate-pulse transition-all duration-300">@Icon</span>
+
+        @if (skill.IsNew)
+        {
+            <div class="absolute top-3 right-3 md:top-4 md:right-4 bg-secondary-container px-2 py-0.5 text-[10px] font-black text-on-secondary tracking-widest">NEW</div>
+        }
     </div>
 
     <div class="relative z-10">
         <h4 class="font-headline font-bold text-xl md:text-2xl mb-2 group-hover:text-gradient transition-all duration-500">@skill.Title</h4>
-
-        @if (skill.IsNew)
-        {
-            <div class="inline-block bg-secondary-container px-2 py-0.5 text-[10px] font-black text-on-secondary tracking-widest mb-4">NEW</div>
-        }
 
         <div class="flex justify-between items-center mb-2">
             <span class="text-[10px] font-label tracking-widest opacity-60">

@@ -1,0 +1,112 @@
+﻿/* Skills Section Isolated Scroll Styles */
+.skills-scroll-track {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+    .skills-scroll-track::before,
+    .skills-scroll-track::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4rem;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .skills-scroll-track::before {
+        left: 0;
+        background: linear-gradient(to right, #0a0a0f, transparent);
+    }
+
+    .skills-scroll-track::after {
+        right: 0;
+        background: linear-gradient(to left, #0a0a0f, transparent);
+    }
+
+.skills-scroll-track-inner {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: skillsScrollAuto 40s linear infinite;
+}
+
+.skills-scroll-track:hover .skills-scroll-track-inner {
+    animation-play-state: paused;
+}
+
+/* Reverse auto-scroll for odd rows */
+.skills-scroll-track-reverse {
+    overflow: hidden;
+    width: 100%;
+    position: relative;
+}
+
+    .skills-scroll-track-reverse::before,
+    .skills-scroll-track-reverse::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 4rem;
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .skills-scroll-track-reverse::before {
+        left: 0;
+        background: linear-gradient(to right, #0a0a0f, transparent);
+    }
+
+    .skills-scroll-track-reverse::after {
+        right: 0;
+        background: linear-gradient(to left, #0a0a0f, transparent);
+    }
+
+.skills-scroll-track-inner-reverse {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    animation: skillsScrollAutoReverse 40s linear infinite;
+}
+
+.skills-scroll-track-reverse:hover .skills-scroll-track-inner-reverse {
+    animation-play-state: paused;
+}
+
+/* Skill card sizing - 3 visible per row */
+.skill-card-wrapper {
+    flex-shrink: 0;
+    width: calc((100vw - 3rem - 48px) / 3);
+    max-width: calc((1440px - 3rem - 48px) / 3);
+    min-width: 280px;
+}
+
+@media (max-width: 768px) {
+    .skill-card-wrapper {
+        width: calc((100vw - 1.5rem - 24px) / 1);
+        min-width: 260px;
+    }
+}
+
+@keyframes skillsScrollAuto {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+@keyframes skillsScrollAutoReverse {
+    0% {
+        transform: translateX(-50%);
+    }
+
+    100% {
+        transform: translateX(0);
+    }
+}
