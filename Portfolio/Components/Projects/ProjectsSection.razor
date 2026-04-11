@@ -1,5 +1,7 @@
 @using Portfolio.Models
 @using Portfolio.Mockdata
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
 
 <section id="projects" class="pt-16 md:pt-24 pb-16 md:pb-24 px-6 md:px-8 min-h-screen mesh-gradient relative overflow-hidden">
     <!-- Hero Section Title -->
@@ -15,17 +17,63 @@
         </div>
     </div>
 
-    <!-- Projects Grid -->
-    <div class="max-w-screen-2xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        @for (int i = 0; i < projects.Count; i++)
-        {
-            var project = projects[i];
-            <ProjectCard Project="project" Index="@(i)" />
-        }
-    </div>
+    <!-- Projects Horizontal Scroll Container -->
+    <div class="max-w-screen-2xl mx-auto relative">
+        <div class="projects-viewport overflow-hidden">
+            <div class="projects-track" id="projects-track">
+                @for (int i = 0; i < projects.Count; i++)
+                {
+                    var project = projects[i];
+                    <div class="project-slide">
+                        <ProjectCard Project="project" Index="@i" />
+                    </div>
+                }
+            </div>
+        </div>
 
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center mt-12">
+            <button @onclick="PreviousPage"
+                    disabled="@(currentIndex == 0)"
+                    class="px-6 py-3 bg-surface-container-high border border-outline-variant/30 text-primary font-label text-xs tracking-widest uppercase hover:border-primary/50 hover:shadow-glow-cyan transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-sm mr-2">arrow_back</span>
+                Previous
+            </button>
+
+            <span class="text-on-surface-variant font-label text-xs tracking-widest">
+                @($"{currentIndex / PageSize + 1} / {(projects.Count + PageSize - 1) / PageSize}")
+            </span>
+
+            <button @onclick="NextPage"
+                    disabled="@(currentIndex + PageSize >= projects.Count)"
+                    class="px-6 py-3 bg-surface-container-high border border-outline-variant/30 text-primary font-label text-xs tracking-widest uppercase hover:border-primary/50 hover:shadow-glow-cyan transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+                Next
+                <span class="material-symbols-outlined text-sm ml-2">arrow_forward</span>
+            </button>
+        </div>
+    </div>
 </section>
 
 @code {
     private readonly List<Project> projects = ProjectData.Projects;
+    private int currentIndex = 0;
+    private const int PageSize = 4;
+
+    private async Task NextPage()
+    {
+        if (currentIndex + PageSize < projects.Count)
+        {
+            currentIndex += PageSize;
+            await JS.InvokeVoidAsync("slideProjectsTrack", currentIndex);
+        }
+    }
+
+    private async Task PreviousPage()
+    {
+        if (currentIndex - PageSize >= 0)
+        {
+            currentIndex -= PageSize;
+            await JS.InvokeVoidAsync("slideProjectsTrack", currentIndex);
+        }
+    }
 }

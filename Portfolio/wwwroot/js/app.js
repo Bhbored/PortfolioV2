@@ -30,3 +30,24 @@ function setupScrollSpy(sectionIds, callback) {
         });
     });
 }
+
+// Projects Horizontal Scroll
+window.slideProjectsTrack = function(currentIndex) {
+    const track = document.getElementById('projects-track');
+    if (!track) return;
+
+    const slides = Array.from(track.children);
+    if (slides.length === 0) return;
+
+    const slideWidth = slides[0].offsetWidth;
+    const gap = 32;
+
+    // Slide by current index amount (each index = one card position)
+    const offset = -currentIndex * (slideWidth + gap);
+
+    gsap.to(track, {
+        x: offset,
+        duration: 0.6,
+        ease: "power2.inOut"
+    });
+};

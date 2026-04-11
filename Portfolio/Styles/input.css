@@ -283,3 +283,33 @@ body {
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
+
+/* Projects Horizontal Scroll */
+.projects-viewport {
+    overflow: hidden;
+    width: 100%;
+}
+
+.projects-track {
+    display: flex;
+    gap: 2rem;
+    width: max-content;
+    will-change: transform;
+}
+
+.project-slide {
+    width: calc((100vw - 12rem) / 2 - 1rem);
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .project-slide {
+        width: calc((100vw - 12rem - 6rem) / 2 - 1.5rem);
+    }
+}
+
+@media (min-width: 1440px) {
+    .project-slide {
+        width: calc((1440px - 12rem - 6rem) / 2 - 1.5rem);
+    }
+}
