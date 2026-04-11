@@ -19,7 +19,8 @@
 
     <!-- Projects Horizontal Scroll Container -->
     <div class="max-w-screen-2xl mx-auto relative">
-        <div class="projects-viewport overflow-hidden">
+        <div class="projects-viewport overflow-x-auto md:overflow-hidden"
+             style="scrollbar-width: none; -ms-overflow-style: none;">
             <div class="projects-track" id="projects-track">
                 @for (int i = 0; i < projects.Count; i++)
                 {
@@ -32,7 +33,7 @@
         </div>
 
         <!-- Navigation Buttons -->
-        <div class="flex justify-between items-center mt-12">
+        <div class="flex justify-between items-center mt-12 hidden md:flex">
             <button @onclick="PreviousPage"
                     disabled="@(currentIndex == 0)"
                     class="px-6 py-3 bg-surface-container-high border border-outline-variant/30 text-primary font-label text-xs tracking-widest uppercase hover:border-primary/50 hover:shadow-glow-cyan transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
@@ -57,7 +58,7 @@
 @code {
     private readonly List<Project> projects = ProjectData.Projects;
     private int currentIndex = 0;
-    private const int PageSize = 4;
+    private const int PageSize = 3;
 
     private async Task NextPage()
     {

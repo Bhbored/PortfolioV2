@@ -25,7 +25,6 @@
     <Folder Include="Components\Certificates\" />
     <Folder Include="Components\Education\" />
     <Folder Include="Components\Contact\" />
-    <Folder Include="Components\Projects\" />
     <Folder Include="Services\" />
   </ItemGroup>
 

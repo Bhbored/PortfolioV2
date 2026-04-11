@@ -1,0 +1,45 @@
+﻿/* Projects Horizontal Scroll */
+.projects-viewport {
+    width: 100%;
+}
+
+.projects-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.projects-track {
+    display: flex;
+    gap: 1.5rem;
+    width: max-content;
+    will-change: transform;
+}
+
+/* Mobile (< 768px): 2 cards, horizontally scrollable */
+.project-slide {
+    width: calc((100vw - 3rem) / 2);
+    flex-shrink: 0;
+}
+
+/* Tablet (768px - 1023px): 2 cards, bigger */
+@media (min-width: 768px) {
+    .project-slide {
+        width: calc((100vw - 4rem) / 2);
+    }
+}
+
+/* Desktop (1024px+): 3 cards fully visible */
+@media (min-width: 1024px) {
+    .projects-viewport {
+        overflow: hidden;
+    }
+    .project-slide {
+        width: calc((100vw - 4rem) / 3);
+        max-width: 460px;
+    }
+}
+
+@media (min-width: 1440px) {
+    .project-slide {
+        width: calc((1440px - 3rem) / 3);
+    }
+}

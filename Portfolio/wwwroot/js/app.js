@@ -40,7 +40,9 @@ window.slideProjectsTrack = function(currentIndex) {
     if (slides.length === 0) return;
 
     const slideWidth = slides[0].offsetWidth;
-    const gap = 32;
+    // Get actual gap from computed style
+    const trackStyle = window.getComputedStyle(track);
+    const gap = parseFloat(trackStyle.gap) || 24;
 
     // Slide by current index amount (each index = one card position)
     const offset = -currentIndex * (slideWidth + gap);
