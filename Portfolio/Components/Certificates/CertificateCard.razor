@@ -21,20 +21,23 @@
     </div>
 
     <!-- Top 3 Skills with Mastery Bars -->
-    <div class="space-y-3 mt-auto relative z-10">
-        @foreach (var skill in Certificate.TopSkills)
-        {
-            <div>
-                <div class="flex justify-between items-center mb-1">
-                    <span class="text-[12px] font-label tracking-widest text-slate-500 uppercase group-hover:text-slate-400 transition-colors duration-500">@skill.Title</span>
-                    <span class="text-[12px] font-label text-slate-400 group-hover:text-primary/80 transition-colors duration-500">@skill.MasteryLevel%</span>
+    @if (TopSkills != null && TopSkills.Any())
+    {
+        <div class="space-y-3 mt-auto relative z-10">
+            @foreach (var skill in TopSkills)
+            {
+                <div>
+                    <div class="flex justify-between items-center mb-1">
+                        <span class="text-[12px] font-label tracking-widest text-slate-500 uppercase group-hover:text-slate-400 transition-colors duration-500">@skill.Title</span>
+                        <span class="text-[12px] font-label text-slate-400 group-hover:text-primary/80 transition-colors duration-500">@skill.MasteryLevel%</span>
+                    </div>
+                    <div class="h-0.5 bg-surface-container-highest w-full relative overflow-hidden">
+                        <div class="absolute h-full bg-primary" style="width: @skill.MasteryLevel%; box-shadow: 0 0 8px rgba(0, 240, 255, @ShadowOpacity);"></div>
+                    </div>
                 </div>
-                <div class="h-0.5 bg-surface-container-highest w-full relative overflow-hidden">
-                    <div class="absolute h-full bg-primary" style="width: @skill.MasteryLevel%; box-shadow: 0 0 8px rgba(0, 240, 255, @ShadowOpacity);"></div>
-                </div>
-            </div>
-        }
-    </div>
+            }
+        </div>
+    }
 
     <!-- Bottom Decorative Dots -->
     <div class="absolute bottom-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
@@ -58,6 +61,7 @@
 @code {
     [Parameter, EditorRequired] public required Certificate Certificate { get; set; }
     [Parameter, EditorRequired] public required int Index { get; set; }
+    [Parameter] public List<Skill> TopSkills { get; set; } = [];
 
     private string ShadowOpacity => Index % 2 == 0 ? "0.3" : "0.1";
 }

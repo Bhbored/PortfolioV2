@@ -1,5 +1,7 @@
 @using Portfolio.Models
+@using Portfolio.Contracts
 @using Portfolio.Mockdata
+@inject ISkillService SkillService
 
 <section id="certificates" class="min-h-screen pt-16 md:pt-24 pb-20 md:pb-24 px-6 relative">
     <!-- Atmospheric Background Mesh -->
@@ -25,29 +27,44 @@
         </div>
         <div class="mt-4 flex items-center gap-2 animate-fade-in-up" style="animation-delay: 800ms; animation-fill-mode: both; opacity: 0;">
             <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
-            <span class="font-label text-[10px] tracking-[0.3em] uppercase text-slate-500">@certificates.Count Credentials Verified</span>
+            <span class="font-label text-[10px] tracking-[0.3em] uppercase text-slate-500">@(certificateData?.Count ?? 0) Credentials Verified</span>
         </div>
     </header>
 
     <!-- Certificates Auto-Scroll Track -->
-    <div class="scroll-track">
-        <div class="scroll-track-inner py-4">
-            @* First set *@
-            @for (int i = 0; i < certificates.Count; i++)
-            {
-                var cert = certificates[i];
-                <CertificateCard Certificate="@cert" Index="@i" />
-            }
-            @* Duplicated set for seamless loop *@
-            @for (int i = 0; i < certificates.Count; i++)
-            {
-                var cert = certificates[i];
-                <CertificateCard Certificate="@cert" Index="@(certificates.Count + i)" />
-            }
+    @if (certificateData != null && certificateData.Any())
+    {
+        <div class="scroll-track">
+            <div class="scroll-track-inner py-4">
+                @* First set *@
+                @for (int i = 0; i < certificateData.Count; i++)
+                {
+                    var data = certificateData[i];
+                    <CertificateCard Certificate="@data" Index="@i" TopSkills="data.TopSKills" />
+                }
+                @* Duplicated set for seamless loop *@
+                @for (int i = 0; i < certificateData.Count; i++)
+                {
+                    var data = certificateData[i];
+
+                    <CertificateCard Certificate="@data" Index="@(certificateData.Count + i)" TopSkills="data.TopSKills" />
+                }
+            </div>
         </div>
-    </div>
+    }
 </section>
 
 @code {
-    private readonly List<Certificate> certificates = CertificateData.Certificates;
+    private List<Certificate>? certificateData = [];
+    protected override async Task OnInitializedAsync()
+    {
+        var certs = CertificateData.Certificates;
+        certificateData = certs;
+
+        foreach (var c in certificateData)
+        {
+            c.TopSKills = await SkillService.GetTop3SkillsByCertificateId(c.Id);
+        }
+    }
+   
 }

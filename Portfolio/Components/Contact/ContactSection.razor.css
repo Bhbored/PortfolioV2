@@ -46,3 +46,84 @@
         height: 1.75rem;
     }
 }
+
+/* Flip Card Styles */
+.flip-card-wrapper {
+    min-height: 500px;
+}
+
+.flip-card-container {
+    perspective: 1000px;
+    position: relative;
+    width: 100%;
+    min-height: 500px;
+}
+
+@media (min-width: 768px) {
+    .flip-card-container {
+        min-height: 600px;
+    }
+}
+
+.flip-card-inner {
+    transform-style: preserve-3d;
+    transition: transform 0.7s ease-in-out;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: inherit;
+}
+
+.flip-card-front,
+.flip-card-back {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    position: absolute;
+    inset: 0;
+    min-height: 100%;
+}
+
+.flip-card-back {
+    transform: rotateY(180deg);
+}
+
+/* Mobile-specific: use visibility instead of display for flip */
+@media (max-width: 767px) {
+    .flip-card-front,
+    .flip-card-back {
+        position: relative;
+        min-height: auto;
+        transition: opacity 0.3s ease;
+    }
+    
+    .flip-card-container {
+        min-height: auto;
+    }
+    
+    .flip-card-inner {
+        transform: none !important;
+        transition: none;
+    }
+    
+    .flip-card-back {
+        transform: none !important;
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+    
+    .flip-card-inner.flipped .flip-card-front {
+        opacity: 0;
+        pointer-events: none;
+        position: absolute;
+    }
+    
+    .flip-card-inner.flipped .flip-card-back {
+        opacity: 1;
+        pointer-events: auto;
+        position: relative;
+    }
+}

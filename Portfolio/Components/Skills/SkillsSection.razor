@@ -1,5 +1,7 @@
 @using Portfolio.Models
-@using Portfolio.Mockdata
+@using Portfolio.Contracts
+@using Portfolio.Helpers
+@inject ISkillService SkillService
 
 <section id="skills" class="min-h-screen pt-16 md:pt-20 pb-24 md:pb-32 px-6 max-w-screen-2xl mx-auto overflow-x-hidden mesh-gradient">
     <!-- Section Header -->
@@ -18,105 +20,78 @@
     </header>
 
     <!-- Skills Categories with Auto-Scroll -->
-    <div class="space-y-16 md:space-y-24">
-        @for (int i = 0; i < categories.Count; i++)
-        {
-            var category = categories[i];
-            var isEven = i % 2 == 0;
-            
-            <div class="skill-category animate-fade-in-up" style="animation-delay: @(800 + i * 150)ms; animation-fill-mode: both; opacity: 0;">
-                <!-- Category Header -->
-                <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                    <span class="font-label text-xs bg-surface-container-high px-2 py-1 text-primary">0@(i + 1)</span>
-                    <h3 class="font-headline font-bold tracking-tight text-lg md:text-xl uppercase">@category.Category</h3>
-                </div>
+    @if (categories != null && categories.Any())
+    {
+        <div class="space-y-16 md:space-y-24">
+            @for (int i = 0; i < categories.Count; i++)
+            {
+                var category = categories[i];
+                var isEven = i % 2 == 0;
+                var categorySkills = skills.Where(s => s.SkillCategoryID == category.Id).ToList();
 
-                <!-- Auto-Scroll Track (alternating direction) -->
-                @if (isEven)
-                {
-                    <div class="skills-scroll-track">
-                        <div class="skills-scroll-track-inner">
-                            @* First set *@
-                            @foreach (var skill in category.Skills)
-                            {
-                                var icon = GetIconForSkill(skill.Title);
-                                <div class="skill-card-wrapper">
-                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
-                                </div>
-                            }
-                            @* Duplicated set for seamless loop *@
-                            @foreach (var skill in category.Skills)
-                            {
-                                var icon = GetIconForSkill(skill.Title);
-                                <div class="skill-card-wrapper">
-                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
-                                </div>
-                            }
-                        </div>
+                <div class="skill-category animate-fade-in-up" style="animation-delay: @(800 + i * 150)ms; animation-fill-mode: both; opacity: 0;">
+                    <!-- Category Header -->
+                    <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
+                        <span class="font-label text-xs bg-surface-container-high px-2 py-1 text-primary">0@(i + 1)</span>
+                        <h3 class="font-headline font-bold tracking-tight text-lg md:text-xl uppercase">@category.Category</h3>
                     </div>
-                }
-                else
-                {
-                    <div class="skills-scroll-track-reverse">
-                        <div class="skills-scroll-track-inner-reverse">
-                            @* First set *@
-                            @foreach (var skill in category.Skills)
-                            {
-                                var icon = GetIconForSkill(skill.Title);
-                                <div class="skill-card-wrapper">
-                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
-                                </div>
-                            }
-                            @* Duplicated set for seamless loop *@
-                            @foreach (var skill in category.Skills)
-                            {
-                                var icon = GetIconForSkill(skill.Title);
-                                <div class="skill-card-wrapper">
-                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + category.Skills.IndexOf(skill))" />
-                                </div>
-                            }
+
+                    <!-- Auto-Scroll Track (alternating direction) -->
+                    @if (isEven)
+                    {
+                        <div class="skills-scroll-track">
+                            <div class="skills-scroll-track-inner">
+                                @foreach (var skill in categorySkills)
+                                {
+                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
+                                    <div class="skill-card-wrapper">
+                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
+                                    </div>
+                                }
+                                @foreach (var skill in categorySkills)
+                                {
+                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
+                                    <div class="skill-card-wrapper">
+                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
+                                    </div>
+                                }
+                            </div>
                         </div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
+                    }
+                    else
+                    {
+                        <div class="skills-scroll-track-reverse">
+                            <div class="skills-scroll-track-inner-reverse">
+                                @foreach (var skill in categorySkills)
+                                {
+                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
+                                    <div class="skill-card-wrapper">
+                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
+                                    </div>
+                                }
+                                @foreach (var skill in categorySkills)
+                                {
+                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
+                                    <div class="skill-card-wrapper">
+                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    }
 </section>
 
 @code {
-    private readonly List<SkillCategory> categories = SkillData.Categories;
+    private List<SkillCategory>? categories;
+    private List<Skill>? skills;
 
-    private static string GetIconForSkill(string title)
+    protected override async Task OnInitializedAsync()
     {
-        var lower = title.ToLowerInvariant();
-
-        if (lower.Contains("c#") || lower.Contains(".net") || lower.Contains("asp"))
-            return "terminal";
-
-        if (lower.Contains("typescript") || lower.Contains("javascript"))
-            return "code";
-
-        if (lower.Contains("flutter") || lower.Contains("dart"))
-            return "devices";
-
-        if (lower.Contains("maui"))
-            return "layers";
-
-        if (lower.Contains("react") || lower.Contains("next"))
-            return "auto_awesome_motion";
-
-        if (lower.Contains("blazor") || lower.Contains("wasm"))
-            return "javascript";
-
-        if (lower.Contains("sql") || lower.Contains("postgres"))
-            return "storage";
-
-        if (lower.Contains("node") || lower.Contains("express"))
-            return "memory";
-
-        if (lower.Contains("ai") || lower.Contains("llm"))
-            return "psychology";
-
-        return "code";
+        categories = await SkillService.GetALLSkillCategoriesAsync();
+        skills = await SkillService.GetAllSkillsAsync();
     }
 }
