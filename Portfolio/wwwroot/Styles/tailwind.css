@@ -2473,6 +2473,9 @@ body {
   --tw-scale-y: .95;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
+.disabled\:pointer-events-none:disabled {
+  pointer-events: none;
+}
 .disabled\:cursor-not-allowed:disabled {
   cursor: not-allowed;
 }

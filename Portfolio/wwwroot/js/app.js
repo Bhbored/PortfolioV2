@@ -64,7 +64,7 @@ window.scrollGallery = function(galleryElement, direction) {
 
     const itemWidth = item.offsetWidth;
     const gap = parseFloat(window.getComputedStyle(container).gap) || 16;
-    
+
     // Check if desktop (grid layout) or mobile (flex layout)
     const isDesktop = window.innerWidth >= 768;
     const scrollCount = isDesktop ? 3 : 2;
@@ -73,5 +73,29 @@ window.scrollGallery = function(galleryElement, direction) {
     container.scrollBy({
         left: direction * scrollAmount,
         behavior: 'smooth'
+    });
+};
+
+// Skills Navigation - Manual Slide (called from Blazor)
+window.slideSkillsTrack = function(trackId, slideIndex) {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+
+    const inner = track.querySelector('.skills-track-inner');
+    if (!inner) return;
+
+    const firstCard = inner.querySelector('.skill-card-wrapper');
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth;
+    const innerStyle = window.getComputedStyle(inner);
+    const gap = parseFloat(innerStyle.gap) || 24;
+
+    const offset = -slideIndex * (cardWidth + gap);
+
+    gsap.to(inner, {
+        x: offset,
+        duration: 0.5,
+        ease: "power2.inOut"
     });
 };

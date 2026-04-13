@@ -7,7 +7,7 @@
     "CertificateID": 1,
     "MasteryLevel": 90,
     "IsNew": false,
-    "Details": ["Hooks", "Context API", "Redux"]
+    "Details": [ "Hooks", "Context API", "Redux" ]
   },
   {
     "Id": 2,
@@ -17,7 +17,7 @@
     "CertificateID": null,
     "MasteryLevel": 85,
     "IsNew": false,
-    "Details": ["Generics", "Type Guards", "Decorators"]
+    "Details": [ "Generics", "Type Guards", "Decorators" ]
   },
   {
     "Id": 3,
@@ -27,7 +27,7 @@
     "CertificateID": 2,
     "MasteryLevel": 95,
     "IsNew": false,
-    "Details": ["Web API", "SignalR", "Blazor"]
+    "Details": [ "Web API", "SignalR", "Blazor" ]
   },
   {
     "Id": 4,
@@ -37,7 +37,7 @@
     "CertificateID": 3,
     "MasteryLevel": 80,
     "IsNew": true,
-    "Details": ["Compose", "Multi-stage Builds", "Networking"]
+    "Details": [ "Compose", "Multi-stage Builds", "Networking" ]
   },
   {
     "Id": 5,
@@ -47,6 +47,56 @@
     "CertificateID": 2,
     "MasteryLevel": 88,
     "IsNew": false,
-    "Details": ["T-SQL", "Indexing", "Query Optimization"]
+    "Details": [ "T-SQL", "Indexing", "Query Optimization" ]
+  },
+  {
+    "Id": 6,
+    "Title": "Reacty",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
+  },
+  {
+    "Id": 7,
+    "Title": "Reactyas",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
+  },
+  {
+    "Id": 8,
+    "Title": "Reactyass",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
+  },
+  {
+    "Id": 9,
+    "Title": "Reactyasss",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
+  },
+  {
+    "Id": 10,
+    "Title": "Reactyassss",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
   }
 ]

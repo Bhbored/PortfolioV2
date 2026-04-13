@@ -1,7 +1,9 @@
 @using Portfolio.Models
 @using Portfolio.Contracts
 @using Portfolio.Helpers
+@using Microsoft.JSInterop
 @inject ISkillService SkillService
+@inject IJSRuntime JS
 
 <section id="skills" class="min-h-screen pt-16 md:pt-20 pb-24 md:pb-32 px-6 max-w-screen-2xl mx-auto overflow-x-hidden mesh-gradient">
     <!-- Section Header -->
@@ -25,66 +27,57 @@
         </div>
     </header>
 
-    <!-- Skills Categories with Auto-Scroll -->
+    <!-- Skills Categories with Manual Navigation -->
     @if (categories != null && categories.Any())
     {
         <div class="space-y-16 md:space-y-24">
             @for (int i = 0; i < categories.Count; i++)
             {
                 var category = categories[i];
-                var isEven = i % 2 == 0;
+                var categoryIndex = i;
                 var categorySkills = skills.Where(s => s.SkillCategoryID == category.Id).ToList();
+                var trackId = $"skills-track-{categoryIndex}";
 
-                <div class="skill-category animate-fade-in-up" style="animation-delay: @(800 + i * 150)ms; animation-fill-mode: both; opacity: 0;">
-                    <!-- Category Header -->
-                    <div class="flex items-center gap-3 md:gap-4 mb-6 md:mb-8">
-                        <span class="font-label text-xs bg-surface-container-high px-2 py-1 text-primary">0@(i + 1)</span>
-                        <h3 class="font-headline font-bold tracking-tight text-lg md:text-xl uppercase">@category.Category</h3>
+                <div class="skill-category animate-fade-in-up" style="animation-delay: @(800 + categoryIndex * 150)ms; animation-fill-mode: both; opacity: 0;">
+                    <!-- Category Header with Navigation Buttons -->
+                    <div class="flex items-center justify-between mb-6 md:mb-8">
+                        <div class="flex items-center gap-3 md:gap-4">
+                            <span class="font-label text-xs bg-surface-container-high px-2 py-1 text-primary">0@(categoryIndex + 1)</span>
+                            <h3 class="font-headline font-bold tracking-tight text-lg md:text-xl uppercase">@category.Category</h3>
+                        </div>
+                        <div class="hidden md:flex items-center gap-3">
+                            <button @onclick="() => SlideCategory(categoryIndex, -1)"
+                                    disabled="@(_currentIndex[category.Id] == 0)"
+                                    class="skills-nav-btn disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none">
+                                <span class="material-symbols-outlined text-sm">chevron_left</span>
+                            </button>
+                            <span class="text-on-surface-variant font-label text-[10px] tracking-widest">
+                                @{
+                                    var page = (_currentIndex[category.Id] / 3) + 1;
+                                    var totalPages = Math.Max(1, (categorySkills.Count + 2) / 3);
+                                    @($"{page}/{totalPages}")
+                                }
+                            </span>
+                            <button @onclick="() => SlideCategory(categoryIndex, 1)"
+                                    disabled="@(_currentIndex[category.Id] + 3 >= categorySkills.Count)"
+                                    class="skills-nav-btn disabled:opacity-30 disabled:cursor-not-allowed disabled:pointer-events-none">
+                                <span class="material-symbols-outlined text-sm">chevron_right</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Auto-Scroll Track (alternating direction) -->
-                    @if (isEven)
-                    {
-                        <div class="skills-scroll-track">
-                            <div class="skills-scroll-track-inner">
-                                @foreach (var skill in categorySkills)
-                                {
-                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
-                                    <div class="skill-card-wrapper">
-                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
-                                    </div>
-                                }
-                                @foreach (var skill in categorySkills)
-                                {
-                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
-                                    <div class="skill-card-wrapper">
-                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
-                                    </div>
-                                }
-                            </div>
+                    <!-- Scrollable Track -->
+                    <div class="skills-track" id="@trackId">
+                        <div class="skills-track-inner" id="@($"{trackId}-inner")">
+                            @foreach (var skill in categorySkills)
+                            {
+                                var icon = MaterialIconHelper.ToIconString(skill.Icon);
+                                <div class="skill-card-wrapper">
+                                    <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
+                                </div>
+                            }
                         </div>
-                    }
-                    else
-                    {
-                        <div class="skills-scroll-track-reverse">
-                            <div class="skills-scroll-track-inner-reverse">
-                                @foreach (var skill in categorySkills)
-                                {
-                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
-                                    <div class="skill-card-wrapper">
-                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
-                                    </div>
-                                }
-                                @foreach (var skill in categorySkills)
-                                {
-                                    var icon = MaterialIconHelper.ToIconString(skill.Icon);
-                                    <div class="skill-card-wrapper">
-                                        <SkillCard Skill="skill" Icon="@icon" Index="@(i * 10 + skills.IndexOf(skill))" />
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    }
+                    </div>
                 </div>
             }
         </div>
@@ -93,11 +86,33 @@
 
 @code {
     private List<SkillCategory> categories = [];
-    private List<Skill>? skills = [];
+    private List<Skill> skills = [];
+    private Dictionary<int, int> _currentIndex = new();
 
     protected override async Task OnInitializedAsync()
     {
         categories = await SkillService.GetALLSkillCategoriesAsync();
         skills = await SkillService.GetAllSkillsAsync();
+        foreach (var cat in categories)
+        {
+            _currentIndex[cat.Id] = 0;
+        }
+    }
+
+    private async Task SlideCategory(int categoryIndex, int direction)
+    {
+        var category = categories[categoryIndex];
+        var categorySkills = skills!.Where(s => s.SkillCategoryID == category.Id).ToList();
+        var pageSize = 3;
+        var maxIndex = Math.Max(0, categorySkills.Count - pageSize);
+
+        var newIndex = _currentIndex[category.Id] + (direction * pageSize);
+        if (newIndex < 0) newIndex = 0;
+        if (newIndex > maxIndex) newIndex = maxIndex;
+
+        _currentIndex[category.Id] = newIndex;
+
+        var trackId = $"skills-track-{categoryIndex}";
+        await JS.InvokeVoidAsync("slideSkillsTrack", trackId, newIndex);
     }
 }

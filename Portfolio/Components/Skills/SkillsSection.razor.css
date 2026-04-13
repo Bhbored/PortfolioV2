@@ -1,112 +1,71 @@
-﻿/* Skills Section Isolated Scroll Styles */
-.skills-scroll-track {
-    overflow: hidden;
+﻿/* Skills Section - Manual Slide Styles */
+.skills-track {
+    overflow-x: auto;
+    overflow-y: hidden;
     width: 100%;
     position: relative;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
 }
 
-    .skills-scroll-track::before,
-    .skills-scroll-track::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 4rem;
-        z-index: 2;
-        pointer-events: none;
-    }
+.skills-track::-webkit-scrollbar {
+    display: none;
+}
 
-    .skills-scroll-track::before {
-        left: 0;
-        background: linear-gradient(to right, #0a0a0f, transparent);
+/* Desktop: clip to show exactly 3 cards */
+@media (min-width: 768px) {
+    .skills-track {
+        overflow: hidden;
     }
+}
 
-    .skills-scroll-track::after {
-        right: 0;
-        background: linear-gradient(to left, #0a0a0f, transparent);
-    }
-
-.skills-scroll-track-inner {
+.skills-track-inner {
     display: flex;
-    gap: 1.5rem;
+    gap: 24px;
     width: max-content;
-    animation: skillsScrollAuto 40s linear infinite;
+    transition: transform 0.5s ease-in-out;
 }
 
-.skills-scroll-track:hover .skills-scroll-track-inner {
-    animation-play-state: paused;
-}
-
-/* Reverse auto-scroll for odd rows */
-.skills-scroll-track-reverse {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-}
-
-    .skills-scroll-track-reverse::before,
-    .skills-scroll-track-reverse::after {
-        content: "";
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 4rem;
-        z-index: 2;
-        pointer-events: none;
-    }
-
-    .skills-scroll-track-reverse::before {
-        left: 0;
-        background: linear-gradient(to right, #0a0a0f, transparent);
-    }
-
-    .skills-scroll-track-reverse::after {
-        right: 0;
-        background: linear-gradient(to left, #0a0a0f, transparent);
-    }
-
-.skills-scroll-track-inner-reverse {
+/* Navigation buttons */
+.skills-nav-btn {
     display: flex;
-    gap: 1.5rem;
-    width: max-content;
-    animation: skillsScrollAutoReverse 40s linear infinite;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.03);
+    color: #a1a1aa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    backdrop-filter: blur(8px);
 }
 
-.skills-scroll-track-reverse:hover .skills-scroll-track-inner-reverse {
-    animation-play-state: paused;
+.skills-nav-btn:hover:not(:disabled) {
+    border-color: rgba(0, 240, 255, 0.5);
+    color: #00f0ff;
+    background: rgba(0, 240, 255, 0.05);
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.15);
+    transform: translateY(-2px);
 }
 
-/* Skill card sizing - 3 visible per row */
+.skills-nav-btn:active:not(:disabled) {
+    transform: scale(0.96);
+}
+
+/* Skill card sizing — 1 per row on mobile */
 .skill-card-wrapper {
     flex-shrink: 0;
-    width: calc((100vw - 3rem - 48px) / 3);
-    max-width: calc((1440px - 3rem - 48px) / 3);
-    min-width: 280px;
+    width: 85vw;
+    min-width: 260px;
 }
 
-@media (max-width: 768px) {
+/* Desktop: exactly 3 cards per row */
+@media (min-width: 768px) {
     .skill-card-wrapper {
-        width: calc((100vw - 1.5rem - 24px) / 1);
-        min-width: 260px;
-    }
-}
-
-@keyframes skillsScrollAuto {
-    0% {
-        transform: translateX(0);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes skillsScrollAutoReverse {
-    0% {
-        transform: translateX(-50%);
-    }
-
-    100% {
-        transform: translateX(0);
+        width: calc((100vw - 96px) / 3);
+        max-width: 480px;
+        min-width: 300px;
     }
 }
