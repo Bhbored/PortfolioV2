@@ -7,7 +7,24 @@ using Portfolio.Services;
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
-builder.Services.AddSingleton<ISkillService, SkillService>();
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<IModelToJsonService, ModelToJson>();
+builder.Services.AddScoped<ISkillService, SkillService>();
 
-await builder.Build().RunAsync();
+var app = builder.Build();
+
+// Preload all data before app starts
+using var scope = app.Services.CreateScope();
+var dataService = scope.ServiceProvider.GetRequiredService<IModelToJsonService>();
+
+_ = Task.WhenAll(
+    dataService.GetPersonalInfoAsync(),
+    dataService.GetCertificatesAsync(),
+    dataService.GetEducationsAsync(),
+    dataService.GetExperiencesAsync(),
+    dataService.GetProjectsAsync(),
+    dataService.GetSkillCategoriesAsync(),
+    dataService.GetSkillsAsync()
+);
+
+await app.RunAsync();

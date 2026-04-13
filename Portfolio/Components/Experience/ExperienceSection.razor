@@ -1,5 +1,6 @@
 @using Portfolio.Models
-@using Portfolio.Mockdata
+@using Portfolio.Contracts
+@inject IModelToJsonService ModelToJsonService
 
 <section id="experience" class="min-h-screen pt-16 md:pt-24 pb-24 md:pb-32 px-6 relative">
     <!-- Atmospheric Background Mesh -->
@@ -52,5 +53,10 @@
 </section>
 
 @code {
-    private readonly List<Experience> experiences = ExperienceData.Experiences;
+    private List<Experience> experiences = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        experiences = await ModelToJsonService.GetExperiencesAsync();
+    }
 }

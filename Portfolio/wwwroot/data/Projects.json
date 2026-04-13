@@ -1,0 +1,35 @@
+[
+  {
+    "Title": "E-Commerce Platform",
+    "Description": "A full-stack e-commerce solution with payment integration and admin dashboard.",
+    "ImageUrl": "/images/projects/ecommerce.jpg",
+    "ProjectCategory": 4,
+    "Technologies": ["ASP.NET Core", "React", "Stripe", "SQL Server"],
+    "GithubUrl": "https://github.com/alexchen/ecommerce",
+    "LiveUrl": "https://ecommerce-demo.example.com",
+    "KeyFeatures": ["Shopping Cart", "Payment Processing", "Admin Panel"],
+    "Screenshots": ["/images/screenshots/1.jpg", "/images/screenshots/2.jpg"]
+  },
+  {
+    "Title": "Task Management API",
+    "Description": "RESTful API for task tracking with real-time updates using SignalR.",
+    "ImageUrl": "/images/projects/taskapi.jpg",
+    "ProjectCategory": 0,
+    "Technologies": ["ASP.NET Core", "SignalR", "Entity Framework"],
+    "GithubUrl": "https://github.com/alexchen/task-api",
+    "LiveUrl": "",
+    "KeyFeatures": ["Real-time Updates", "Authentication", "Role-based Access"],
+    "Screenshots": []
+  },
+  {
+    "Title": "Portfolio Website",
+    "Description": "Personal portfolio site built with Blazor and modern design principles.",
+    "ImageUrl": "/images/projects/portfolio.jpg",
+    "ProjectCategory": 60,
+    "Technologies": ["Blazor", "TailwindCSS", "GSAP"],
+    "GithubUrl": "https://github.com/alexchen/portfolio",
+    "LiveUrl": "https://alexchen.dev",
+    "KeyFeatures": ["Responsive Design", "Dark Theme", "Animations"],
+    "Screenshots": ["/images/screenshots/portfolio.jpg"]
+  }
+]

@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 1,
+    "Title": "Bachelor of Science in Computer Science",
+    "Issuer": "University of California",
+    "Year": "2018"
+  },
+  {
+    "Id": 2,
+    "Title": "AWS Certified Developer",
+    "Issuer": "Amazon Web Services",
+    "Year": "2021"
+  }
+]

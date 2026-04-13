@@ -19,13 +19,12 @@
 
   <ItemGroup>
     <Folder Include="Components\Shared\" />
-    <Folder Include="Mockdata\" />
     <Folder Include="Components\Landing\" />
     <Folder Include="Components\Experience\" />
     <Folder Include="Components\Certificates\" />
     <Folder Include="Components\Education\" />
     <Folder Include="Components\Contact\" />
-    <Folder Include="wwwroot\data\" />
+    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>

@@ -1,7 +1,7 @@
 @using Portfolio.Models
 @using Portfolio.Contracts
-@using Portfolio.Mockdata
 @inject ISkillService SkillService
+@inject IModelToJsonService ModelToJsonService
 
 <section id="certificates" class="min-h-screen pt-16 md:pt-24 pb-20 md:pb-24 px-6 relative">
     <!-- Atmospheric Background Mesh -->
@@ -58,13 +58,12 @@
     private List<Certificate>? certificateData = [];
     protected override async Task OnInitializedAsync()
     {
-        var certs = CertificateData.Certificates;
-        certificateData = certs;
+        certificateData = await ModelToJsonService.GetCertificatesAsync();
 
         foreach (var c in certificateData)
         {
             c.TopSKills = await SkillService.GetTop3SkillsByCertificateId(c.Id);
         }
     }
-   
+
 }

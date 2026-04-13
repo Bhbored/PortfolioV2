@@ -1,0 +1,25 @@
+{
+  "Name": "Alex Chen",
+  "Title": "Full Stack Developer",
+  "Email": "alex.chen@example.com",
+  "Phone": "+1 (555) 123-4567",
+  "Location": "San Francisco, CA",
+  "Summary": "Passionate full-stack developer with 5+ years of experience building scalable web applications. Proficient in .NET, React, and cloud technologies.",
+  "HeadLine": "Building Modern Digital Experiences",
+  "ProfileImage": "/images/1741106920933.jpg",
+  "IsAvailableForWork": true,
+  "Social": {
+    "Github": "https://github.com/alexchen",
+    "Linkedin": "https://linkedin.com/in/alexchen"
+  },
+  "Languages": [
+    {
+      "Name": "English",
+      "Proficiency": 3
+    },
+    {
+      "Name": "Mandarin",
+      "Proficiency": 2
+    }
+  ]
+}

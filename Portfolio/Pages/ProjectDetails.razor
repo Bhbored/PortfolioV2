@@ -1,5 +1,6 @@
 @page "/project/{ProjectId}"
 @inject NavigationManager Navigation
+@inject IModelToJsonService ModelToJsonService
 @layout EmptyLayout
 
 <!-- Project Details Page -->
@@ -155,20 +156,23 @@
     [Parameter] public string? ProjectId { get; set; }
 
     private Project? project;
-    private readonly List<Project> allProjects = ProjectData.Projects;
+    private List<Project> allProjects = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        allProjects = await ModelToJsonService.GetProjectsAsync();
+    }
 
     protected override void OnParametersSet()
     {
         if (!string.IsNullOrEmpty(ProjectId))
         {
-            // Try to parse the project ID and find the project
             if (int.TryParse(ProjectId, out int id) && id >= 0 && id < allProjects.Count)
             {
                 project = allProjects[id];
             }
             else
             {
-                // Try to find by title slug
                 project = allProjects.FirstOrDefault(p =>
                     p.Title.ToLowerInvariant().Replace(" ", "-") == ProjectId?.ToLowerInvariant());
             }
@@ -176,7 +180,6 @@
 
         if (project == null)
         {
-            // Redirect to home if project not found
             Navigation.NavigateTo("/");
         }
     }

@@ -1,0 +1,32 @@
+[
+  {
+    "Title": "Senior Full Stack Developer",
+    "Company": "TechCorp Inc.",
+    "Period": "2022 - Present",
+    "Description": [
+      "Led development of microservices architecture",
+      "Mentored junior developers",
+      "Implemented CI/CD pipelines"
+    ]
+  },
+  {
+    "Title": "Full Stack Developer",
+    "Company": "StartupXYZ",
+    "Period": "2020 - 2022",
+    "Description": [
+      "Built customer-facing web applications",
+      "Designed and implemented RESTful APIs",
+      "Optimized database queries reducing load time by 40%"
+    ]
+  },
+  {
+    "Title": "Junior Developer",
+    "Company": "Digital Agency Co.",
+    "Period": "2018 - 2020",
+    "Description": [
+      "Developed responsive websites",
+      "Maintained legacy applications",
+      "Collaborated with design team"
+    ]
+  }
+]

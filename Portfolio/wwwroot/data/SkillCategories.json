@@ -1,0 +1,14 @@
+[
+  {
+    "Id": 1,
+    "Category": "Frontend"
+  },
+  {
+    "Id": 2,
+    "Category": "Backend"
+  },
+  {
+    "Id": 3,
+    "Category": "DevOps"
+  }
+]

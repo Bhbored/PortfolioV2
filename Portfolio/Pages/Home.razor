@@ -1,5 +1,4 @@
 @page "/"
-@using Portfolio.Mockdata
 @using Portfolio.Components.Landing
 @using Portfolio.Components.Skills
 @using Portfolio.Components.Projects
@@ -7,6 +6,9 @@
 @using Portfolio.Components.Certificates
 @using Portfolio.Components.Education
 @using Portfolio.Components.Contact
+@using Portfolio.Models
+@using Portfolio.Contracts
+@inject IModelToJsonService ModelToJsonService
 @layout MainLayout
 <PageTitle>Home | BH DEVELOPER NOIR</PageTitle>
 
@@ -36,9 +38,8 @@
 @code {
     private PersonalInfo PersonalInfo = new();
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
-        PersonalInfo = PersonalInfoData.GetDeveloper();
+        PersonalInfo = await ModelToJsonService.GetPersonalInfoAsync();
     }
 }

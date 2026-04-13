@@ -1,7 +1,8 @@
 @using Portfolio.Models
-@using Portfolio.Mockdata
+@using Portfolio.Contracts
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
+@inject IModelToJsonService ModelToJsonService
 
 <section id="projects" class="pt-16 md:pt-24 pb-16 md:pb-24 px-6 md:px-8 min-h-screen mesh-gradient relative overflow-hidden">
     <!-- Hero Section Title -->
@@ -64,9 +65,14 @@
 </section>
 
 @code {
-    private readonly List<Project> projects = ProjectData.Projects;
+    private List<Project> projects = [];
     private int currentIndex = 0;
     private const int PageSize = 3;
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await ModelToJsonService.GetProjectsAsync();
+    }
 
     private async Task NextPage()
     {

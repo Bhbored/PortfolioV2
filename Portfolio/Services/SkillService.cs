@@ -1,27 +1,25 @@
 ﻿using Portfolio.Contracts;
-using Portfolio.Mockdata;
 using Portfolio.Models;
 
 namespace Portfolio.Services
 {
     public class SkillService : ISkillService
     {
-        private List<SkillCategory> _skillCategories;
-        private List<Skill> _skills;
+        private readonly IModelToJsonService _modelToJsonService;
 
-        public SkillService()
+        public SkillService(IModelToJsonService modelToJsonService)
         {
-            _skillCategories = SkillData.Categories;
-            _skills = SkillData.Skills;
+            _modelToJsonService = modelToJsonService;
         }
         public async Task<List<SkillCategory>> GetALLSkillCategoriesAsync()
         {
-            return _skillCategories;
+
+            return await _modelToJsonService.GetSkillCategoriesAsync();
         }
 
         public async Task<List<Skill>> GetAllSkillsAsync()
         {
-            return _skills;
+            return await _modelToJsonService.GetSkillsAsync();
         }
 
         public async Task<List<Skill>> GetSkillsByCategoryId(int CategorieId)

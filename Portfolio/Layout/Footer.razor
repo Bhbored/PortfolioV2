@@ -1,6 +1,8 @@
-﻿@using Portfolio.Mockdata
-@using Portfolio.Models
+﻿@using Portfolio.Models
+@using Portfolio.Contracts
+@using Portfolio.Services
 @inject IJSRuntime JS
+@inject IModelToJsonService ModelToJsonService
 
 <footer class="w-full py-12 px-6 md:px-12 border-t border-white/5 bg-[#0a0a0f]">
     <div class="max-w-screen-2xl mx-auto">
@@ -67,7 +69,12 @@
 </footer>
 
 @code {
-    private readonly PersonalInfo info = PersonalInfoData.GetDeveloper();
+    private PersonalInfo info = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        info = await ModelToJsonService.GetPersonalInfoAsync();
+    }
 
     private async Task ScrollToSection(string sectionId)
     {

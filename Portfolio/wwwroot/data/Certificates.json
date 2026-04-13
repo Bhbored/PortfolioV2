@@ -1,0 +1,26 @@
+﻿[
+  {
+    "Id": 1,
+    "Title": "React Developer Certification",
+    "Issuer": "Meta",
+    "Year": "2021",
+    "Link": "https://certificates.example.com/react-1",
+    "TopSKills": []
+  },
+  {
+    "Id": 2,
+    "Title": "ASP.NET Core Developer",
+    "Issuer": "Microsoft",
+    "Year": "2022",
+    "Link": "https://certificates.example.com/aspnet-2",
+    "TopSKills": []
+  },
+  {
+    "Id": 3,
+    "Title": "Docker Certified Associate",
+    "Issuer": "Docker Inc.",
+    "Year": "2023",
+    "Link": "https://certificates.example.com/docker-3",
+    "TopSKills": []
+  }
+]

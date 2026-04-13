@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "Title": "React",
+    "Icon": 74,
+    "SkillCategoryID": 1,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": ["Hooks", "Context API", "Redux"]
+  },
+  {
+    "Id": 2,
+    "Title": "TypeScript",
+    "Icon": 52,
+    "SkillCategoryID": 1,
+    "CertificateID": null,
+    "MasteryLevel": 85,
+    "IsNew": false,
+    "Details": ["Generics", "Type Guards", "Decorators"]
+  },
+  {
+    "Id": 3,
+    "Title": "ASP.NET Core",
+    "Icon": 59,
+    "SkillCategoryID": 2,
+    "CertificateID": 2,
+    "MasteryLevel": 95,
+    "IsNew": false,
+    "Details": ["Web API", "SignalR", "Blazor"]
+  },
+  {
+    "Id": 4,
+    "Title": "Docker",
+    "Icon": 57,
+    "SkillCategoryID": 3,
+    "CertificateID": 3,
+    "MasteryLevel": 80,
+    "IsNew": true,
+    "Details": ["Compose", "Multi-stage Builds", "Networking"]
+  },
+  {
+    "Id": 5,
+    "Title": "SQL Server",
+    "Icon": 60,
+    "SkillCategoryID": 2,
+    "CertificateID": 2,
+    "MasteryLevel": 88,
+    "IsNew": false,
+    "Details": ["T-SQL", "Indexing", "Query Optimization"]
+  }
+]
