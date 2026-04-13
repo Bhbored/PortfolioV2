@@ -10,7 +10,7 @@
         <div class="relative group animate-fade-in-left" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
             <div class="flex items-center gap-4">
                 <a href="/" class="w-10 h-10 border-2 border-primary-container flex items-center justify-center font-headline text-2xl font-bold text-primary-container p-1 leading-none relative hover:scale-110 transition-transform duration-300">
-                    @info.Name
+                    @Capitalizer.GetInitials(info.Name)
                     <svg class="absolute -top-4 -right-4 w-8 h-8 opacity-0 group-hover:opacity-100 transition-opacity" viewbox="0 0 24 24">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" fill="none" stroke="#00f0ff" stroke-width="1"></path>
                         <path d="M13 6l-1-1-1 1m1 12l1 1 1-1" fill="none" stroke="#00f0ff" stroke-width="2"></path>
@@ -26,8 +26,7 @@
             {
                 var isActive = currentSection == navItem;
                 <button class="transition-all duration-300 hover:scale-105 relative group @(isActive ? "text-primary-container" : "text-white/70 hover:text-primary-container")"
-                       
-                       @onclick="() => NavigateTo(navItem)">
+                        @onclick="() => NavigateTo(navItem)">
                     @navItem
                     <span class="absolute -bottom-2 left-0 w-full h-[2px] bg-primary-container @(isActive ? "" : "scale-x-0") group-hover:scale-x-100 transition-transform duration-300"></span>
                 </button>

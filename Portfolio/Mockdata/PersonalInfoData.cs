@@ -9,14 +9,14 @@ namespace Portfolio.Mockdata
         {
             return new()
             {
-                Name = "BH",
-                Title = "SOFTWARE DEVELOPER",
-                HeadLine = "Crafting high-performance digital ecosystems with precision engineering.",
-                Email = "bhbored2022@gmail.com",
+                Name = "Bourhan hassoun",
+                Title = "SOFTWARE  DEVELOPER",
+                HeadLine = "sucking dick",
+                Email = "sucker@gmail.com",
                 Phone = "+961 71 048 125",
                 Location = "Lebanon",
-                Summary = "Crafting high-performance digital ecosystems with precision engineering and cinematic design aesthetics.",
-                ProfileImage = "images/Screenshot 2026-02-05 172429.PNG",
+                Summary = "i love dicks",
+                ProfileImage = "images/1741106920933.jpg",
                 IsAvailableForWork = true,
                 Social = new Models.SocialLinks
                 {

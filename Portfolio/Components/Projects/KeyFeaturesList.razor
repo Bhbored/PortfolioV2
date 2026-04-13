@@ -1,0 +1,33 @@
+<!-- Key Features List -->
+<div class="relative overflow-hidden rounded-2xl bg-gradient-card p-7 border border-white/10 card-hover-lift group flex-1">
+    <!-- Top accent glow line -->
+    <div class="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-cyan-500 via-cyan-400 to-transparent"></div>
+    
+    <!-- Subtle corner glow -->
+    <div class="absolute -top-20 -right-20 w-40 h-40 bg-cyan-500/5 rounded-full blur-3xl group-hover:bg-cyan-500/10 transition-colors duration-500"></div>
+    
+    <!-- Header -->
+    <div class="relative mb-6 pb-4 border-b border-white/5">
+        <h3 class="text-xl font-bold uppercase tracking-wider mb-1.5">
+            <span class="bg-gradient-to-r from-cyan-300 via-cyan-400 to-cyan-500 bg-clip-text text-transparent drop-shadow-[0_0_20px_rgba(34,211,238,0.3)]">
+                Key Features
+            </span>
+        </h3>
+        <p class="text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-medium">What makes this project stand out</p>
+    </div>
+
+    <!-- Features -->
+    <div class="relative flex flex-col gap-1.5">
+        @foreach (var feature in Features)
+        {
+            <div class="feature-row-item">
+                <span class="feature-dot-cyan"></span>
+                <p class="text-[0.875rem] leading-relaxed text-zinc-400 transition-colors duration-300">@feature</p>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required List<string> Features { get; set; }
+}

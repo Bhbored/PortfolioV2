@@ -1,8 +1,9 @@
-<div class="absolute inset-0 flex items-end justify-center pt-12 md:pt-0">
+<div class="absolute inset-0 flex items-center justify-center pt-12 md:pt-0 px-4 md:px-0">
     <!-- Portrait Container -->
-    <div class="relative w-full h-full group max-w-md mx-auto md:max-w-none">
-        <img alt="Developer portrait" class="w-full h-full object-cover  portrait-mask brightness-100 group-hover:brightness-100 transition-all duration-700 group-hover:scale-105" src="@PortraitUrl" style="transform-origin: center bottom;" />
-        
+    <div class="relative w-full h-full group max-w-md mx-auto md:max-w-none overflow-hidden rounded-2xl md:rounded-3xl border-2 border-white/10 portrait-container">
+        <img alt="Developer portrait" class="w-full h-full object-cover object-top portrait-mask brightness-100 group-hover:brightness-100 transition-all duration-700 group-hover:scale-105" src="@PortraitUrl" style="transform-origin: center center;" />
+        <!-- Gradient overlay on edges -->
+        <div class="absolute inset-0 rounded-2xl md:rounded-3xl pointer-events-none portrait-overlay"></div>
     </div>
 </div>
 

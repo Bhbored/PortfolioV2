@@ -1,0 +1,123 @@
+@using Microsoft.JSInterop
+@inject IJSRuntime JS
+@implements IAsyncDisposable
+
+<!-- Screenshot Gallery Component -->
+<div class="screenshot-gallery w-full">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+        @for (int i = 0; i < Screenshots.Count; i++)
+        {
+            var screenshot = Screenshots[i];
+            var index = i;
+            <div class="screenshot-item relative group aspect-video bg-surface-container-low overflow-hidden rounded-xl border border-white/10 cursor-pointer hover:scale-[1.02] transition-all duration-300"
+                 @onclick="() => OpenPreview(index)">
+                <img src="@screenshot" alt="Screenshot @(index + 1)" class="w-full h-full object-cover" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <div class="w-16 h-16 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 flex items-center justify-center">
+                        <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v3m0 0v3m0-3h3m-3 0H7"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Image Preview Modal -->
+    @if (isPreviewOpen && SelectedImageIndex.HasValue)
+    {
+        <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in" @onclick="ClosePreview">
+            <div class="relative max-w-7xl max-h-[90vh] w-full" @onclick:stopPropagation="true">
+                <!-- Close Button -->
+                <button type="button" class="absolute top-4 right-4 md:top-8 md:right-8 z-50 w-12 h-12 rounded-full bg-surface-container-high border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="ClosePreview">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <!-- Image -->
+                <img src="@Screenshots[SelectedImageIndex.Value]" alt="Preview" class="w-full h-full object-contain rounded-lg" />
+
+                <!-- Navigation Arrows -->
+                @if (Screenshots.Count > 1)
+                {
+                    <button type="button" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="PreviousImage">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                        </svg>
+                    </button>
+                    <button type="button" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="NextImage">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </button>
+
+                    <!-- Image Counter -->
+                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-surface-container-high/80 backdrop-blur-sm rounded-full border border-white/20 text-white font-label text-sm">
+                        @(SelectedImageIndex.Value + 1) / @Screenshots.Count
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required List<string> Screenshots { get; set; }
+
+    private bool isPreviewOpen = false;
+    private int? SelectedImageIndex = null;
+
+    private void OpenPreview(int index)
+    {
+        SelectedImageIndex = index;
+        isPreviewOpen = true;
+    }
+
+    private void ClosePreview()
+    {
+        isPreviewOpen = false;
+        SelectedImageIndex = null;
+    }
+
+    private void NextImage()
+    {
+        if (SelectedImageIndex.HasValue && Screenshots.Count > 0)
+        {
+            SelectedImageIndex = (SelectedImageIndex.Value + 1) % Screenshots.Count;
+        }
+    }
+
+    private void PreviousImage()
+    {
+        if (SelectedImageIndex.HasValue && Screenshots.Count > 0)
+        {
+            SelectedImageIndex = (SelectedImageIndex.Value - 1 + Screenshots.Count) % Screenshots.Count;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (isPreviewOpen)
+        {
+            // Disable body scroll when preview is open
+            await JS.InvokeVoidAsync("eval", "document.body.style.overflow = 'hidden'");
+        }
+        else if (!firstRender)
+        {
+            await JS.InvokeVoidAsync("eval", "document.body.style.overflow = ''");
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        try
+        {
+            await JS.InvokeVoidAsync("eval", "document.body.style.overflow = ''");
+        }
+        catch
+        {
+        }
+    }
+
+}

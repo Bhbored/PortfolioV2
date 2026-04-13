@@ -1,0 +1,38 @@
+/* Key Features List Styles */
+.feature-row-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.875rem;
+    padding: 0.875rem 1rem;
+    background: rgba(255, 255, 255, 0.015);
+    border: 1px solid rgba(255, 255, 255, 0.04);
+    border-radius: 0.625rem;
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-row-item:hover {
+    background: rgba(6, 182, 212, 0.05);
+    border-color: rgba(6, 182, 212, 0.2);
+    transform: translateX(6px);
+    box-shadow: 0 4px 20px rgba(6, 182, 212, 0.08);
+}
+
+.feature-row-item:hover p {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.feature-dot-cyan {
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    margin-top: 7px;
+    border-radius: 50%;
+    background: #22d3ee;
+    box-shadow: 0 0 12px rgba(34, 211, 238, 0.6);
+    transition: all 0.35s ease;
+}
+
+.feature-row-item:hover .feature-dot-cyan {
+    box-shadow: 0 0 24px rgba(34, 211, 238, 0.9);
+    transform: scale(1.4);
+}

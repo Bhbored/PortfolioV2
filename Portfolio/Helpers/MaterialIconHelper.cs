@@ -93,7 +93,7 @@ namespace Portfolio.Helpers
             MaterialIcon.DesktopMac => "desktop_mac",
             MaterialIcon.Router => "router",
             MaterialIcon.Wifi => "wifi",
-            MaterialIcon.Kubernetes => "kubernetes",
+            MaterialIcon.Kubernetes => "file_json",
             MaterialIcon.DataUsage => "data_usage",
             MaterialIcon.JavaScript => "javascript",
             MaterialIcon.Analytics => "analytics",
