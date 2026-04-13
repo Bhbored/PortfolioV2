@@ -53,3 +53,25 @@ window.slideProjectsTrack = function(currentIndex) {
         ease: "power2.inOut"
     });
 };
+
+// Screenshot Gallery Scroll
+window.scrollGallery = function(galleryElement, direction) {
+    const container = galleryElement.querySelector('.screenshot-container');
+    if (!container) return;
+
+    const item = container.querySelector('.screenshot-item');
+    if (!item) return;
+
+    const itemWidth = item.offsetWidth;
+    const gap = parseFloat(window.getComputedStyle(container).gap) || 16;
+    
+    // Check if desktop (grid layout) or mobile (flex layout)
+    const isDesktop = window.innerWidth >= 768;
+    const scrollCount = isDesktop ? 3 : 2;
+    const scrollAmount = (itemWidth + gap) * scrollCount;
+
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+};

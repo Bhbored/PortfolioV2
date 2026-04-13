@@ -3,13 +3,42 @@
 @implements IAsyncDisposable
 
 <!-- Screenshot Gallery Component -->
-<div class="screenshot-gallery w-full">
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
+<div class="screenshot-gallery w-full" @ref="galleryRef">
+    <!-- Navigation Arrows -->
+    <button type="button" class="hidden md:flex absolute left-[-1.5rem] top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-sm border border-white/20 items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            @onclick="ScrollLeft">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    <button type="button" class="hidden md:flex absolute right-[-1.5rem] top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-sm border border-white/20 items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            @onclick="ScrollRight">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Mobile Navigation Arrows -->
+    <button type="button" class="md:hidden absolute left-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            @onclick="ScrollLeft">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+        </svg>
+    </button>
+    <button type="button" class="md:hidden absolute right-2 top-1/2 -translate-y-1/2 z-10 w-10 h-10 rounded-full bg-surface-container-high/90 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300"
+            @onclick="ScrollRight">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+        </svg>
+    </button>
+
+    <!-- Gallery Container -->
+    <div class="screenshot-container">
         @for (int i = 0; i < Screenshots.Count; i++)
         {
             var screenshot = Screenshots[i];
             var index = i;
-            <div class="screenshot-item relative group aspect-video bg-surface-container-low overflow-hidden rounded-xl border border-white/10 cursor-pointer hover:scale-[1.02] transition-all duration-300"
+            <div class="screenshot-item flex-shrink-0 relative group aspect-video bg-surface-container-low overflow-hidden rounded-xl border border-white/10 cursor-pointer hover:scale-[1.02] transition-all duration-300"
                  @onclick="() => OpenPreview(index)">
                 <img src="@screenshot" alt="Screenshot @(index + 1)" class="w-full h-full object-cover" />
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -67,6 +96,7 @@
 
     private bool isPreviewOpen = false;
     private int? SelectedImageIndex = null;
+    private ElementReference galleryRef;
 
     private void OpenPreview(int index)
     {
@@ -96,11 +126,20 @@
         }
     }
 
+    private async Task ScrollLeft()
+    {
+        await JS.InvokeVoidAsync("scrollGallery", galleryRef, -1);
+    }
+
+    private async Task ScrollRight()
+    {
+        await JS.InvokeVoidAsync("scrollGallery", galleryRef, 1);
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (isPreviewOpen)
         {
-            // Disable body scroll when preview is open
             await JS.InvokeVoidAsync("eval", "document.body.style.overflow = 'hidden'");
         }
         else if (!firstRender)
@@ -119,5 +158,4 @@
         {
         }
     }
-
 }
