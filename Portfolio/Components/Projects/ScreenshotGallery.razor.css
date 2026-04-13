@@ -22,6 +22,12 @@
     .screenshot-item {
         flex: 0 0 calc(33.333% - 1rem);
         min-width: calc(33.333% - 1rem);
+        position: relative;
+        transition: all 0.3s ease;
+    }
+
+    .screenshot-item:hover {
+        transform: scale(1.02);
     }
 }
 
@@ -34,5 +40,6 @@
     .screenshot-item {
         flex: 0 0 calc(50% - 0.5rem);
         min-width: calc(50% - 0.5rem);
+        position: relative;
     }
 }

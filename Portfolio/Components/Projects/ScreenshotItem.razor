@@ -1,0 +1,27 @@
+<!-- Screenshot Item with Lazy Loading and Skeleton -->
+<div class="lazy-image-wrapper relative aspect-video bg-surface-container-low overflow-hidden rounded-xl border border-white/10">
+    <!-- Skeleton Loader -->
+    @if (!isLoaded)
+    {
+        <div class="absolute inset-0 skeleton-shimmer"></div>
+    }
+
+    <!-- Image -->
+    <img src="@Src" 
+         alt="@Alt" 
+         loading="lazy"
+         class="w-full h-full object-cover transition-opacity duration-500 @(isLoaded ? "opacity-100" : "opacity-0")"
+         @onload="OnImageLoad" />
+</div>
+
+@code {
+    [Parameter, EditorRequired] public required string Src { get; set; }
+    [Parameter] public string Alt { get; set; } = "Screenshot";
+
+    private bool isLoaded = false;
+
+    private void OnImageLoad()
+    {
+        isLoaded = true;
+    }
+}

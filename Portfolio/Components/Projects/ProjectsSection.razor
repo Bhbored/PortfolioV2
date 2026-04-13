@@ -5,17 +5,25 @@
 
 <section id="projects" class="pt-16 md:pt-24 pb-16 md:pb-24 px-6 md:px-8 min-h-screen mesh-gradient relative overflow-hidden">
     <!-- Hero Section Title -->
-    <div class="max-w-screen-2xl mx-auto mb-16 md:mb-24 flex flex-col md:flex-row items-baseline justify-between gap-8">
-        <h1 class="font-headline text-[40px] md:text-[64px] lg:text-[80px] font-black tracking-tighter leading-none text-white uppercase max-w-2xl animate-fade-in-left" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">
-            KINETIC<br />INTERFACES
-        </h1>
-        <div class="max-w-md text-on-surface-variant font-body leading-relaxed border-l border-outline-variant/20 pl-4 md:pl-8 animate-fade-in-up" style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;">
-            <span class="block text-primary text-xs font-label tracking-widest uppercase mb-4">Documentation // Module 04</span>
-            <p class="text-sm md:text-base">
-                A visualization of the dynamic cursor system. Our interface reacts to environmental context, transforming the user's focus point based on content hierarchy and interaction intent.
-            </p>
+    <header class="mb-16 md:mb-24 relative">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div class="inline-block relative">
+                <span class="absolute -top-4 md:-top-6 left-0 font-label text-[8px] md:text-[10px] tracking-[0.4em] text-primary/40 uppercase animate-fade-in-up" style="animation-delay: 200ms; animation-fill-mode: both; opacity: 0;">// DOCUMENTATION_MODULE_04</span>
+                <h1 class="font-headline text-[48px] md:text-[80px] lg:text-[96px] font-black tracking-tighter uppercase leading-none animate-fade-in-left" style="animation-delay: 400ms; animation-fill-mode: both; opacity: 0;">
+                    KINETIC<br /><span class="text-primary">INTERFACES</span>_
+                </h1>
+            </div>
+            <div class="max-w-xs md:text-right border-r-2 md:border-r-0 md:border-l-2 border-primary/20 md:pl-6 pr-4 md:pr-0">
+                <p class="text-slate-400 text-xs md:text-sm leading-relaxed animate-fade-in-up" style="animation-delay: 600ms; animation-fill-mode: both; opacity: 0;">
+                    A visualization of the dynamic cursor system. Our interface reacts to environmental context, transforming the user's focus point based on content hierarchy and interaction intent.
+                </p>
+            </div>
         </div>
-    </div>
+        <div class="mt-4 flex items-center gap-2 animate-fade-in-up" style="animation-delay: 800ms; animation-fill-mode: both; opacity: 0;">
+            <span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+            <span class="font-label text-[10px] tracking-[0.3em] uppercase text-slate-500">@projects.Count Projects Archived</span>
+        </div>
+    </header>
 
     <!-- Projects Horizontal Scroll Container -->
     <div class="max-w-screen-2xl mx-auto relative">
