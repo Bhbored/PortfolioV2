@@ -22,5 +22,45 @@
     "Year": "2023",
     "Link": "https://certificates.example.com/docker-3",
     "TopSKills": []
+  },
+  {
+    "Id": 4,
+    "Title": "AWS Solutions Architect",
+    "Issuer": "Amazon Web Services",
+    "Year": "2023",
+    "Link": "https://certificates.example.com/aws-4",
+    "TopSKills": []
+  },
+  {
+    "Id": 5,
+    "Title": "Google Cloud Professional",
+    "Issuer": "Google Cloud",
+    "Year": "2024",
+    "Link": "https://certificates.example.com/gcp-5",
+    "TopSKills": []
+  },
+  {
+    "Id": 6,
+    "Title": "Kubernetes Administrator",
+    "Issuer": "Cloud Native Computing Foundation",
+    "Year": "2024",
+    "Link": "https://certificates.example.com/k8s-6",
+    "TopSKills": []
+  },
+  {
+    "Id": 7,
+    "Title": "Azure DevOps Engineer",
+    "Issuer": "Microsoft",
+    "Year": "2024",
+    "Link": "https://certificates.example.com/azure-7",
+    "TopSKills": []
+  },
+  {
+    "Id": 8,
+    "Title": "Terraform Associate",
+    "Issuer": "HashiCorp",
+    "Year": "2025",
+    "Link": "https://certificates.example.com/terraform-8",
+    "TopSKills": []
   }
 ]

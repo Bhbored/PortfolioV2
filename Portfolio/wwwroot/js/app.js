@@ -99,3 +99,43 @@ window.slideSkillsTrack = function(trackId, slideIndex) {
         ease: "power2.inOut"
     });
 };
+
+// Certificates Navigation - Manual Slide (called from Blazor)
+window.slideCertsTrack = function(slideIndex) {
+    const inner = document.getElementById('certificates-track');
+    if (!inner) return;
+
+    const firstCard = inner.querySelector('.cert-card-wrapper');
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth;
+    const gap = parseFloat(window.getComputedStyle(inner).gap) || 48;
+
+    const offset = -slideIndex * (cardWidth + gap);
+
+    gsap.to(inner, {
+        x: offset,
+        duration: 0.5,
+        ease: "power2.inOut"
+    });
+};
+
+// Education Navigation - Manual Slide (called from Blazor)
+window.slideEduTrack = function(slideIndex) {
+    const inner = document.getElementById('education-track');
+    if (!inner) return;
+
+    const firstCard = inner.querySelector('.edu-card-wrapper');
+    if (!firstCard) return;
+
+    const cardWidth = firstCard.offsetWidth;
+    const gap = parseFloat(window.getComputedStyle(inner).gap) || 48;
+
+    const offset = -slideIndex * (cardWidth + gap);
+
+    gsap.to(inner, {
+        x: offset,
+        duration: 0.5,
+        ease: "power2.inOut"
+    });
+};

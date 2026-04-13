@@ -2016,6 +2016,21 @@ video {
   --tw-shadow-colored: 0 0 20px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
+.ring {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-1 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
+.ring-2 {
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .blur {
   --tw-blur: blur(8px);
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
@@ -2277,112 +2292,6 @@ body {
 .delay-1000 { animation-delay: 1000ms; }
 .delay-1200 { animation-delay: 1200ms; }
 .delay-1500 { animation-delay: 1500ms; }
-
-/* Horizontal Scroll Track for Certificates - Auto Scroll */
-.scroll-track {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-}
-
-.scroll-track::before,
-.scroll-track::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4rem;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.scroll-track::before {
-    left: 0;
-    background: linear-gradient(to right, #0a0a0f, transparent);
-}
-
-.scroll-track::after {
-    right: 0;
-    background: linear-gradient(to left, #0a0a0f, transparent);
-}
-
-.scroll-track-inner {
-    display: flex;
-    gap: 3rem;
-    width: -moz-max-content;
-    width: max-content;
-    animation: scrollAuto 40s linear infinite;
-}
-
-.scroll-track:hover .scroll-track-inner {
-    animation-play-state: paused;
-}
-
-.scroll-track > * {
-    flex-shrink: 0;
-}
-
-/* Reverse auto-scroll (left to right) for Education */
-.scroll-track-reverse {
-    overflow: hidden;
-    width: 100%;
-    position: relative;
-}
-
-.scroll-track-reverse::before,
-.scroll-track-reverse::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 4rem;
-    z-index: 2;
-    pointer-events: none;
-}
-
-.scroll-track-reverse::before {
-    left: 0;
-    background: linear-gradient(to right, #0a0a0f, transparent);
-}
-
-.scroll-track-reverse::after {
-    right: 0;
-    background: linear-gradient(to left, #0a0a0f, transparent);
-}
-
-.scroll-track-inner-reverse {
-    display: flex;
-    gap: 3rem;
-    width: -moz-max-content;
-    width: max-content;
-    animation: scrollAutoReverse 40s linear infinite;
-}
-
-.scroll-track-reverse:hover .scroll-track-inner-reverse {
-    animation-play-state: paused;
-}
-
-.scroll-track-reverse > * {
-    flex-shrink: 0;
-}
-
-@keyframes scrollAuto {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-50%);
-    }
-}
-
-@keyframes scrollAutoReverse {
-    0% {
-        transform: translateX(-50%);
-    }
-    100% {
-        transform: translateX(0);
-    }
-}
 
 /* Utility: Gradient text on hover */
 .group:hover .text-gradient {

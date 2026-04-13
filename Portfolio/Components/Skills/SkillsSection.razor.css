@@ -57,7 +57,8 @@
 /* Skill card sizing — 1 per row on mobile */
 .skill-card-wrapper {
     flex-shrink: 0;
-    width: 85vw;
+    width: calc(100vw - 48px);
+    max-width: 600px;
     min-width: 260px;
 }
 

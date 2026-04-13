@@ -1,0 +1,41 @@
+/* Certificates Section - Manual Slide Styles */
+.cert-track {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.cert-track::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .cert-track {
+        overflow: hidden;
+    }
+}
+
+.cert-track-inner {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+}
+
+/* Certificate card sizing — 2 per row on mobile */
+.cert-card-wrapper {
+    flex-shrink: 0;
+    width: calc(50vw - 48px);
+    min-width: 240px;
+}
+
+/* Desktop: exactly 4 cards per row */
+@media (min-width: 768px) {
+    .cert-card-wrapper {
+        width: calc(25vw - 48px);
+        max-width: 360px;
+        min-width: 280px;
+    }
+}

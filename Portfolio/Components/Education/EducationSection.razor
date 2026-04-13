@@ -1,6 +1,7 @@
 @using Portfolio.Models
 @using Portfolio.Contracts
 @inject IModelToJsonService ModelToJsonService
+@inject IJSRuntime JS
 
 <section id="education" class="min-h-screen pt-16 md:pt-24 pb-24 md:pb-32 px-6 relative">
     <!-- Atmospheric Background Mesh -->
@@ -30,30 +31,68 @@
         </div>
     </header>
 
-    <!-- Education Auto-Scroll Track (Left to Right) -->
-    <div class="scroll-track-reverse">
-        <div class="scroll-track-inner-reverse py-4">
-            @* First set *@
-            @for (int i = 0; i < educations.Count; i++)
-            {
-                var edu = educations[i];
-                <EducationCard Education="@edu" Index="@i" />
-            }
-            @* Duplicated set for seamless loop *@
-            @for (int i = 0; i < educations.Count; i++)
-            {
-                var edu = educations[i];
-                <EducationCard Education="@edu" Index="@(educations.Count + i)" />
-            }
+    <!-- Education Manual Scroll Track -->
+    <div class="max-w-screen-2xl mx-auto relative">
+        <div class="edu-track">
+            <div class="edu-track-inner py-4" id="education-track">
+                @for (int i = 0; i < educations.Count; i++)
+                {
+                    var edu = educations[i];
+                    <div class="edu-card-wrapper">
+                        <EducationCard Education="@edu" Index="@i" />
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="flex justify-between items-center mt-12 hidden md:flex">
+            <button @onclick="PreviousPage"
+                    disabled="@(currentIndex == 0)"
+                    class="px-6 py-3 bg-surface-container-high border border-outline-variant/30 text-primary font-label text-xs tracking-widest uppercase hover:border-primary/50 hover:shadow-glow-cyan transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+                <span class="material-symbols-outlined text-sm mr-2">arrow_back</span>
+                Previous
+            </button>
+
+            <span class="text-on-surface-variant font-label text-xs tracking-widest">
+                @($"{currentIndex / PageSize + 1} / {(educations.Count + PageSize - 1) / PageSize}")
+            </span>
+
+            <button @onclick="NextPage"
+                    disabled="@(currentIndex + PageSize >= educations.Count)"
+                    class="px-6 py-3 bg-surface-container-high border border-outline-variant/30 text-primary font-label text-xs tracking-widest uppercase hover:border-primary/50 hover:shadow-glow-cyan transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed">
+                Next
+                <span class="material-symbols-outlined text-sm ml-2">arrow_forward</span>
+            </button>
         </div>
     </div>
 </section>
 
 @code {
     private List<Education> educations = [];
+    private int currentIndex = 0;
+    private const int PageSize = 2;
 
     protected override async Task OnInitializedAsync()
     {
         educations = await ModelToJsonService.GetEducationsAsync();
+    }
+
+    private async Task NextPage()
+    {
+        if (currentIndex + PageSize < educations.Count)
+        {
+            currentIndex += PageSize;
+            await JS.InvokeVoidAsync("slideEduTrack", currentIndex);
+        }
+    }
+
+    private async Task PreviousPage()
+    {
+        if (currentIndex - PageSize >= 0)
+        {
+            currentIndex -= PageSize;
+            await JS.InvokeVoidAsync("slideEduTrack", currentIndex);
+        }
     }
 }

@@ -1,0 +1,41 @@
+/* Education Section - Manual Slide Styles */
+.edu-track {
+    overflow-x: auto;
+    overflow-y: hidden;
+    width: 100%;
+    position: relative;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.edu-track::-webkit-scrollbar {
+    display: none;
+}
+
+@media (min-width: 768px) {
+    .edu-track {
+        overflow: hidden;
+    }
+}
+
+.edu-track-inner {
+    display: flex;
+    gap: 3rem;
+    width: max-content;
+}
+
+/* Education card sizing — 1 per row on mobile */
+.edu-card-wrapper {
+    flex-shrink: 0;
+    width: 85vw;
+    min-width: 280px;
+}
+
+/* Desktop: exactly 2 cards per row */
+@media (min-width: 768px) {
+    .edu-card-wrapper {
+        width: calc(50vw - 24px);
+        max-width: 600px;
+        min-width: 400px;
+    }
+}
