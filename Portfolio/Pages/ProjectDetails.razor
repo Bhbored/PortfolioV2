@@ -2,7 +2,6 @@
 @inject NavigationManager Navigation
 @inject IModelToJsonService ModelToJsonService
 @layout EmptyLayout
-
 <!-- Project Details Page -->
 <div class="relative w-full min-h-screen bg-background">
     <!-- Hero Section with Full-Width Image -->
@@ -141,10 +140,9 @@
 
                     <!-- Right Column: Project Information -->
                     <div class="right-column">
-                        <ProjectInfoCard
-                            Category="@project.ProjectCategory"
-                            RepositoryUrl="@(project.GithubUrl)"
-                            TechnologyCount="@(project.Technologies?.Count ?? 0)" />
+                        <ProjectInfoCard Category="@project.ProjectCategory"
+                                         RepositoryUrl="@(project.GithubUrl)"
+                                         TechnologyCount="@(project.Technologies?.Count ?? 0)" />
                     </div>
                 </div>
             </div>
@@ -154,7 +152,7 @@
 
 @code {
     [Parameter] public string? ProjectId { get; set; }
-
+    private string projectTitle = string.Empty;
     private Project? project;
     private List<Project> allProjects = [];
 
@@ -170,6 +168,7 @@
             if (int.TryParse(ProjectId, out int id) && id >= 0 && id < allProjects.Count)
             {
                 project = allProjects[id];
+                projectTitle = project.Title;
             }
             else
             {
@@ -186,6 +185,6 @@
 
     private void GoBack()
     {
-        Navigation.NavigateTo("/#projects");
+        Navigation.NavigateTo("/");
     }
 }
