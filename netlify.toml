@@ -1,22 +1,7 @@
 [build]
   base = "Portfolio"
-  command = """
-    # Install .NET 10 SDK
-    curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 10.0.100
-    export PATH="$HOME/.dotnet:$PATH"
-    
-    # Verify .NET version
-    dotnet --info
-    
-    # Restore and publish
-    dotnet restore
-    dotnet publish -c Release -o ../publish
-  """
+  command = "dotnet publish -c Release -o ../publish"
   publish = "../publish/wwwroot"
-
-[build.environment]
-  DOTNET_ROOT = "$HOME/.dotnet"
-  PATH = "$HOME/.dotnet:$PATH"
 
 [[redirects]]
   from = "/*"
