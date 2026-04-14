@@ -1,18 +1,10 @@
 [build]
   base = "Portfolio"
-  command = """
-    curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --version 10.0.100
-    export PATH="$HOME/.dotnet:$PATH"
-    
-    dotnet --info
-    
-    dotnet publish -c Release -o ../publish
-  """
+  command = "dotnet publish Portfolio/Portfolio..csproj -c Release -o ../publish /p:TreatWarningsAsErrors=false"
   publish = "../publish/wwwroot"
 
 [build.environment]
-  DOTNET_ROOT = "$HOME/.dotnet"
-  PATH = "$HOME/.dotnet:$PATH"
+  DOTNET_VERSION = "10.0.x"
 
 [[redirects]]
   from = "/*"
