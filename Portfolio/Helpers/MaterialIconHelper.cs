@@ -89,7 +89,7 @@ namespace Portfolio.Helpers
             MaterialIcon.Devices => "devices",
             MaterialIcon.Monitor => "monitor",
             MaterialIcon.Smartphone => "smartphone",
-            MaterialIcon.Laptop => "laptop",
+            MaterialIcon.Laptop => "laptop_chromebook",
             MaterialIcon.DesktopMac => "desktop_mac",
             MaterialIcon.Router => "router",
             MaterialIcon.Wifi => "wifi",

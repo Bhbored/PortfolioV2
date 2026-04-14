@@ -180,3 +180,170 @@ body {
     background-clip: text;
 }
 
+/* Admin Trigger in NavMenu */
+.admin-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(0, 240, 255, 0.05);
+    border: 1px solid rgba(0, 240, 255, 0.15);
+    color: #71717a;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.admin-trigger:hover {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: rgba(0, 240, 255, 0.4);
+    color: #00f0ff;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.2);
+}
+
+.admin-trigger .material-symbols-outlined {
+    font-size: 1.2rem;
+}
+
+/* Password Prompt Overlay */
+.password-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.password-card {
+    background: linear-gradient(145deg, #1a1a24 0%, #141419 100%);
+    border: 1px solid #1f1f2e;
+    border-radius: 16px;
+    padding: 0;
+    max-width: 320px;
+    width: 100%;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    cursor: default;
+}
+
+.password-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1.5rem 1.5rem 1rem;
+    border-bottom: 1px solid #1f1f2e;
+}
+
+.password-header .material-symbols-outlined {
+    font-size: 1.5rem;
+    color: #00f0ff;
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.4));
+}
+
+.password-header h3 {
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.password-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.password-input {
+    width: 100%;
+    padding: 0.65rem 1rem;
+    background-color: #0a0a0f;
+    border: 1px solid #1f1f2e;
+    border-radius: 10px;
+    color: #ffffff;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 0.9rem;
+    text-align: center;
+    letter-spacing: 0.15em;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+.password-input:focus {
+    border-color: rgba(0, 240, 255, 0.5);
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+}
+
+.password-input::placeholder {
+    color: #3f3f46;
+    letter-spacing: normal;
+}
+
+.password-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pw-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    border: 1px solid #1f1f2e;
+    background: #1a1a24;
+    color: #a1a1aa;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    padding: 0;
+}
+
+.pw-btn .material-symbols-outlined {
+    font-size: 1.1rem;
+}
+
+.pw-confirm {
+    background: rgba(0, 240, 255, 0.12);
+    border-color: rgba(0, 240, 255, 0.3);
+    color: #00f0ff;
+}
+
+.pw-confirm:hover {
+    background: rgba(0, 240, 255, 0.2);
+    border-color: rgba(0, 240, 255, 0.5);
+}
+
+.pw-cancel {
+    background: rgba(255, 77, 0, 0.08);
+    border-color: rgba(255, 77, 0, 0.2);
+    color: #ff4d00;
+}
+
+.pw-cancel:hover {
+    background: rgba(255, 77, 0, 0.15);
+    border-color: rgba(255, 77, 0, 0.4);
+}
+
+.pw-error {
+    margin: 0;
+    font-family: 'Ubuntu', sans-serif;
+    font-size: 0.75rem;
+    color: #ff4d00;
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+

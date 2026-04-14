@@ -126,3 +126,28 @@ window.slideEduTrack = function (slideIndex) {
     ease: "power2.inOut",
   });
 };
+  
+  
+window.downloadJson = function (fileName, jsonContent) {  
+  const blob = new Blob([jsonContent], { type: "application/json" });  
+  const url = URL.createObjectURL(blob);  
+  const a = document.createElement("a");  
+  a.href = url;  
+  a.download = fileName;  
+  document.body.appendChild(a);  
+  a.click();  
+  document.body.removeChild(a);  
+  URL.revokeObjectURL(url);  
+}; 
+  
+  
+window.getElementRect = function(elementId) {  
+  const el = document.getElementById(elementId);  
+  if (!el) return { top: 0, bottom: 0, left: 0, right: 0, x: 0, y: 0 };  
+  const rect = el.getBoundingClientRect();  
+  return { top: rect.top, bottom: rect.bottom, left: rect.left, right: rect.right, x: rect.x, y: rect.y };  
+};  
+  
+window.getViewportHeight = function() {  
+  return window.innerHeight;  
+}; 

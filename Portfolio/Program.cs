@@ -10,10 +10,11 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 builder.Services.AddScoped<IModelToJsonService, ModelToJson>();
 builder.Services.AddScoped<ISkillService, SkillService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IAdminAuthService, AdminAuthService>();
 
 var app = builder.Build();
 
-// Preload all data before app starts
 using var scope = app.Services.CreateScope();
 var dataService = scope.ServiceProvider.GetRequiredService<IModelToJsonService>();
 

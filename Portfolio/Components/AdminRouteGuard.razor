@@ -1,0 +1,14 @@
+@inject IAdminAuthService AuthService
+@inject NavigationManager Nav
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        if (!AuthService.IsAuthenticated)
+        {
+            Nav.NavigateTo("/");
+        }
+    }
+}

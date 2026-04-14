@@ -98,5 +98,15 @@
     "MasteryLevel": 90,
     "IsNew": false,
     "Details": [ "Hooks", "Context API", "Redux" ]
+  },
+  {
+    "Id": 11,
+    "Title": "Reactyassss",
+    "Icon": 74,
+    "SkillCategoryID": null,
+    "CertificateID": 1,
+    "MasteryLevel": 90,
+    "IsNew": false,
+    "Details": [ "Hooks", "Context API", "Redux" ]
   }
 ]
