@@ -32,6 +32,20 @@ A private `/admin` section for managing all portfolio content. Each page support
 - **Education** — Academic entries
 - **Certificates** — Professional certifications with associated skills
 
+#### 📸 Admin Panel Screenshots
+
+| Dashboard | Personal Info | Skills |
+|:---:|:---:|:---:|
+| ![Dashboard](screenshots/admin-dashboard.png) | ![Personal Info](screenshots/admin-personal-info.png) | ![Skills](screenshots/admin-skills.png) |
+
+| Categories | Projects | Experience |
+|:---:|:---:|:---:|
+| ![Categories](screenshots/admin-categories.png) | ![Projects](screenshots/admin-projects.png) | ![Experience](screenshots/admin-experience.png) |
+
+| Education | Certificates |
+|:---:|:---:|:---:|
+| ![Education](screenshots/admin-education.png) | ![Certificates](screenshots/admin-certificates.png) | *Empty* |
+
 ### 📦 Data Workflow
 
 All data lives in `wwwroot/data/` as JSON files. The admin panel edits data in-memory, then downloads an updated JSON file. You manually replace the file in `wwwroot/data/` — no backend or database needed.
