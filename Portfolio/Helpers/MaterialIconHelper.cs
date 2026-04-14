@@ -18,7 +18,9 @@ namespace Portfolio.Helpers
             MaterialIcon.Menu => "menu",
             MaterialIcon.Close => "close",
             MaterialIcon.OpenInNew => "open_in_new",
-
+            MaterialIcon.Flutter => "flutter",
+            MaterialIcon.HTML => "html",
+            MaterialIcon.CSS => "css",
             // Actions
             MaterialIcon.Check => "check",
             MaterialIcon.CheckCircle => "check_circle",
@@ -93,7 +95,7 @@ namespace Portfolio.Helpers
             MaterialIcon.DesktopMac => "desktop_mac",
             MaterialIcon.Router => "router",
             MaterialIcon.Wifi => "wifi",
-            MaterialIcon.Kubernetes => "file_json",
+            MaterialIcon.Json => "file_json",
             MaterialIcon.DataUsage => "data_usage",
             MaterialIcon.JavaScript => "javascript",
             MaterialIcon.Analytics => "analytics",
@@ -103,6 +105,8 @@ namespace Portfolio.Helpers
             MaterialIcon.Timeline => "timeline",
             MaterialIcon.TrendingUp => "trending_up",
             MaterialIcon.ShowChart => "show_chart",
+            MaterialIcon.Web=>"web",
+            MaterialIcon.AI=> "smart_toy",
 
             // Education & Learning
             MaterialIcon.School => "school",

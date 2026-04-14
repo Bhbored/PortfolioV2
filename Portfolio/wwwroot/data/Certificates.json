@@ -1,66 +1,34 @@
 ﻿[
   {
-    "Id": 1,
-    "Title": "React Developer Certification",
-    "Issuer": "Meta",
-    "Year": "2021",
-    "Link": "https://certificates.example.com/react-1",
-    "TopSKills": []
+    "id": 1,
+    "title": "CCNA: Introduction to Networks",
+    "issuer": "Cisco Networking Academy",
+    "year": "2024",
+    "link": "https://www.credly.com/badges/89939040-c749-4f65-b5eb-764a7a2e42e3/public_url",
+    "topSKills": []
   },
   {
-    "Id": 2,
-    "Title": "ASP.NET Core Developer",
-    "Issuer": "Microsoft",
-    "Year": "2022",
-    "Link": "https://certificates.example.com/aspnet-2",
-    "TopSKills": []
+    "id": 2,
+    "title": "CCNA: Switching, Routing, and Wireless Essentials",
+    "issuer": "Cisco Networking Academy",
+    "year": "2024",
+    "link": "https://www.credly.com/badges/094850e1-391e-4fe4-adcf-ffd40738c9de",
+    "topSKills": []
   },
   {
-    "Id": 3,
-    "Title": "Docker Certified Associate",
-    "Issuer": "Docker Inc.",
-    "Year": "2023",
-    "Link": "https://certificates.example.com/docker-3",
-    "TopSKills": []
+    "id": 3,
+    "title": "Flutter \u0026 Dart - TheComplete Guide",
+    "issuer": "Udemy",
+    "year": "2025",
+    "link": "https://www.udemy.com/certificate/UC-5c27f2b1-224c-4d4e-9dff-b1c199e63140/",
+    "topSKills": []
   },
   {
-    "Id": 4,
-    "Title": "AWS Solutions Architect",
-    "Issuer": "Amazon Web Services",
-    "Year": "2023",
-    "Link": "https://certificates.example.com/aws-4",
-    "TopSKills": []
-  },
-  {
-    "Id": 5,
-    "Title": "Google Cloud Professional",
-    "Issuer": "Google Cloud",
-    "Year": "2024",
-    "Link": "https://certificates.example.com/gcp-5",
-    "TopSKills": []
-  },
-  {
-    "Id": 6,
-    "Title": "Kubernetes Administrator",
-    "Issuer": "Cloud Native Computing Foundation",
-    "Year": "2024",
-    "Link": "https://certificates.example.com/k8s-6",
-    "TopSKills": []
-  },
-  {
-    "Id": 7,
-    "Title": "Azure DevOps Engineer",
-    "Issuer": "Microsoft",
-    "Year": "2024",
-    "Link": "https://certificates.example.com/azure-7",
-    "TopSKills": []
-  },
-  {
-    "Id": 8,
-    "Title": "Terraform Associate",
-    "Issuer": "HashiCorp",
-    "Year": "2025",
-    "Link": "https://certificates.example.com/terraform-8",
-    "TopSKills": []
+    "id": 4,
+    "title": ".NET MAUI course with Visual Studio 2022",
+    "issuer": "Udemy",
+    "year": "2025",
+    "link": "https://www.udemy.com/certificate/UC-139a6b13-9e8b-4305-aa49-b78b3ce55b72",
+    "topSKills": []
   }
 ]

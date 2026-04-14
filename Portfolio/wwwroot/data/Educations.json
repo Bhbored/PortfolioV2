@@ -1,32 +1,14 @@
 [
   {
-    "Id": 1,
-    "Title": "Bachelor of Science in Computer Science",
-    "Issuer": "University of California",
-    "Year": "2018"
+    "id": 1,
+    "title": "Bachelor of Business: AIS",
+    "issuer": "Lebanese International University",
+    "year": "2021"
   },
   {
-    "Id": 2,
-    "Title": "AWS Certified Developer",
-    "Issuer": "Amazon Web Services",
-    "Year": "2021"
-  },
-  {
-    "Id": 3,
-    "Title": "Master of Science in Software Engineering",
-    "Issuer": "Stanford University",
-    "Year": "2022"
-  },
-  {
-    "Id": 4,
-    "Title": "Google Professional Data Engineer",
-    "Issuer": "Google Cloud",
-    "Year": "2023"
-  },
-  {
-    "Id": 5,
-    "Title": "Full Stack Web Development Bootcamp",
-    "Issuer": "General Assembly",
-    "Year": "2019"
+    "id": 2,
+    "title": "Bachelor of Science: Computer Science",
+    "issuer": "Lebanese International University",
+    "year": "2025"
   }
 ]

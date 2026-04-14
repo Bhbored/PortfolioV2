@@ -59,7 +59,7 @@ namespace Portfolio.Models.Enums
         ErrorOutline,
         Cancel,
         Block,
-
+        Web,
         // Tech & Development
         Code,
         Terminal,
@@ -89,7 +89,7 @@ namespace Portfolio.Models.Enums
         DesktopMac,
         Router,
         Wifi,
-        Kubernetes,
+        Json,
         DataUsage,
         JavaScript,
         Analytics,
@@ -225,6 +225,11 @@ namespace Portfolio.Models.Enums
         EnergySavingsLeaf,
 
         // Miscellaneous
+        Flutter,
+        HTML,
+        CSS,
+        AI,
+
         Home,
         HomeMax,
         Place,

@@ -1,32 +1,26 @@
 [
   {
-    "Title": "Senior Full Stack Developer",
-    "Company": "TechCorp Inc.",
-    "Period": "2022 - Present",
-    "Description": [
-      "Led development of microservices architecture",
-      "Mentored junior developers",
-      "Implemented CI/CD pipelines"
+    "title": "Mobile Developer Intern",
+    "company": "Sana Computer Company (CIS)",
+    "period": "February 2025 \u2013 August 2025",
+    "description": [
+      "Developed cross-platform .NET MAUI applications using MVVM architecture for scalability",
+      "Designed SQLite relational databases, managing cascading relationships to ensure data integrity",
+      "Integrated REST APIs for data features, handling async requests and JSON parsing",
+      "Implemented rich UI elements using Syncfusion and CommunityToolkit.Maui to improve usability",
+      "Integrated Supabase for authentication, real-time operations, and REST API consumption",
+      "Established offline-first data synchronization between local SQLite and cloud backends",
+      "Applied clean code practices and Git workflows within a collaborative team environment. Researched Flutter and React Native to expand cross-platform technical knowledge"
     ]
   },
   {
-    "Title": "Full Stack Developer",
-    "Company": "StartupXYZ",
-    "Period": "2020 - 2022",
-    "Description": [
-      "Built customer-facing web applications",
-      "Designed and implemented RESTful APIs",
-      "Optimized database queries reducing load time by 40%"
-    ]
-  },
-  {
-    "Title": "Junior Developer",
-    "Company": "Digital Agency Co.",
-    "Period": "2018 - 2020",
-    "Description": [
-      "Developed responsive websites",
-      "Maintained legacy applications",
-      "Collaborated with design team"
+    "title": "Technical Support",
+    "company": "Lebanese Army",
+    "period": "2018 - 2024",
+    "description": [
+      "Diagnosing and resolving hardware, software, and network problems for users",
+      "Creating, modifying, and deactivating user accounts and permissions based on organizational policies and user roles",
+      "Developing user manuals, training materials, and knowledge base articles to educate users on software applications, best practices, and troubleshooting techniques"
     ]
   }
 ]

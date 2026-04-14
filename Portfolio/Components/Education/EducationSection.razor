@@ -44,8 +44,9 @@
                 }
             </div>
         </div>
-
-        <!-- Navigation Buttons -->
+        @if (educations.Count > 3)
+        {
+            <!-- Navigation Buttons -->
         <div class="flex justify-between items-center mt-12 hidden md:flex">
             <button @onclick="PreviousPage"
                     disabled="@(currentIndex == 0)"
@@ -64,7 +65,8 @@
                 Next
                 <span class="material-symbols-outlined text-sm ml-2">arrow_forward</span>
             </button>
-        </div>
+        </div>            
+        }
     </div>
 </section>
 

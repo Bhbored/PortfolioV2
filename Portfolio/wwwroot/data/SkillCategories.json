@@ -1,18 +1,38 @@
 [
   {
     "id": 1,
-    "category": "Frontend"
+    "category": "Languages \u0026 Frameworks"
   },
   {
     "id": 2,
-    "category": "Backend"
+    "category": "Web Development"
   },
   {
     "id": 3,
-    "category": "DevOps v2"
+    "category": "Mobile Development \u0026 Patterns"
   },
   {
     "id": 4,
-    "category": "Mobile"
+    "category": "Data \u0026 Persistence"
+  },
+  {
+    "id": 5,
+    "category": "Backend Services \u0026 Cloud"
+  },
+  {
+    "id": 6,
+    "category": "Tools \u0026 Practices"
+  },
+  {
+    "id": 7,
+    "category": "AI-Assisted Development \u0026 Tooling"
+  },
+  {
+    "id": 8,
+    "category": "Business \u0026 Accounting Knowledge"
+  },
+  {
+    "id": 9,
+    "category": "Currently Exploring"
   }
 ]
