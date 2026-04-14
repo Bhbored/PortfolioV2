@@ -1,0 +1,271 @@
+@page "/admin/certificates"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+@inject ISkillService SkillService
+
+<PageTitle>Certificates</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Certificates</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedCertificates.Count of @certificates.Count certificates</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Issuer</th>
+                        <th>Year</th>
+                        <th>Associated Skills</th>
+                        <th>Link</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cert in paginatedCertificates)
+                    {
+                        <tr>
+                            <td>
+                                @if (editingId == cert.Id)
+                                {
+                                    <input class="inline-input" @bind="editTitle" placeholder="Certificate title" />
+                                }
+                                else
+                                {
+                                    <span class="cell-primary">@cert.Title</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == cert.Id)
+                                {
+                                    <input class="inline-input" @bind="editIssuer" placeholder="Issuer name" />
+                                }
+                                else
+                                {
+                                    <span class="cell-secondary">@cert.Issuer</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == cert.Id)
+                                {
+                                    <input class="inline-input-sm" @bind="editYear" placeholder="e.g. 2024" />
+                                }
+                                else
+                                {
+                                    <span class="badge badge-year">@cert.Year</span>
+                                }
+                            </td>
+                            <td>
+                                @if (cert.TopSKills.Any())
+                                {
+                                    <div class="tech-tags">
+                                        @foreach (var skill in cert.TopSKills.Take(3))
+                                        {
+                                            <span class="tech-tag">@skill.Title</span>
+                                        }
+                                        @if (cert.TopSKills.Count > 3)
+                                        {
+                                            <span class="tech-more">+@(cert.TopSKills.Count - 3)</span>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No associated skills</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == cert.Id)
+                                {
+                                    <input class="inline-input" @bind="editLink" placeholder="https://..." />
+                                }
+                                else if (!string.IsNullOrEmpty(cert.Link))
+                                {
+                                    <a href="@cert.Link" target="_blank" class="link-button">
+                                        <span class="material-symbols-outlined">open_in_new</span>
+                                        View
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">No link</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (editingId == cert.Id)
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="() => SaveEdit(cert)" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(cert)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteCertificate(cert.Id)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="certificates.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form">
+                    <input class="inline-input-sm" @bind="newTitle" placeholder="Title" />
+                    <input class="inline-input-sm" @bind="newIssuer" placeholder="Issuer" />
+                    <input class="inline-input-sm" @bind="newYear" placeholder="Year" />
+                    <input class="inline-input-sm" @bind="newLink" placeholder="Link (optional)" />
+                    <button class="btn-icon btn-confirm" @onclick="AddCertificate" title="Add">
+                        <span class="material-symbols-outlined">check</span>
+                    </button>
+                    <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Certificate
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<Certificate> certificates = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingId = -1;
+    private string editTitle = string.Empty;
+    private string editIssuer = string.Empty;
+    private string editYear = string.Empty;
+    private string editLink = string.Empty;
+
+    // Add state
+    private bool isAdding = false;
+    private string newTitle = string.Empty;
+    private string newIssuer = string.Empty;
+    private string newYear = string.Empty;
+    private string newLink = string.Empty;
+
+    private int totalPages => (int)Math.Ceiling((double)certificates.Count / pageSize);
+    private List<Certificate> paginatedCertificates => certificates.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        certificates = await ModelService.GetCertificatesAsync();
+        foreach (var cert in certificates)
+        {
+            cert.TopSKills = await SkillService.GetTop3SkillsByCertificateId(cert.Id);
+        }
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(Certificate cert)
+    {
+        editingId = cert.Id;
+        editTitle = cert.Title;
+        editIssuer = cert.Issuer;
+        editYear = cert.Year;
+        editLink = cert.Link ?? string.Empty;
+    }
+
+    private void SaveEdit(Certificate cert)
+    {
+        if (string.IsNullOrWhiteSpace(editTitle)) return;
+
+        cert.Title = editTitle.Trim();
+        cert.Issuer = editIssuer.Trim();
+        cert.Year = editYear.Trim();
+        cert.Link = string.IsNullOrWhiteSpace(editLink) ? null : editLink.Trim();
+        editingId = -1;
+    }
+
+    private void CancelEdit()
+    {
+        editingId = -1;
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newTitle = string.Empty;
+        newIssuer = string.Empty;
+        newYear = string.Empty;
+        newLink = string.Empty;
+    }
+
+    private void AddCertificate()
+    {
+        if (string.IsNullOrWhiteSpace(newTitle)) return;
+
+        var newId = AdminService.GetNextId(certificates);
+        certificates.Add(new Certificate
+        {
+            Id = newId,
+            Title = newTitle.Trim(),
+            Issuer = newIssuer.Trim(),
+            Year = newYear.Trim(),
+            Link = string.IsNullOrWhiteSpace(newLink) ? null : newLink.Trim(),
+            TopSKills = new List<Skill>()
+        });
+        isAdding = false;
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+    }
+
+    private void DeleteCertificate(int id)
+    {
+        certificates.RemoveAll(c => c.Id == id);
+        if (paginatedCertificates.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("Certificates.json", certificates);
+    }
+}

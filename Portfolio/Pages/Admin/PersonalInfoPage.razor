@@ -1,0 +1,154 @@
+@page "/admin/personal-info"
+@layout AdminLayout
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+
+<PageTitle>Personal Info</PageTitle>
+
+@if (personalInfo is null)
+{
+    <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Loading personal info...</p>
+    </div>
+}
+else
+{
+    <div class="data-card">
+        <div class="card-header">
+            <h2>Personal Information</h2>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="info-grid">
+                <div class="info-item">
+                    <label class="info-label">Name</label>
+                    <input class="info-input" @bind="personalInfo.Name" placeholder="Full name" />
+                </div>
+                <div class="info-item">
+                    <label class="info-label">Title</label>
+                    <input class="info-input" @bind="personalInfo.Title" placeholder="Professional title" />
+                </div>
+                <div class="info-item full-width">
+                    <label class="info-label">Headline</label>
+                    <input class="info-input" @bind="personalInfo.HeadLine" placeholder="Short headline" />
+                </div>
+                <div class="info-item">
+                    <label class="info-label">Email</label>
+                    <input class="info-input" type="email" @bind="personalInfo.Email" placeholder="email@example.com" />
+                </div>
+                <div class="info-item">
+                    <label class="info-label">Phone</label>
+                    <input class="info-input" @bind="personalInfo.Phone" placeholder="+1 234 567 890" />
+                </div>
+                <div class="info-item">
+                    <label class="info-label">Location</label>
+                    <input class="info-input" @bind="personalInfo.Location" placeholder="City, Country" />
+                </div>
+                <div class="info-item">
+                    <label class="info-label">Available for Work</label>
+                    <div class="toggle-container">
+                        <button class="toggle-btn @(personalInfo.IsAvailableForWork ? "active" : "")" @onclick="() => personalInfo.IsAvailableForWork = !personalInfo.IsAvailableForWork">
+                            <span class="toggle-dot"></span>
+                        </button>
+                        <span class="toggle-label">@(personalInfo.IsAvailableForWork ? "Available" : "Not Available")</span>
+                    </div>
+                </div>
+                <div class="info-item full-width">
+                    <label class="info-label">Summary</label>
+                    <textarea class="info-textarea" @bind="personalInfo.Summary" rows="4" placeholder="Professional summary..."></textarea>
+                </div>
+                <div class="info-item full-width">
+                    <label class="info-label">Profile Image Path</label>
+                    <input class="info-input" @bind="personalInfo.ProfileImage" placeholder="/images/profile.png" />
+                    @if (!string.IsNullOrEmpty(personalInfo.ProfileImage))
+                    {
+                        <div class="image-preview">
+                            <img src="@personalInfo.ProfileImage" alt="Profile" onerror="this.style.display='none'" />
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="subsection">
+                <h3>Social Links</h3>
+                <div class="social-links-grid">
+                    <div class="social-item">
+                        <label class="info-label">GitHub</label>
+                        <input class="info-input" @bind="personalInfo.Social.Github" placeholder="https://github.com/username" />
+                    </div>
+                    <div class="social-item">
+                        <label class="info-label">LinkedIn</label>
+                        <input class="info-input" @bind="personalInfo.Social.Linkedin" placeholder="https://linkedin.com/in/username" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-divider"></div>
+
+            <div class="subsection">
+                <div class="subsection-header">
+                    <h3>Languages</h3>
+                    <button class="btn-add-small" @onclick="AddLanguage">
+                        <span class="material-symbols-outlined">add</span>
+                    </button>
+                </div>
+                <div class="languages-list">
+                    @for (int i = 0; i < personalInfo.Languages.Count; i++)
+                    {
+                        var index = i;
+                        var lang = personalInfo.Languages[index];
+                        <div class="language-row">
+                            <input class="info-input-sm" @bind="lang.Name" placeholder="Language" />
+                            <select class="info-select" @bind="lang.Proficiency">
+                                <option value="@ProficiencyLevel.Native">Native</option>
+                                <option value="@ProficiencyLevel.Advanced">Advanced</option>
+                                <option value="@ProficiencyLevel.Intermediate">Intermediate</option>
+                                <option value="@ProficiencyLevel.Elementary">Elementary</option>
+                            </select>
+                            <button class="btn-icon btn-delete" @onclick="() => RemoveLanguage(index)" title="Remove">
+                                <span class="material-symbols-outlined">delete</span>
+                            </button>
+                        </div>
+                    }
+                    @if (!personalInfo.Languages.Any())
+                    {
+                        <p class="empty-state">No languages added yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private PersonalInfo personalInfo = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        personalInfo = await ModelService.GetPersonalInfoAsync();
+    }
+
+    private void AddLanguage()
+    {
+        personalInfo?.Languages.Add(new Language { Name = "New Language", Proficiency = ProficiencyLevel.Elementary });
+    }
+
+    private void RemoveLanguage(int index)
+    {
+        personalInfo?.Languages.RemoveAt(index);
+    }
+
+    private async Task SaveChanges()
+    {
+        if (personalInfo != null)
+        {
+            await AdminService.DownloadJsonAsync("Person.json", personalInfo);
+        }
+    }
+}

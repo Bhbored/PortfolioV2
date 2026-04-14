@@ -1,0 +1,269 @@
+@page "/admin/experiences"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+
+<PageTitle>Experience</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Work Experience</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedExperiences.Count of @experiences.Count @(experiences.Count == 1 ? "position" : "positions")</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Company</th>
+                        <th>Period</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var exp in paginatedExperiences)
+                    {
+                        <tr>
+                            <td>
+                                @if (editingId == exp.GetHashCode())
+                                {
+                                    <input class="inline-input" @bind="editTitle" placeholder="Job title" />
+                                }
+                                else
+                                {
+                                    <span class="cell-primary">@exp.Title</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == exp.GetHashCode())
+                                {
+                                    <input class="inline-input" @bind="editCompany" placeholder="Company name" />
+                                }
+                                else
+                                {
+                                    <span class="company-cell">@exp.Company</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == exp.GetHashCode())
+                                {
+                                    <input class="inline-input-sm" @bind="editPeriod" placeholder="e.g. 2023-2024" />
+                                }
+                                else
+                                {
+                                    <span class="badge badge-period">@exp.Period</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == exp.GetHashCode())
+                                {
+                                    <div class="edit-description">
+                                        @for (int i = 0; i < editDescriptions.Count; i++)
+                                        {
+                                            var idx = i;
+                                            <div class="desc-input-row">
+                                                <input class="inline-input-sm" @bind="editDescriptions[idx]" placeholder="Description point" />
+                                                <button class="btn-icon-sm btn-delete" @onclick="() => RemoveDescPoint(idx)" title="Remove">
+                                                    <span class="material-symbols-outlined">remove</span>
+                                                </button>
+                                            </div>
+                                        }
+                                        <button class="btn-add-point" @onclick="AddDescPoint">
+                                            <span class="material-symbols-outlined">add</span> Add point
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="description-list">
+                                        @foreach (var desc in exp.Description.Take(3))
+                                        {
+                                            <div class="description-item">
+                                                <span class="bullet">&bull;</span>
+                                                <span>@desc</span>
+                                            </div>
+                                        }
+                                        @if (exp.Description.Count > 3)
+                                        {
+                                            <span class="desc-more">+@(exp.Description.Count - 3) more</span>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (editingId == exp.GetHashCode())
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="() => SaveEdit(exp)" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(exp)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteExperience(exp)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="experiences.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form">
+                    <input class="inline-input-sm" @bind="newTitle" placeholder="Title" />
+                    <input class="inline-input-sm" @bind="newCompany" placeholder="Company" />
+                    <input class="inline-input-sm" @bind="newPeriod" placeholder="Period" />
+                    <button class="btn-icon btn-confirm" @onclick="AddExperience" title="Add">
+                        <span class="material-symbols-outlined">check</span>
+                    </button>
+                    <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Experience
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<Experience> experiences = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingId = -1;
+    private string editTitle = string.Empty;
+    private string editCompany = string.Empty;
+    private string editPeriod = string.Empty;
+    private List<string> editDescriptions = new();
+
+    // Add state
+    private bool isAdding = false;
+    private string newTitle = string.Empty;
+    private string newCompany = string.Empty;
+    private string newPeriod = string.Empty;
+
+    private int totalPages => (int)Math.Ceiling((double)experiences.Count / pageSize);
+    private List<Experience> paginatedExperiences => experiences.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        experiences = await ModelService.GetExperiencesAsync();
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(Experience exp)
+    {
+        editingId = exp.GetHashCode();
+        editTitle = exp.Title;
+        editCompany = exp.Company;
+        editPeriod = exp.Period;
+        editDescriptions = new List<string>(exp.Description);
+    }
+
+    private void SaveEdit(Experience exp)
+    {
+        if (string.IsNullOrWhiteSpace(editTitle)) return;
+
+        exp.Title = editTitle.Trim();
+        exp.Company = editCompany.Trim();
+        exp.Period = editPeriod.Trim();
+        exp.Description = editDescriptions.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        editingId = -1;
+    }
+
+    private void CancelEdit()
+    {
+        editingId = -1;
+    }
+
+    private void AddDescPoint()
+    {
+        editDescriptions.Add(string.Empty);
+    }
+
+    private void RemoveDescPoint(int index)
+    {
+        editDescriptions.RemoveAt(index);
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newTitle = string.Empty;
+        newCompany = string.Empty;
+        newPeriod = string.Empty;
+    }
+
+    private void AddExperience()
+    {
+        if (string.IsNullOrWhiteSpace(newTitle)) return;
+
+        experiences.Add(new Experience
+        {
+            Title = newTitle.Trim(),
+            Company = newCompany.Trim(),
+            Period = newPeriod.Trim(),
+            Description = new List<string>()
+        });
+        isAdding = false;
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+    }
+
+    private void DeleteExperience(Experience exp)
+    {
+        experiences.Remove(exp);
+        if (paginatedExperiences.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("Experiences.json", experiences);
+    }
+}

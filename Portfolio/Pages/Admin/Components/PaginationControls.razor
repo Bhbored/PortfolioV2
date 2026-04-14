@@ -1,0 +1,31 @@
+@attribute [Microsoft.AspNetCore.Components.RouteAttribute("/__pagination_placeholder__")]
+
+<div class="pagination-controls">
+    <span class="pagination-info">
+        Showing @((CurrentPage - 1) * PageSize + 1)-@(Math.Min(CurrentPage * PageSize, TotalItems)) of @TotalItems
+    </span>
+    <div class="pagination-buttons">
+        <button class="page-btn" disabled="@(CurrentPage == 1)" @onclick="() => PageChanged.InvokeAsync(CurrentPage - 1)">
+            <span class="material-symbols-outlined">chevron_left</span>
+        </button>
+        @for (int i = 1; i <= TotalPages; i++)
+        {
+            var pageNum = i;
+            <button class="page-btn @(CurrentPage == pageNum ? "active" : "")" @onclick="() => PageChanged.InvokeAsync(pageNum)">
+                @pageNum
+            </button>
+        }
+        <button class="page-btn" disabled="@(CurrentPage == TotalPages || TotalPages == 0)" @onclick="() => PageChanged.InvokeAsync(CurrentPage + 1)">
+            <span class="material-symbols-outlined">chevron_right</span>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter, EditorRequired] public int CurrentPage { get; set; }
+    [Parameter, EditorRequired] public int PageSize { get; set; }
+    [Parameter, EditorRequired] public int TotalItems { get; set; }
+    [Parameter, EditorRequired] public EventCallback<int> PageChanged { get; set; }
+
+    private int TotalPages => (int)Math.Ceiling((double)TotalItems / PageSize);
+}

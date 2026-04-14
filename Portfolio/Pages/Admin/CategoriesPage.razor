@@ -1,0 +1,207 @@
+@page "/admin/categories"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+
+<PageTitle>Categories</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Skill Categories</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedCategories.Count of @categories.Count categories</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category Name</th>
+                        <th>Skills Count</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var category in paginatedCategories)
+                    {
+                        var skillsCount = skills.Count(s => s.SkillCategoryID == category.Id);
+                        <tr>
+                            <td>
+                                <span class="cell-id">#@category.Id</span>
+                            </td>
+                            <td>
+                                @if (editingId == category.Id)
+                                {
+                                    <input class="inline-input" @bind="editValue" @onkeydown="HandleEditKeyDown" autofocus />
+                                }
+                                else
+                                {
+                                    <span class="cell-primary">@category.Category</span>
+                                }
+                            </td>
+                            <td>
+                                <span class="badge">@skillsCount @(skillsCount == 1 ? "skill" : "skills")</span>
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (editingId == category.Id)
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="SaveEdit" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(category)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteCategory(category.Id)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="categories.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form">
+                    <input class="inline-input" @bind="newCategoryName" @onkeydown="HandleAddKeyDown" placeholder="Category name..." autofocus />
+                    <button class="btn-icon btn-confirm" @onclick="AddCategory" title="Add">
+                        <span class="material-symbols-outlined">check</span>
+                    </button>
+                    <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Category
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<SkillCategory> categories = new();
+    private List<Skill> skills = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingId = -1;
+    private string editValue = string.Empty;
+    private bool isAdding = false;
+    private string newCategoryName = string.Empty;
+
+    private int totalPages => (int)Math.Ceiling((double)categories.Count / pageSize);
+    private List<SkillCategory> paginatedCategories => categories.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        categories = await ModelService.GetSkillCategoriesAsync();
+        skills = await ModelService.GetSkillsAsync();
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(SkillCategory category)
+    {
+        editingId = category.Id;
+        editValue = category.Category;
+    }
+
+    private void SaveEdit()
+    {
+        if (string.IsNullOrWhiteSpace(editValue)) return;
+
+        var category = categories.FirstOrDefault(c => c.Id == editingId);
+        if (category != null)
+        {
+            category.Category = editValue.Trim();
+        }
+        editingId = -1;
+    }
+
+    private void CancelEdit()
+    {
+        editingId = -1;
+    }
+
+    private async Task HandleEditKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") SaveEdit();
+        else if (e.Key == "Escape") CancelEdit();
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newCategoryName = string.Empty;
+    }
+
+    private void AddCategory()
+    {
+        if (string.IsNullOrWhiteSpace(newCategoryName)) return;
+
+        var newId = AdminService.GetNextId(categories);
+        categories.Add(new SkillCategory { Id = newId, Category = newCategoryName.Trim() });
+        isAdding = false;
+
+        // Go to last page to see the new item
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+    }
+
+    private async Task HandleAddKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter") AddCategory();
+        else if (e.Key == "Escape") CancelAdd();
+    }
+
+    private void DeleteCategory(int id)
+    {
+        categories.RemoveAll(c => c.Id == id);
+        if (paginatedCategories.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("SkillCategories.json", categories);
+    }
+}

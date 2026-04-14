@@ -1,0 +1,79 @@
+@layout AdminLayout
+@inject IAdminAuthService AuthService
+@inject NavigationManager Nav
+
+<nav class="admin-nav">
+    <ul class="nav-list">
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin" Match="NavLinkMatch.All">
+                <span class="material-symbols-outlined nav-icon">dashboard</span>
+                <span class="nav-text">Dashboard</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/personal-info">
+                <span class="material-symbols-outlined nav-icon">person</span>
+                <span class="nav-text">Personal Info</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/skills">
+                <span class="material-symbols-outlined nav-icon">bolt</span>
+                <span class="nav-text">Skills</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/categories">
+                <span class="material-symbols-outlined nav-icon">category</span>
+                <span class="nav-text">Categories</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/projects">
+                <span class="material-symbols-outlined nav-icon">work</span>
+                <span class="nav-text">Projects</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/experiences">
+                <span class="material-symbols-outlined nav-icon">work_history</span>
+                <span class="nav-text">Experience</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/educations">
+                <span class="material-symbols-outlined nav-icon">school</span>
+                <span class="nav-text">Education</span>
+            </NavLink>
+        </li>
+        <hr class="nav-divider" />
+        <li class="nav-item">
+            <NavLink class="nav-link" href="/admin/certificates">
+                <span class="material-symbols-outlined nav-icon">verified</span>
+                <span class="nav-text">Certificates</span>
+            </NavLink>
+        </li>
+    </ul>
+
+    <div class="nav-footer">
+        <hr class="nav-divider" />
+        <button class="logout-btn" @onclick="Logout">
+            <span class="material-symbols-outlined">logout</span>
+            <span>Logout</span>
+        </button>
+    </div>
+</nav>
+
+@code {
+    private void Logout()
+    {
+        AuthService.Logout();
+        Nav.NavigateTo("/");
+    }
+}

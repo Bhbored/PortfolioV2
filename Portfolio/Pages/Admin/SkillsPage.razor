@@ -1,0 +1,641 @@
+@page "/admin/skills"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+@inject IJSRuntime JS
+
+<PageTitle>Skills</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Skills</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedSkills.Count of @skills.Count skills</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Certificate</th>
+                        <th>Mastery</th>
+                        <th>Is New</th>
+                        <th>Details</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var skill in paginatedSkills)
+                    {
+                        var isEditing = editingId == skill.Id;
+                        <tr>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <button class="icon-edit-trigger" @onclick="ToggleEditIconDropdown">
+                                        <span class="material-symbols-outlined">@GetSkillIcon(editIcon)</span>
+                                        <span class="icon-edit-name">@editIcon</span>
+                                    </button>
+                                }
+                                else
+                                {
+                                    <span class="material-symbols-outlined skill-icon">@GetSkillIcon(skill.Icon)</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <input class="inline-input" @bind="editTitle" placeholder="Skill title" />
+                                }
+                                else
+                                {
+                                    <span class="cell-primary">@skill.Title</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <select class="inline-select" @bind="editCategoryId">
+                                        <option value="">-- None --</option>
+                                        @foreach (var cat in categories)
+                                        {
+                                            <option value="@cat.Id">@cat.Category</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    @GetCategoryName(skill.SkillCategoryID)
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <select class="inline-select" @bind="editCertificateId">
+                                        <option value="">-- None --</option>
+                                        @foreach (var cert in certificates)
+                                        {
+                                            <option value="@cert.Id">@cert.Title</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    @GetCertificateName(skill.CertificateID)
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <div class="mastery-edit">
+                                        <input type="range" class="mastery-slider" min="0" max="100" step="5" @bind="editMastery" />
+                                        <span class="mastery-value">@editMastery%</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="mastery-cell">
+                                        <div class="mastery-bar">
+                                            <div class="mastery-fill" style="width: @skill.MasteryLevel%"></div>
+                                        </div>
+                                        <span class="mastery-text">@skill.MasteryLevel%</span>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <label class="toggle-switch">
+                                        <input type="checkbox" @bind="editIsNew" />
+                                        <span class="toggle-slider"></span>
+                                    </label>
+                                }
+                                else
+                                {
+                                    @if (skill.IsNew)
+                                    {
+                                        <span class="badge badge-new">New</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-existing">Existing</span>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <div class="edit-details">
+                                        @for (int i = 0; i < editDetails.Count; i++)
+                                        {
+                                            var idx = i;
+                                            <div class="detail-input-row">
+                                                <input class="inline-input-xs" @bind="editDetails[idx]" placeholder="Detail" />
+                                                <button class="btn-icon-xs btn-delete" @onclick="() => RemoveDetail(idx)">
+                                                    <span class="material-symbols-outlined">remove</span>
+                                                </button>
+                                            </div>
+                                        }
+                                        <button class="btn-add-detail" @onclick="AddDetail">
+                                            <span class="material-symbols-outlined">add</span> Add
+                                        </button>
+                                    </div>
+                                }
+                                else if (skill.Details.Any())
+                                {
+                                    <div class="details-preview">
+                                        @foreach (var detail in skill.Details.Take(2))
+                                        {
+                                            <span class="detail-tag">@detail</span>
+                                        }
+                                        @if (skill.Details.Count > 2)
+                                        {
+                                            <span class="details-more">+@(skill.Details.Count - 2)</span>
+                                        }
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">-</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (isEditing)
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="() => SaveEdit(skill)" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(skill)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteSkill(skill.Id)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+
+                        @* Edit icon dropdown row *@
+                        @if (isEditing && showEditIconDropdown)
+                        {
+                            <tr class="icon-dropdown-row">
+                                <td colspan="8">
+                                    <div class="icon-dropdown-wrapper" id="edit-icon-trigger">
+                                        <div class="icon-dropdown @(editDropdownPosition == "up" ? "drop-up" : "drop-down")">
+                                            <div class="icon-search-bar">
+                                                <input class="icon-search-input" @bind="editIconSearchText" placeholder="Search icons..." />
+                                                <button class="icon-search-btn" @onclick="FilterEditIcons" title="Search">
+                                                    <span class="material-symbols-outlined">search</span>
+                                                </button>
+                                            </div>
+                                            @if (editIsFiltering)
+                                            {
+                                                <div class="icon-loading">
+                                                    <div class="spinner"></div>
+                                                    <span>Filtering...</span>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="icon-list">
+                                                    @foreach (var iconOption in editFilteredIcons)
+                                                    {
+                                                        var icon = iconOption;
+                                                        <button class="icon-option" @onclick="() => SelectEditIcon(icon)">
+                                                            <span class="material-symbols-outlined">@GetSkillIcon(icon)</span>
+                                                            <span class="icon-option-name">@icon</span>
+                                                        </button>
+                                                    }
+                                                    @if (!editFilteredIcons.Any())
+                                                    {
+                                                        <div class="icon-no-results">No icons found</div>
+                                                    }
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="skills.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form-grid">
+                    <div class="add-field add-field-icon">
+                        <label class="add-label">Icon</label>
+                        <div class="icon-dropdown-container-add" id="add-icon-trigger">
+                            <button class="icon-dropdown-btn" @onclick="ToggleAddIconDropdown">
+                                <span class="material-symbols-outlined add-selected-icon">@selectedIconDisplay</span>
+                                <span class="dropdown-arrow">▼</span>
+                            </button>
+                            @if (showAddIconDropdown)
+                            {
+                                <div class="icon-dropdown icon-dropdown-large @(addDropdownPosition == "up" ? "drop-up" : "drop-down")">
+                                    <div class="icon-search-bar">
+                                        <input class="icon-search-input" @bind="addIconSearchText" placeholder="Search icons..." />
+                                        <button class="icon-search-btn" @onclick="FilterAddIcons" title="Search">
+                                            <span class="material-symbols-outlined">search</span>
+                                        </button>
+                                    </div>
+                                    @if (addIsFiltering)
+                                    {
+                                        <div class="icon-loading">
+                                            <div class="spinner"></div>
+                                            <span>Filtering...</span>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="icon-list">
+                                            @foreach (var iconOption in addFilteredIcons)
+                                            {
+                                                var icon = iconOption;
+                                                <button class="icon-option" @onclick="() => SelectAddIcon(icon)">
+                                                    <span class="material-symbols-outlined">@GetSkillIcon(icon)</span>
+                                                    <span class="icon-option-name">@icon</span>
+                                                </button>
+                                            }
+                                            @if (!addFilteredIcons.Any())
+                                            {
+                                                <div class="icon-no-results">No icons found</div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Title</label>
+                        <input class="inline-input-xs" @bind="newTitle" placeholder="Skill title" />
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Category</label>
+                        <select class="inline-select" @bind="newCategoryId">
+                            <option value="">-- None --</option>
+                            @foreach (var cat in categories)
+                            {
+                                <option value="@cat.Id">@cat.Category</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Certificate</label>
+                        <select class="inline-select" @bind="newCertificateId">
+                            <option value="">-- None --</option>
+                            @foreach (var cert in certificates)
+                            {
+                                <option value="@cert.Id">@cert.Title</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Mastery: @newMastery%</label>
+                        <input type="range" class="mastery-slider" min="0" max="100" step="5" @bind="newMastery" />
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Is New</label>
+                        <label class="toggle-switch">
+                            <input type="checkbox" @bind="newIsNew" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="add-field add-actions">
+                        <button class="btn-icon btn-confirm" @onclick="AddSkill" title="Add">
+                            <span class="material-symbols-outlined">check</span>
+                        </button>
+                        <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Skill
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<Skill> skills = new();
+    private List<SkillCategory> categories = new();
+    private List<Certificate> certificates = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingId = -1;
+    private string editTitle = string.Empty;
+    private int? editCategoryId;
+    private int? editCertificateId;
+    private double editMastery;
+    private bool editIsNew;
+    private List<string> editDetails = new();
+    private MaterialIcon editIcon = MaterialIcon.Code;
+
+    // Edit icon dropdown
+    private bool showEditIconDropdown = false;
+    private string editIconSearchText = string.Empty;
+    private List<MaterialIcon> editFilteredIcons = new();
+    private bool editIsFiltering = false;
+    private string editDropdownPosition = "down";
+
+    // Add state
+    private bool isAdding = false;
+    private MaterialIcon newIcon = MaterialIcon.Code;
+    private string newTitle = string.Empty;
+    private int? newCategoryId;
+    private int? newCertificateId;
+    private double newMastery = 50;
+    private bool newIsNew;
+
+    // Add icon dropdown
+    private bool showAddIconDropdown = false;
+    private string addIconSearchText = string.Empty;
+    private List<MaterialIcon> addFilteredIcons = new();
+    private bool addIsFiltering = false;
+    private string addDropdownPosition = "down";
+
+    // Shared
+    private List<MaterialIcon> allIcons = new();
+    private string selectedIconDisplay = "code";
+
+    private int totalPages => (int)Math.Ceiling((double)skills.Count / pageSize);
+    private List<Skill> paginatedSkills => skills.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        skills = await ModelService.GetSkillsAsync();
+        categories = await ModelService.GetSkillCategoriesAsync();
+        certificates = await ModelService.GetCertificatesAsync();
+
+        allIcons = Enum.GetValues<MaterialIcon>().ToList();
+        editFilteredIcons = allIcons;
+        addFilteredIcons = allIcons;
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    private string GetSkillIcon(MaterialIcon icon) => MaterialIconHelper.ToIconString(icon);
+
+    private string GetCategoryName(int? categoryId)
+    {
+        if (!categoryId.HasValue) return "None";
+        var cat = categories.FirstOrDefault(c => c.Id == categoryId.Value);
+        return cat?.Category ?? "Unknown";
+    }
+
+    private string GetCertificateName(int? certId)
+    {
+        if (!certId.HasValue) return "None";
+        var cert = certificates.FirstOrDefault(c => c.Id == certId.Value);
+        return cert?.Title ?? "Unknown";
+    }
+
+    // --- Smart Dropdown Positioning ---
+
+    private async Task<string> GetDropdownPosition(string elementId)
+    {
+        try
+        {
+            var rect = await JS.InvokeAsync<DomRect>("getElementRect", elementId);
+            var viewportHeight = await JS.InvokeAsync<double>("getViewportHeight");
+            var spaceBelow = viewportHeight - rect.Bottom;
+            return spaceBelow < 300 ? "up" : "down";
+        }
+        catch
+        {
+            return "down";
+        }
+    }
+
+    // --- Edit Icon Dropdown ---
+
+    private async Task ToggleEditIconDropdown()
+    {
+        showEditIconDropdown = !showEditIconDropdown;
+        if (showEditIconDropdown)
+        {
+            editFilteredIcons = allIcons;
+            editIconSearchText = string.Empty;
+            editDropdownPosition = await GetDropdownPosition("edit-icon-trigger");
+        }
+    }
+
+    private async Task FilterEditIcons()
+    {
+        editIsFiltering = true;
+        StateHasChanged();
+
+        // Small delay to show loading state
+        await Task.Delay(150);
+
+        if (string.IsNullOrWhiteSpace(editIconSearchText))
+        {
+            editFilteredIcons = allIcons;
+        }
+        else
+        {
+            var search = editIconSearchText.Trim();
+            editFilteredIcons = allIcons
+                .Where(i => i.ToString().Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                            GetSkillIcon(i).Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        editIsFiltering = false;
+        StateHasChanged();
+    }
+
+    private void SelectEditIcon(MaterialIcon icon)
+    {
+        editIcon = icon;
+        showEditIconDropdown = false;
+        editIconSearchText = string.Empty;
+    }
+
+    // --- Add Icon Dropdown ---
+
+    private async Task ToggleAddIconDropdown()
+    {
+        showAddIconDropdown = !showAddIconDropdown;
+        if (showAddIconDropdown)
+        {
+            addFilteredIcons = allIcons;
+            addIconSearchText = string.Empty;
+            addDropdownPosition = await GetDropdownPosition("add-icon-trigger");
+        }
+    }
+
+    private async Task FilterAddIcons()
+    {
+        addIsFiltering = true;
+        StateHasChanged();
+
+        await Task.Delay(150);
+
+        if (string.IsNullOrWhiteSpace(addIconSearchText))
+        {
+            addFilteredIcons = allIcons;
+        }
+        else
+        {
+            var search = addIconSearchText.Trim();
+            addFilteredIcons = allIcons
+                .Where(i => i.ToString().Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                            GetSkillIcon(i).Contains(search, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        addIsFiltering = false;
+        StateHasChanged();
+    }
+
+    private void SelectAddIcon(MaterialIcon icon)
+    {
+        newIcon = icon;
+        selectedIconDisplay = GetSkillIcon(icon);
+        showAddIconDropdown = false;
+        addIconSearchText = string.Empty;
+    }
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(Skill skill)
+    {
+        editingId = skill.Id;
+        editTitle = skill.Title;
+        editCategoryId = skill.SkillCategoryID;
+        editCertificateId = skill.CertificateID;
+        editMastery = skill.MasteryLevel;
+        editIsNew = skill.IsNew;
+        editDetails = new List<string>(skill.Details);
+        editIcon = skill.Icon;
+        showEditIconDropdown = false;
+        editIconSearchText = string.Empty;
+        editFilteredIcons = allIcons;
+    }
+
+    private void SaveEdit(Skill skill)
+    {
+        if (string.IsNullOrWhiteSpace(editTitle)) return;
+
+        skill.Title = editTitle.Trim();
+        skill.Icon = editIcon;
+        skill.SkillCategoryID = editCategoryId;
+        skill.CertificateID = editCertificateId;
+        skill.MasteryLevel = editMastery;
+        skill.IsNew = editIsNew;
+        skill.Details = editDetails.Where(d => !string.IsNullOrWhiteSpace(d)).ToList();
+        editingId = -1;
+        showEditIconDropdown = false;
+    }
+
+    private void CancelEdit()
+    {
+        editingId = -1;
+        showEditIconDropdown = false;
+    }
+
+    private void AddDetail()
+    {
+        editDetails.Add(string.Empty);
+    }
+
+    private void RemoveDetail(int index)
+    {
+        editDetails.RemoveAt(index);
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newIcon = MaterialIcon.Code;
+        selectedIconDisplay = GetSkillIcon(MaterialIcon.Code);
+        newTitle = string.Empty;
+        newCategoryId = null;
+        newCertificateId = null;
+        newMastery = 50;
+        newIsNew = false;
+        showAddIconDropdown = false;
+        addIconSearchText = string.Empty;
+        addFilteredIcons = allIcons;
+    }
+
+    private void AddSkill()
+    {
+        if (string.IsNullOrWhiteSpace(newTitle)) return;
+
+        var newId = AdminService.GetNextId(skills);
+        skills.Add(new Skill
+        {
+            Id = newId,
+            Title = newTitle.Trim(),
+            Icon = newIcon,
+            SkillCategoryID = newCategoryId,
+            CertificateID = newCertificateId,
+            MasteryLevel = newMastery,
+            IsNew = newIsNew,
+            Details = new List<string>()
+        });
+        isAdding = false;
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+        showAddIconDropdown = false;
+    }
+
+    private void DeleteSkill(int id)
+    {
+        skills.RemoveAll(s => s.Id == id);
+        if (paginatedSkills.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("Skills.json", skills);
+    }
+
+    
+    
+}

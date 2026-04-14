@@ -1,0 +1,43 @@
+@inherits LayoutComponentBase
+@inject IAdminAuthService AuthService
+@inject NavigationManager Nav
+
+@if (isAuthenticated)
+{
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo">
+                    <span class="material-symbols-outlined logo-icon">shield_person</span>
+                    <span class="logo-text">Admin</span>
+                </h2>
+            </div>
+            <AdminNavMenu />
+        </aside>
+        <main class="content">
+            <header class="content-header">
+                <h1 class="page-title">@PageTitle</h1>
+            </header>
+            <div class="content-body">
+                @Body
+            </div>
+        </main>
+    </div>
+}
+
+@code {
+    private bool isAuthenticated;
+
+    [Parameter]
+    public string PageTitle { get; set; } = "Dashboard";
+
+    protected override void OnInitialized()
+    {
+        isAuthenticated = AuthService.IsAuthenticated;
+
+        if (!isAuthenticated)
+        {
+            Nav.NavigateTo("/");
+        }
+    }
+}

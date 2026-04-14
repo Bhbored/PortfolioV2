@@ -1,0 +1,233 @@
+@page "/admin"
+@layout AdminLayout
+@inject IModelToJsonService ModelService
+
+<PageTitle>Dashboard - Overview</PageTitle>
+
+<div class="dashboard-grid">
+    <div class="stat-card">
+        <div class="stat-icon projects">
+            <span>&#9830;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Projects</h3>
+            <p class="stat-value">@projects.Count</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon skills">
+            <span>&#9679;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Skills</h3>
+            <p class="stat-value">@skills.Count</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon certificates">
+            <span>&#9824;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Certificates</h3>
+            <p class="stat-value">@certificates.Count</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon experiences">
+            <span>&#9829;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Experience</h3>
+            <p class="stat-value">@experiences.Count</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon educations">
+            <span>&#9827;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Education</h3>
+            <p class="stat-value">@educations.Count</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-icon categories">
+            <span>&#9678;</span>
+        </div>
+        <div class="stat-content">
+            <h3>Categories</h3>
+            <p class="stat-value">@categories.Count</p>
+        </div>
+    </div>
+</div>
+
+<div class="data-sections">
+    <section class="data-section">
+        <div class="section-header">
+            <h2>Recent Projects</h2>
+            <a href="/admin/projects" class="view-all-link">View All &rarr;</a>
+        </div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Technologies</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var project in projects.Take(5))
+                    {
+                        <tr>
+                            <td>
+                                <div class="table-cell-primary">
+                                    <span class="project-icon">&#128187;</span>
+                                    @project.Title
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge">@project.ProjectCategory.ToString()</span>
+                            </td>
+                            <td>
+                                <div class="tech-tags">
+                                    @foreach (var tech in project.Technologies.Take(3))
+                                    {
+                                        <span class="tech-tag">@tech</span>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="data-section">
+        <div class="section-header">
+            <h2>Skills Overview</h2>
+            <a href="/admin/skills" class="view-all-link">View All &rarr;</a>
+        </div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Skill</th>
+                        <th>Category</th>
+                        <th>Mastery</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var skill in skills.Take(5))
+                    {
+                        var category = categories.FirstOrDefault(c => c.Id == skill.SkillCategoryID);
+                        <tr>
+                            <td>
+                                <div class="table-cell-primary">
+                                    <span class="material-symbols-outlined skill-icon">@GetSkillIcon(skill.Icon)</span>
+                                    @skill.Title
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge badge-secondary">@(category?.Category ?? "Uncategorized")</span>
+                            </td>
+                            <td>
+                                <div class="mastery-bar">
+                                    <div class="mastery-fill" style="width: @skill.MasteryLevel%"></div>
+                                    <span class="mastery-text">@skill.MasteryLevel%</span>
+                                </div>
+                            </td>
+                            <td>
+                                @if (skill.IsNew)
+                                {
+                                    <span class="badge badge-new">New</span>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-existing">Existing</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="data-section">
+        <div class="section-header">
+            <h2>Certificates</h2>
+            <a href="/admin/certificates" class="view-all-link">View All &rarr;</a>
+        </div>
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Issuer</th>
+                        <th>Year</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cert in certificates.Take(5))
+                    {
+                        <tr>
+                            <td>
+                                <div class="table-cell-primary">
+                                    <span class="cert-icon">&#127891;</span>
+                                    @cert.Title
+                                </div>
+                            </td>
+                            <td>@cert.Issuer</td>
+                            <td>@cert.Year</td>
+                            <td>
+                                @if (!string.IsNullOrEmpty(cert.Link))
+                                {
+                                    <a href="@cert.Link" target="_blank" class="link-button">
+                                        <span>&#128279;</span> View
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="no-link">No link</span>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+@code {
+    private List<Project> projects = new();
+    private List<Skill> skills = new();
+    private List<Certificate> certificates = new();
+    private List<Experience> experiences = new();
+    private List<Education> educations = new();
+    private List<SkillCategory> categories = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await ModelService.GetProjectsAsync();
+        skills = await ModelService.GetSkillsAsync();
+        certificates = await ModelService.GetCertificatesAsync();
+        experiences = await ModelService.GetExperiencesAsync();
+        educations = await ModelService.GetEducationsAsync();
+        categories = await ModelService.GetSkillCategoriesAsync();
+    }
+
+    private string GetSkillIcon(MaterialIcon icon)
+    {
+        return MaterialIconHelper.ToIconString(icon);
+    }
+}

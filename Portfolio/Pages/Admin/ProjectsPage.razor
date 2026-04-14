@@ -1,0 +1,403 @@
+@page "/admin/projects"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+
+<PageTitle>Projects</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Projects</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedProjects.Count of @projects.Count projects</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Technologies</th>
+                        <th>Features</th>
+                        <th>Links</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (int i = 0; i < paginatedProjects.Count; i++)
+                    {
+                        var project = paginatedProjects[i];
+                        var globalIndex = (currentPage - 1) * pageSize + i;
+                        var isEditing = editingIndex == globalIndex;
+                        <tr>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <input class="inline-input" @bind="editImageUrl" placeholder="Image URL" />
+                                }
+                                else
+                                {
+                                    <div class="project-thumbnail">
+                                        <img src="@project.ImageUrl" alt="@project.Title" onerror="this.style.display='none'" />
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <input class="inline-input" @bind="editTitle" placeholder="Project title" />
+                                }
+                                else
+                                {
+                                    <div>
+                                        <span class="cell-primary">@project.Title</span>
+                                        <p class="project-description">@project.Description</p>
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <select class="inline-select" @bind="editCategory">
+                                        @foreach (ProjectCategory cat in Enum.GetValues<ProjectCategory>())
+                                        {
+                                            <option value="@cat">@cat.ToString()</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <span class="badge badge-secondary">@GetCategoryName(project.ProjectCategory)</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <div class="edit-tags">
+                                        @for (int j = 0; j < editTechnologies.Count; j++)
+                                        {
+                                            var idx = j;
+                                            <div class="tag-input-row">
+                                                <input class="inline-input-xs" @bind="editTechnologies[idx]" placeholder="Tech" />
+                                                <button class="btn-icon-xs btn-delete" @onclick="() => RemoveTech(idx)">
+                                                    <span class="material-symbols-outlined">remove</span>
+                                                </button>
+                                            </div>
+                                        }
+                                        <button class="btn-add-tag" @onclick="AddTech">
+                                            <span class="material-symbols-outlined">add</span> Add
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="tech-tags">
+                                        @foreach (var tech in project.Technologies.Take(3))
+                                        {
+                                            <span class="tech-tag">@tech</span>
+                                        }
+                                        @if (project.Technologies.Count > 3)
+                                        {
+                                            <span class="tech-more">+@(project.Technologies.Count - 3)</span>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <div class="edit-tags">
+                                        @for (int j = 0; j < editFeatures.Count; j++)
+                                        {
+                                            var idx = j;
+                                            <div class="tag-input-row">
+                                                <input class="inline-input-xs" @bind="editFeatures[idx]" placeholder="Feature" />
+                                                <button class="btn-icon-xs btn-delete" @onclick="() => RemoveFeature(idx)">
+                                                    <span class="material-symbols-outlined">remove</span>
+                                                </button>
+                                            </div>
+                                        }
+                                        <button class="btn-add-tag" @onclick="AddFeature">
+                                            <span class="material-symbols-outlined">add</span> Add
+                                        </button>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <span class="badge">@project.KeyFeatures.Count</span>
+                                }
+                            </td>
+                            <td>
+                                @if (isEditing)
+                                {
+                                    <div class="edit-links">
+                                        <input class="inline-input-xs" @bind="editGithubUrl" placeholder="GitHub URL" />
+                                        <input class="inline-input-xs" @bind="editLiveUrl" placeholder="Live URL" />
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="links-cell">
+                                        @if (!string.IsNullOrEmpty(project.GithubUrl))
+                                        {
+                                            <a href="@project.GithubUrl" target="_blank" class="link-icon-btn" title="GitHub">
+                                                <span class="material-symbols-outlined">code</span>
+                                            </a>
+                                        }
+                                        @if (!string.IsNullOrEmpty(project.LiveUrl))
+                                        {
+                                            <a href="@project.LiveUrl" target="_blank" class="link-icon-btn" title="Live Demo">
+                                                <span class="material-symbols-outlined">open_in_new</span>
+                                            </a>
+                                        }
+                                        @if (string.IsNullOrEmpty(project.GithubUrl) && string.IsNullOrEmpty(project.LiveUrl))
+                                        {
+                                            <span class="text-muted">-</span>
+                                        }
+                                    </div>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (isEditing)
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="() => SaveEdit(globalIndex)" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(globalIndex)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteProject(globalIndex)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="projects.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form-grid">
+                    <div class="add-field">
+                        <label class="add-label">Title</label>
+                        <input class="inline-input-xs" @bind="newTitle" placeholder="Project title" />
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Category</label>
+                        <select class="inline-select" @bind="newCategory">
+                            @foreach (ProjectCategory cat in Enum.GetValues<ProjectCategory>())
+                            {
+                                <option value="@cat">@cat.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                    <div class="add-field">
+                        <label class="add-label">Image URL</label>
+                        <input class="inline-input-xs" @bind="newImageUrl" placeholder="/images/..." />
+                    </div>
+                    <div class="add-field full-width">
+                        <label class="add-label">Description</label>
+                        <textarea class="inline-textarea" @bind="newDescription" rows="2" placeholder="Project description..."></textarea>
+                    </div>
+                    <div class="add-field full-width">
+                        <label class="add-label">GitHub URL (optional)</label>
+                        <input class="inline-input-xs" @bind="newGithubUrl" placeholder="https://github.com/..." />
+                    </div>
+                    <div class="add-field full-width">
+                        <label class="add-label">Live URL (optional)</label>
+                        <input class="inline-input-xs" @bind="newLiveUrl" placeholder="https://..." />
+                    </div>
+                    <div class="add-field add-actions">
+                        <button class="btn-icon btn-confirm" @onclick="AddProject" title="Add">
+                            <span class="material-symbols-outlined">check</span>
+                        </button>
+                        <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                            <span class="material-symbols-outlined">close</span>
+                        </button>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Project
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<Project> projects = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingIndex = -1;
+    private string editTitle = string.Empty;
+    private string editDescription = string.Empty;
+    private string editImageUrl = string.Empty;
+    private ProjectCategory editCategory;
+    private List<string> editTechnologies = new();
+    private List<string> editFeatures = new();
+    private string editGithubUrl = string.Empty;
+    private string editLiveUrl = string.Empty;
+
+    // Add state
+    private bool isAdding = false;
+    private string newTitle = string.Empty;
+    private string newDescription = string.Empty;
+    private string newImageUrl = string.Empty;
+    private ProjectCategory newCategory;
+    private string newGithubUrl = string.Empty;
+    private string newLiveUrl = string.Empty;
+
+    private int totalPages => (int)Math.Ceiling((double)projects.Count / pageSize);
+    private List<Project> paginatedProjects => projects.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        projects = await ModelService.GetProjectsAsync();
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    private string GetCategoryName(ProjectCategory category) => ProjectCategoryHelper.GetCategoryDisplayName(category);
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(int index)
+    {
+        var project = projects[index];
+        editingIndex = index;
+        editTitle = project.Title;
+        editDescription = project.Description;
+        editImageUrl = project.ImageUrl;
+        editCategory = project.ProjectCategory;
+        editTechnologies = new List<string>(project.Technologies);
+        editFeatures = new List<string>(project.KeyFeatures);
+        editGithubUrl = project.GithubUrl ?? string.Empty;
+        editLiveUrl = project.LiveUrl ?? string.Empty;
+    }
+
+    private void SaveEdit(int index)
+    {
+        if (string.IsNullOrWhiteSpace(editTitle)) return;
+
+        projects[index] = new Project
+        {
+            Title = editTitle.Trim(),
+            Description = editDescription.Trim(),
+            ImageUrl = editImageUrl.Trim(),
+            ProjectCategory = editCategory,
+            Technologies = editTechnologies.Where(t => !string.IsNullOrWhiteSpace(t)).ToList(),
+            KeyFeatures = editFeatures.Where(f => !string.IsNullOrWhiteSpace(f)).ToList(),
+            GithubUrl = string.IsNullOrWhiteSpace(editGithubUrl) ? string.Empty : editGithubUrl.Trim(),
+            LiveUrl = string.IsNullOrWhiteSpace(editLiveUrl) ? string.Empty : editLiveUrl.Trim(),
+            Screenshots = projects[index].Screenshots
+        };
+        editingIndex = -1;
+    }
+
+    private void CancelEdit()
+    {
+        editingIndex = -1;
+    }
+
+    private void AddTech()
+    {
+        editTechnologies.Add(string.Empty);
+    }
+
+    private void RemoveTech(int index)
+    {
+        editTechnologies.RemoveAt(index);
+    }
+
+    private void AddFeature()
+    {
+        editFeatures.Add(string.Empty);
+    }
+
+    private void RemoveFeature(int index)
+    {
+        editFeatures.RemoveAt(index);
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newTitle = string.Empty;
+        newDescription = string.Empty;
+        newImageUrl = string.Empty;
+        newCategory = ProjectCategory.WebApplication;
+        newGithubUrl = string.Empty;
+        newLiveUrl = string.Empty;
+    }
+
+    private void AddProject()
+    {
+        if (string.IsNullOrWhiteSpace(newTitle)) return;
+
+        projects.Add(new Project
+        {
+            Title = newTitle.Trim(),
+            Description = newDescription.Trim(),
+            ImageUrl = newImageUrl.Trim(),
+            ProjectCategory = newCategory,
+            Technologies = new List<string>(),
+            KeyFeatures = new List<string>(),
+            GithubUrl = newGithubUrl.Trim(),
+            LiveUrl = newLiveUrl.Trim(),
+            Screenshots = new List<string>()
+        });
+        isAdding = false;
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+    }
+
+    private void DeleteProject(int index)
+    {
+        projects.RemoveAt(index);
+        if (paginatedProjects.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("Projects.json", projects);
+    }
+}

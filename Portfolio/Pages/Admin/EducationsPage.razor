@@ -1,0 +1,220 @@
+@page "/admin/educations"
+@layout AdminLayout
+@using Portfolio.Pages.Admin.Components
+@inject IModelToJsonService ModelService
+@inject IAdminService AdminService
+
+<PageTitle>Education</PageTitle>
+
+<div class="data-card">
+    <div class="card-header">
+        <h2>Education</h2>
+        <div class="header-actions">
+            <span class="count-badge">@paginatedEducations.Count of @educations.Count @(educations.Count == 1 ? "entry" : "entries")</span>
+            <button class="btn-save" @onclick="SaveChanges">
+                <span class="material-symbols-outlined">download</span>
+                Save Changes
+            </button>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-container">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Institution</th>
+                        <th>Year</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var edu in paginatedEducations)
+                    {
+                        <tr>
+                            <td>
+                                @if (editingId == edu.Id)
+                                {
+                                    <input class="inline-input" @bind="editTitle" placeholder="Degree / Title" />
+                                }
+                                else
+                                {
+                                    <span class="cell-primary">@edu.Title</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == edu.Id)
+                                {
+                                    <input class="inline-input" @bind="editIssuer" placeholder="Institution name" />
+                                }
+                                else
+                                {
+                                    <span class="cell-secondary">@edu.Issuer</span>
+                                }
+                            </td>
+                            <td>
+                                @if (editingId == edu.Id)
+                                {
+                                    <input class="inline-input-sm" @bind="editYear" placeholder="e.g. 2020" />
+                                }
+                                else
+                                {
+                                    <span class="badge badge-year">@edu.Year</span>
+                                }
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    @if (editingId == edu.Id)
+                                    {
+                                        <button class="btn-icon btn-confirm" @onclick="() => SaveEdit(edu)" title="Save">
+                                            <span class="material-symbols-outlined">check</span>
+                                        </button>
+                                        <button class="btn-icon btn-cancel" @onclick="CancelEdit" title="Cancel">
+                                            <span class="material-symbols-outlined">close</span>
+                                        </button>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn-icon btn-edit" @onclick="() => StartEdit(edu)" title="Edit">
+                                            <span class="material-symbols-outlined">edit</span>
+                                        </button>
+                                        <button class="btn-icon btn-delete" @onclick="() => DeleteEducation(edu.Id)" title="Delete">
+                                            <span class="material-symbols-outlined">delete</span>
+                                        </button>
+                                    }
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (totalPages > 1)
+        {
+            <PaginationControls CurrentPage="currentPage" PageSize="pageSize" TotalItems="educations.Count" PageChanged="OnPageChanged" />
+        }
+        <div class="add-row">
+            @if (isAdding)
+            {
+                <div class="add-form">
+                    <input class="inline-input-sm" @bind="newTitle" placeholder="Title" />
+                    <input class="inline-input-sm" @bind="newIssuer" placeholder="Institution" />
+                    <input class="inline-input-sm" @bind="newYear" placeholder="Year" />
+                    <button class="btn-icon btn-confirm" @onclick="AddEducation" title="Add">
+                        <span class="material-symbols-outlined">check</span>
+                    </button>
+                    <button class="btn-icon btn-cancel" @onclick="CancelAdd" title="Cancel">
+                        <span class="material-symbols-outlined">close</span>
+                    </button>
+                </div>
+            }
+            else
+            {
+                <button class="btn-add" @onclick="StartAdd">
+                    <span class="material-symbols-outlined">add</span>
+                    Add Education
+                </button>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private const int pageSize = 10;
+    private List<Education> educations = new();
+    private int currentPage = 1;
+
+    // Edit state
+    private int editingId = -1;
+    private string editTitle = string.Empty;
+    private string editIssuer = string.Empty;
+    private string editYear = string.Empty;
+
+    // Add state
+    private bool isAdding = false;
+    private string newTitle = string.Empty;
+    private string newIssuer = string.Empty;
+    private string newYear = string.Empty;
+
+    private int totalPages => (int)Math.Ceiling((double)educations.Count / pageSize);
+    private List<Education> paginatedEducations => educations.Skip((currentPage - 1) * pageSize).Take(pageSize).ToList();
+
+    protected override async Task OnInitializedAsync()
+    {
+        educations = await ModelService.GetEducationsAsync();
+    }
+
+    private async Task OnPageChanged(int page)
+    {
+        currentPage = page;
+        StateHasChanged();
+    }
+
+    // --- CRUD Operations ---
+
+    private void StartEdit(Education edu)
+    {
+        editingId = edu.Id;
+        editTitle = edu.Title;
+        editIssuer = edu.Issuer;
+        editYear = edu.Year;
+    }
+
+    private void SaveEdit(Education edu)
+    {
+        if (string.IsNullOrWhiteSpace(editTitle)) return;
+
+        edu.Title = editTitle.Trim();
+        edu.Issuer = editIssuer.Trim();
+        edu.Year = editYear.Trim();
+        editingId = -1;
+    }
+
+    private void CancelEdit()
+    {
+        editingId = -1;
+    }
+
+    private void StartAdd()
+    {
+        isAdding = true;
+        newTitle = string.Empty;
+        newIssuer = string.Empty;
+        newYear = string.Empty;
+    }
+
+    private void AddEducation()
+    {
+        if (string.IsNullOrWhiteSpace(newTitle)) return;
+
+        var newId = AdminService.GetNextId(educations);
+        educations.Add(new Education
+        {
+            Id = newId,
+            Title = newTitle.Trim(),
+            Issuer = newIssuer.Trim(),
+            Year = newYear.Trim()
+        });
+        isAdding = false;
+        currentPage = totalPages;
+    }
+
+    private void CancelAdd()
+    {
+        isAdding = false;
+    }
+
+    private void DeleteEducation(int id)
+    {
+        educations.RemoveAll(e => e.Id == id);
+        if (paginatedEducations.Count == 0 && currentPage > 1)
+        {
+            currentPage--;
+        }
+    }
+
+    private async Task SaveChanges()
+    {
+        await AdminService.DownloadJsonAsync("Educations.json", educations);
+    }
+}
