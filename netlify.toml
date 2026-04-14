@@ -1,6 +1,6 @@
 [build]
   base = "Portfolio"
-  command = "dotnet publish Portfolio/Portfolio.csproj -c Release -o ../publish /p:TreatWarningsAsErrors=false"
+  command = "dotnet publish -c Release -o ../publish"
   publish = "../publish/wwwroot"
 
 [build.environment]
