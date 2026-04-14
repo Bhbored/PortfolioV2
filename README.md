@@ -43,8 +43,8 @@ A private `/admin` section for managing all portfolio content. Each page support
 | ![Categories](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20151949.png) | ![Projects](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152004.png) | ![Experience](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152032.png) |
 
 | Education | Certificates |
-|:---:|:---:|:---:|
-| ![Education](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152043.png) | ![Certificates](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152059.png) | *Empty* |
+|:---:|:---:|
+| ![Education](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152043.png) | ![Certificates](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152059.png) |
 
 ### 📦 Data Workflow
 
