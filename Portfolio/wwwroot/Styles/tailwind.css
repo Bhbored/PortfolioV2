@@ -1256,9 +1256,6 @@ video {
 .overflow-hidden {
   overflow: hidden;
 }
-.overflow-x-auto {
-  overflow-x: auto;
-}
 .overflow-x-hidden {
   overflow-x: hidden;
 }
@@ -1884,6 +1881,9 @@ video {
 .text-on-surface-variant {
   --tw-text-opacity: 1;
   color: rgb(161 161 170 / var(--tw-text-opacity, 1));
+}
+.text-on-surface-variant\/100 {
+  color: rgb(161 161 170 / 1);
 }
 .text-on-surface-variant\/50 {
   color: rgb(161 161 170 / 0.5);
@@ -2949,10 +2949,6 @@ body {
     margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
   }
 
-  .md\:overflow-hidden {
-    overflow: hidden;
-  }
-
   .md\:rounded-3xl {
     border-radius: 1.5rem;
   }
@@ -2982,6 +2978,11 @@ body {
   .md\:px-4 {
     padding-left: 1rem;
     padding-right: 1rem;
+  }
+
+  .md\:px-6 {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
   }
 
   .md\:px-8 {
@@ -3121,6 +3122,11 @@ body {
 
   .lg\:gap-16 {
     gap: 4rem;
+  }
+
+  .lg\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .lg\:text-2xl {

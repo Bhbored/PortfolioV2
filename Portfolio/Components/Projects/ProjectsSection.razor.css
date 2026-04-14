@@ -1,6 +1,17 @@
 ﻿/* Projects Horizontal Scroll */
+.projects-container {
+    width: 100%;
+    max-width: 1536px; /* screen-2xl */
+    margin-left: auto;
+    margin-right: auto;
+    overflow: hidden;
+}
+
 .projects-viewport {
     width: 100%;
+    overflow: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .projects-viewport::-webkit-scrollbar {
@@ -10,36 +21,41 @@
 .projects-track {
     display: flex;
     gap: 1.5rem;
-    width: max-content;
     will-change: transform;
 }
 
 /* Mobile (< 768px): 2 cards, horizontally scrollable */
-.project-slide {
-    width: calc((100vw - 3rem) / 2);
-    flex-shrink: 0;
+@media (max-width: 767px) {
+    .projects-viewport {
+        overflow-x: auto;
+    }
+    .projects-track {
+        width: max-content;
+    }
+    .project-slide {
+        width: calc((100vw - 3rem) / 2);
+        flex-shrink: 0;
+    }
 }
 
-/* Tablet (768px - 1023px): 2 cards, bigger */
-@media (min-width: 768px) {
+/* Tablet (768px - 1023px): 2 cards */
+@media (min-width: 768px) and (max-width: 1023px) {
+    .projects-viewport {
+        overflow-x: auto;
+    }
+    .projects-track {
+        width: max-content;
+    }
     .project-slide {
         width: calc((100vw - 4rem) / 2);
+        flex-shrink: 0;
     }
 }
 
-/* Desktop (1024px+): 3 cards fully visible */
+/* Desktop (1024px+): 3 cards fully visible, no 4th card cutoff */
 @media (min-width: 1024px) {
-    .projects-viewport {
-        overflow: hidden;
-    }
     .project-slide {
-        width: calc((100vw - 4rem) / 3);
-        max-width: 460px;
-    }
-}
-
-@media (min-width: 1440px) {
-    .project-slide {
-        width: calc((1440px - 3rem) / 3);
+        flex: 0 0 calc((100% - 3rem) / 3);
+        max-width: calc((100% - 3rem) / 3);
     }
 }

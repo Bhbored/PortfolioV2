@@ -49,9 +49,13 @@
 
         <!-- Technologies -->
         <div class="flex flex-wrap gap-2">
-            @foreach (var tech in project.Technologies)
+            @foreach (var tech in project.Technologies.Take(3))
             {
                 <span class="text-[10px] font-label tracking-widest uppercase text-primary bg-primary/10 border border-primary/20 px-2 py-1">@tech</span>
+            }
+            @if (project.Technologies.Count > 3)
+            {
+                <span class="text-[10px] font-label tracking-widest uppercase text-on-surface-variant/100 bg-surface-container/10 border border-outline-variant/20 px-2 py-1">+@(project.Technologies.Count - 3)</span>
             }
         </div>
 
