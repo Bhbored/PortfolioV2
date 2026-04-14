@@ -36,15 +36,15 @@ A private `/admin` section for managing all portfolio content. Each page support
 
 | Dashboard | Personal Info | Skills |
 |:---:|:---:|:---:|
-| ![Dashboard](screenshots/admin-dashboard.png) | ![Personal Info](screenshots/admin-personal-info.png) | ![Skills](screenshots/admin-skills.png) |
+| ![Dashboard](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20151820.png) | ![Personal Info](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20151839.png) | ![Skills](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20151923.png) |
 
 | Categories | Projects | Experience |
 |:---:|:---:|:---:|
-| ![Categories](screenshots/admin-categories.png) | ![Projects](screenshots/admin-projects.png) | ![Experience](screenshots/admin-experience.png) |
+| ![Categories](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20151949.png) | ![Projects](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152004.png) | ![Experience](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152032.png) |
 
 | Education | Certificates |
 |:---:|:---:|:---:|
-| ![Education](screenshots/admin-education.png) | ![Certificates](screenshots/admin-certificates.png) | *Empty* |
+| ![Education](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152043.png) | ![Certificates](https://github.com/Bhbored/PortfolioV2/blob/master/Screenshots/Screenshot%202026-04-14%20152059.png) | *Empty* |
 
 ### 📦 Data Workflow
 
