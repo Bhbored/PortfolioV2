@@ -176,7 +176,7 @@
   },
   {
     "title": "ChartSightAI",
-    "description": "ChartSightAI is a .NET MAUI mobile app that uses AI to analyze financial charts and generate trade ideas, support/resistance levels, and market insights.",
+    "description": ".NET MAUI mobile app that uses AI to analyze financial charts and generate trade ideas, support/resistance levels, and market insights.",
     "imageUrl": "/images/Projects/chartsight_ai/chartsight_icon.png",
     "projectCategory": 6,
     "technologies": [
@@ -234,7 +234,7 @@
   },
   {
     "title": "DE Helper",
-    "description": "DE Helper Designed to streamline data entry tasks. Instead of repeatedly interacting with a physical POS system, this app allows users to conveniently input data via their smartphone. The collected data can then be exported as an organized Excel sheet, significantly improving workflow efficiency for repetitive data entry tasks.",
+    "description": "DE Helper allows users to conveniently input data via their smartphone. The collected data can then be exported as an organized Excel sheet, significantly improving workflow efficiency for repetitive data entry tasks.",
     "imageUrl": "/images/Projects/de_helper/de_helper_icon.png",
     "projectCategory": 6,
     "technologies": [
@@ -342,7 +342,7 @@
   },
   {
     "title": "Meal\u0027s Calories",
-    "description": "A Flutter-powered nutrition companion for mindful eating. user-friendly mobile app that helps users log meals, track daily calorie intake, and visualize dietary habits through interactive charts. Built with Flutter and Riverpod for smooth state management, it combines local SQLite persistence with REST API integration to fetch real-time food nutrition data.",
+    "description": "A Flutter-powered nutrition companion for mindful eating. user-friendly mobile app that helps users log meals, track daily calorie intake, and visualize dietary habits through interactive charts.",
     "imageUrl": "/images/Projects/meal\u0027s_calories/meal_icon.png",
     "projectCategory": 6,
     "technologies": [
@@ -438,7 +438,7 @@
   },
   {
     "title": "NeuroPOS",
-    "description": "NeuroPOS is a .NET MAUI-based, offline-first Point of Sale system with inventory management, sales transactions, cash tracking, and an AI assistant (GPT-4-mini) for smart queries and automation\u2014designed for real-world retail use and built as a senior graduation project.",
+    "description": ".NET MAUI-based, offline-first Point of Sale system with inventory management, sales transactions, cash tracking, and an AI assistant (GPT-4-mini) for smart queries and automation\u2014designed for real-world retail use and built as a senior graduation project.",
     "imageUrl": "/images/Projects/neuro_pos/neuro_pos.png",
     "projectCategory": 10,
     "technologies": [

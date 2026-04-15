@@ -11,7 +11,7 @@ namespace Portfolio.Services
         public AdminAuthService(IConfiguration configuration)
         {
             _configuration = configuration;
-            _adminPassword = _configuration["AdminKey"];
+            _adminPassword = _configuration["ADMIN_KEY"];
         }
 
         public bool Login(string password)

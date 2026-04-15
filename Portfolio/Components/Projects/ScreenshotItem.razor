@@ -1,5 +1,6 @@
+@using Portfolio.Models.Enums
 <!-- Screenshot Item with Lazy Loading and Skeleton -->
-<div class="lazy-image-wrapper relative aspect-video bg-surface-container-low overflow-hidden rounded-xl border border-white/10">
+<div class="lazy-image-wrapper relative @(GetAspectRatioClass()) bg-surface-container-low overflow-hidden rounded-xl border border-white/10">
     <!-- Skeleton Loader -->
     @if (!isLoaded)
     {
@@ -7,8 +8,8 @@
     }
 
     <!-- Image -->
-    <img src="@Src" 
-         alt="@Alt" 
+    <img src="@Src"
+         alt="@Alt"
          loading="lazy"
          class="w-full h-full object-cover transition-opacity duration-500 @(isLoaded ? "opacity-100" : "opacity-0")"
          @onload="OnImageLoad" />
@@ -17,8 +18,23 @@
 @code {
     [Parameter, EditorRequired] public required string Src { get; set; }
     [Parameter] public string Alt { get; set; } = "Screenshot";
+    [Parameter] public ProjectCategory Category { get; set; } = ProjectCategory.WebApplication;
 
     private bool isLoaded = false;
+
+    private string GetAspectRatioClass()
+    {
+        return Category switch
+        {
+            ProjectCategory.MobileApp or
+            ProjectCategory.iOSApp or
+            ProjectCategory.AndroidApp or
+            ProjectCategory.CrossPlatformMobile or
+            ProjectCategory.MobileGame
+                => "aspect-[9/16]", // Portrait for mobile apps
+            _ => "aspect-video" // Landscape (16:9) for web, desktop, and other
+        };
+    }
 
     private void OnImageLoad()
     {

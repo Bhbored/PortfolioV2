@@ -3,8 +3,6 @@
 <section id="home" class="relative h-screen w-full flex items-center px-6 md:px-12 mesh-gradient overflow-hidden">
     <div class="absolute inset-0 grid-pattern opacity-10"></div>
 
-  
-
     <!-- Content Container -->
     <div class="w-full max-w-screen-2xl mx-auto h-full flex items-center">
         <!-- Desktop Layout: Side by side -->
@@ -14,10 +12,10 @@
                 <div class="flex flex-col gap-0">
                     <!-- Main Headline -->
                     <div class="relative">
-                        <h1 class="font-headline text-[72px] md:text-[96px] lg:text-[120px] font-bold text-white leading-[0.85] tracking-tight group animate-fade-in-left" style="animation-delay: 300ms; animation-fill-mode: both; opacity: 0;">
+                        <h1 class="font-headline text-[72px] md:text-[96px] lg:text-[120px] font-bold text-white leading-[0.85] tracking-tight group animate-fade-in-left select-none" style="animation-delay: 300ms; animation-fill-mode: forwards; opacity: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; will-change: opacity, transform; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; -webkit-tap-highlight-color: transparent;">
                             @Capitalizer.CapitalizeName(info.Name)
                         </h1>
-                        <h1 class="font-headline text-[72px] md:text-[96px] lg:text-[120px] font-bold text-gradient leading-[0.85] tracking-tight mt-4 animate-fade-in-left" style="animation-delay: 500ms; animation-fill-mode: both; opacity: 0;">
+                        <h1 class="font-headline text-[72px] md:text-[96px] lg:text-[120px] font-bold text-gradient leading-[0.85] tracking-tight mt-4 animate-fade-in-left select-none" style="animation-delay: 500ms; animation-fill-mode: forwards; opacity: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; will-change: opacity, transform; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; -webkit-tap-highlight-color: transparent;">
                             @info.Title
                         </h1>
                     </div>
@@ -50,7 +48,7 @@
                 <div class="flex flex-col gap-0">
                     <!-- Main Headline - Smaller on mobile -->
                     <div class="relative">
-                        <h1 class="font-headline text-[64px] font-bold text-white leading-[0.9] tracking-tight group animate-fade-in-up" style="animation-delay: 300ms; animation-fill-mode: both; opacity: 0;">
+                        <h1 class="font-headline text-[64px] font-bold text-white leading-[0.9] tracking-tight group animate-fade-in-up select-none" style="animation-delay: 300ms; animation-fill-mode: forwards; opacity: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; will-change: opacity, transform; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; -webkit-tap-highlight-color: transparent;">
                             @foreach (var (letter, index) in Capitalizer.CapitalizeName(info.Name).Select((c, i) => (c, i)))
                             {
                                 <span class="inline-block relative hover:-translate-y-2 transition-transform duration-300">
@@ -59,7 +57,7 @@
                                 </span>
                             }
                         </h1>
-                        <h1 class="font-headline text-[64px] font-bold text-gradient leading-[0.9] tracking-tight mt-2 animate-fade-in-up" style="animation-delay: 500ms; animation-fill-mode: both; opacity: 0;">
+                        <h1 class="font-headline text-[64px] font-bold text-gradient leading-[0.9] tracking-tight mt-2 animate-fade-in-up select-none" style="animation-delay: 500ms; animation-fill-mode: forwards; opacity: 0; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; will-change: opacity, transform; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; outline: none; -webkit-tap-highlight-color: transparent;">
                             @info.Title
                         </h1>
                     </div>

@@ -1,3 +1,4 @@
+@using Portfolio.Models.Enums
 @using Microsoft.JSInterop
 @inject IJSRuntime JS
 @implements IAsyncDisposable
@@ -41,7 +42,7 @@
             var altText = $"Screenshot {index + 1}";
             <div class="screenshot-item flex-shrink-0 cursor-pointer"
                  @onclick="() => OpenPreview(index)">
-                <ScreenshotItem Src="@screenshot" Alt="@altText" />
+                <ScreenshotItem Src="@screenshot" Alt="@altText" Category="@ProjectCategory" />
                 <!-- Hover Overlay -->
                 <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center pointer-events-none">
                     <div class="w-16 h-16 rounded-full bg-primary/20 backdrop-blur-sm border border-primary/50 flex items-center justify-center">
@@ -57,34 +58,34 @@
     <!-- Image Preview Modal -->
     @if (isPreviewOpen && SelectedImageIndex.HasValue)
     {
-        <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 animate-fade-in" @onclick="ClosePreview">
-            <div class="relative max-w-7xl max-h-[90vh] w-full" @onclick:stopPropagation="true">
+        <div class="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-3 md:p-4 animate-fade-in" @onclick="ClosePreview">
+            <div class="relative @(IsMobileCategory() ? "max-w-xs md:max-w-sm" : "max-w-7xl") w-full flex flex-col items-center justify-center" @onclick:stopPropagation="true">
                 <!-- Close Button -->
-                <button type="button" class="absolute top-4 right-4 md:top-8 md:right-8 z-50 w-12 h-12 rounded-full bg-surface-container-high border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="ClosePreview">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button type="button" class="absolute -top-2 -right-2 md:-top-3 md:-right-3 z-50 w-10 h-10 md:w-11 md:h-11 rounded-full bg-surface-container-high border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="ClosePreview">
+                    <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
 
                 <!-- Image -->
-                <img src="@Screenshots[SelectedImageIndex.Value]" alt="Preview" class="w-full h-full object-contain rounded-lg" />
+                <img src="@Screenshots[SelectedImageIndex.Value]" alt="Preview" class="@(IsMobileCategory() ? "max-h-[65vh] md:max-h-[75vh] w-auto" : "w-full h-auto max-h-[85vh]") object-contain rounded-lg" />
 
                 <!-- Navigation Arrows -->
                 @if (Screenshots.Count > 1)
                 {
-                    <button type="button" class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="PreviousImage">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" class="absolute -left-4 md:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="PreviousImage">
+                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
                         </svg>
                     </button>
-                    <button type="button" class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="NextImage">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button type="button" class="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 rounded-full bg-surface-container-high/80 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-primary/20 hover:border-primary/50 transition-all duration-300" @onclick="NextImage">
+                        <svg class="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                         </svg>
                     </button>
 
                     <!-- Image Counter -->
-                    <div class="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-surface-container-high/80 backdrop-blur-sm rounded-full border border-white/20 text-white font-label text-sm">
+                    <div class="absolute -bottom-10 left-1/2 -translate-x-1/2 px-4 py-2 bg-surface-container-high/80 backdrop-blur-sm rounded-full border border-white/20 text-white font-label text-sm whitespace-nowrap">
                         @(SelectedImageIndex.Value + 1) / @Screenshots.Count
                     </div>
                 }
@@ -95,10 +96,25 @@
 
 @code {
     [Parameter, EditorRequired] public required List<string> Screenshots { get; set; }
+    [Parameter, EditorRequired] public ProjectCategory ProjectCategory { get; set; } = ProjectCategory.WebApplication;
 
     private bool isPreviewOpen = false;
     private int? SelectedImageIndex = null;
     private ElementReference galleryRef;
+
+    private bool IsMobileCategory()
+    {
+        return ProjectCategory switch
+        {
+            ProjectCategory.MobileApp or
+            ProjectCategory.iOSApp or
+            ProjectCategory.AndroidApp or
+            ProjectCategory.CrossPlatformMobile or
+            ProjectCategory.MobileGame
+                => true,
+            _ => false
+        };
+    }
 
     private void OpenPreview(int index)
     {

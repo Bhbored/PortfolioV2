@@ -13,8 +13,8 @@
   </Target>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +24,6 @@
     <Folder Include="Components\Certificates\" />
     <Folder Include="Components\Education\" />
     <Folder Include="Components\Contact\" />
-    <Folder Include="Data\" />
   </ItemGroup>
 
 </Project>
