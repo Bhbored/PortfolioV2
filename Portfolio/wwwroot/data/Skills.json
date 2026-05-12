@@ -65,17 +65,17 @@
     "title": "Blazor",
     "icon": 50,
     "skillCategoryID": 2,
-    "certificateID": null,
+    "certificateID": 5,
     "masteryLevel": 80,
     "isNew": false,
     "details": [
-      "Component-Based Architecture",
-      " Server \u0026 WebAssembly",
-      "State Management",
-      "Styling \u0026 Responsive UI ",
-      "JavaScript Interop \u0026 Hybrid Integration",
-      "Authentication \u0026 Authorization",
-      "Form Handling \u0026 Validation"
+      "Server, WASM, Hybrid, Static SSR",
+      "Component Design: Lifecycle, Parameters, CascadingValue, EventCallback, RenderFragment",
+      "Forms \u0026 Validation: EditForm, Data Annotations, Custom Validation, EditContext",
+      "State \u0026 Performance: Scoped Services, Virtualization, Lazy Loading, Streaming Rendering",
+      "Real-Time \u0026 Interop: SignalR, IJSRuntime",
+      "UI \u0026 Styling: Bootstrap, CSS Isolation, Tailwind",
+      "Testing \u0026 Deployment: bUnit, Azure/IIS/Docker, CI/CD"
     ]
   },
   {
@@ -94,7 +94,9 @@
       "Forms Validation \u0026 User Input Handling",
       "Local DB (Drift)",
       "Third-Party UI Libraries (Syncfusion)",
-      "Unit \u0026 Widget Testing Awareness"
+      "Unit \u0026 Widget Testing Awareness",
+      "Clean Architecture",
+      "Dio (Auth,rety Interceptors, Typed APIs)"
     ]
   },
   {
@@ -131,7 +133,11 @@
       "Advanced Unit Testing (xUnit \u0026 Moq)",
       "Layered Architecture \u0026 DTO Mapping",
       "API Documentation \u0026 Logging",
-      "Repository Pattern"
+      "Repository Pattern",
+      "Identity-based authentication",
+      "Role-gated authorization",
+      "Custom Authorization policy",
+      "Cookie session management"
     ]
   },
   {

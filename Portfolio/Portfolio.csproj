@@ -1,29 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
-	<PropertyGroup>
-		<TargetFramework>net8.0</TargetFramework>
-		<Nullable>enable</Nullable>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
-	</PropertyGroup>
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <OverrideHtmlAssetPlaceholders>true</OverrideHtmlAssetPlaceholders>
+  </PropertyGroup>
 
-	<Target Name="BuildTailwind" BeforeTargets="BeforeBuild">
-		<Exec Command="npm run build:css" />
-		<Exec Command="npm run build:gsap" />
-	</Target>
+  <Target Name="BuildTailwind" BeforeTargets="BeforeBuild">
+    <Exec Command="npm run build:css" />
+    <Exec Command="npm run build:gsap" />
+  </Target>
 
-	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
-	</ItemGroup>
+  <ItemGroup>
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.10" />
+	  <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.10" PrivateAssets="all" />
+  </ItemGroup>
 
-	<ItemGroup>
-		<Folder Include="Components\Shared\" />
-		<Folder Include="Components\Landing\" />
-		<Folder Include="Components\Experience\" />
-		<Folder Include="Components\Certificates\" />
-		<Folder Include="Components\Education\" />
-		<Folder Include="Components\Contact\" />
-	</ItemGroup>
+  <ItemGroup>
+    <Folder Include="Components\Shared\" />
+    <Folder Include="Components\Landing\" />
+    <Folder Include="Components\Experience\" />
+    <Folder Include="Components\Certificates\" />
+    <Folder Include="Components\Education\" />
+    <Folder Include="Components\Contact\" />
+  </ItemGroup>
 
 </Project>

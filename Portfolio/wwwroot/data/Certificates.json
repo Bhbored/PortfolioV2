@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "id": 1,
     "title": "CCNA: Introduction to Networks",
@@ -21,7 +21,39 @@
     "issuer": "Udemy",
     "year": "2025",
     "link": "https://www.udemy.com/certificate/UC-5c27f2b1-224c-4d4e-9dff-b1c199e63140/",
-    "topSKills": []
+    "topSKills": [
+      {
+        "id": 1,
+        "title": "Dart (Flutter)",
+        "icon": 193,
+        "skillCategoryID": 1,
+        "certificateID": 3,
+        "masteryLevel": 80,
+        "isNew": false,
+        "details": []
+      },
+      {
+        "id": 7,
+        "title": "Flutter",
+        "icon": 193,
+        "skillCategoryID": 3,
+        "certificateID": 3,
+        "masteryLevel": 80,
+        "isNew": false,
+        "details": [
+          "State Management (Riverpod)",
+          "Navigation \u0026 Routing",
+          "Firebase Integration (FCM Push Notifications, Firebase SDK)",
+          "Responsive/Adaptive UI",
+          "Forms Validation \u0026 User Input Handling",
+          "Local DB (Drift)",
+          "Third-Party UI Libraries (Syncfusion)",
+          "Unit \u0026 Widget Testing Awareness",
+          "Clean Architecture",
+          "Dio (Auth,rety Interceptors, Typed APIs)"
+        ]
+      }
+    ]
   },
   {
     "id": 4,
@@ -29,6 +61,33 @@
     "issuer": "Udemy",
     "year": "2025",
     "link": "https://www.udemy.com/certificate/UC-139a6b13-9e8b-4305-aa49-b78b3ce55b72",
+    "topSKills": [
+      {
+        "id": 8,
+        "title": ".NET MAUI",
+        "icon": 51,
+        "skillCategoryID": 3,
+        "certificateID": 4,
+        "masteryLevel": 90,
+        "isNew": false,
+        "details": [
+          "XAML-Based UI Design XAML-Based UI Design with MVVM Pattern",
+          "Shell Navigation \u0026 App Routing",
+          "Blazor Hybrid Integration (Mobile \u0026 Desktop apps)",
+          "Cross-Platform Architecture",
+          "UI Libraries: CommunityToolkit.Maui, Syncfusion",
+          "Local DB (EF Core SQLite)",
+          "MVVM Source Generators \u0026 Observable Properties"
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "Blazor: From Beginner To Pro",
+    "issuer": "Udemy",
+    "year": "2026",
+    "link": "https://www.udemy.com/certificate/UC-894814c0-3de5-4400-9e35-6fddaaa69bd6/",
     "topSKills": []
   }
 ]
