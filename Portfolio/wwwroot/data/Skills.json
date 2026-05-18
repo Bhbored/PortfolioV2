@@ -123,8 +123,8 @@
     "icon": 58,
     "skillCategoryID": 5,
     "certificateID": null,
-    "masteryLevel": 60,
-    "isNew": true,
+    "masteryLevel": 70,
+    "isNew": false,
     "details": [
       "REST API Design (Controllers, Routing, Model Binding \u0026 Validation)",
       "Middleware Pipeline \u0026 Global Error Handling",
@@ -135,7 +135,6 @@
       "API Documentation \u0026 Logging",
       "Repository Pattern",
       "Identity-based authentication",
-      "Role-gated authorization",
       "Custom Authorization policy",
       "Cookie session management"
     ]
